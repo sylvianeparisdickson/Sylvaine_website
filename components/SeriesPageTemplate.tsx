@@ -196,7 +196,7 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
           </div>
         )}
         {/* Hint text — smaller on mobile */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.18em] uppercase px-3 md:px-4 py-2 rounded pointer-events-none whitespace-nowrap"
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 max-w-[calc(100%-2rem)] text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.18em] uppercase px-3 md:px-4 py-2 rounded pointer-events-none text-center whitespace-normal sm:whitespace-nowrap"
           style={{ color: "rgba(255,255,255,.4)", background: "rgba(0,0,0,.4)", backdropFilter: "blur(4px)" }}>
           <span className="hidden md:inline">Scroll to zoom · Drag to pan · Double-click to zoom in</span>
           <span className="md:hidden">Pinch to zoom · Drag to pan</span>
@@ -282,7 +282,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
       </section>
 
       {/* Bottom nav */}
-      <div className="border-t border-black/10 px-6 md:px-14 py-7 md:py-10 flex justify-between items-center bg-[#f8f5ef]">
+      <div className="border-t border-black/10 px-6 md:px-14 py-7 md:py-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#f8f5ef]">
         <Link href="/study" className="text-[9px] tracking-[.22em] uppercase text-[#9a9188] hover:text-[#1a1816] transition-colors duration-300">← All collections</Link>
         <span className="font-serif italic text-[12px] md:text-[13px] text-[#9a9188]">{series.numeral} of V</span>
       </div>

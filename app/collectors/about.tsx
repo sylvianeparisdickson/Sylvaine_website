@@ -11,15 +11,15 @@ export default function AboutPage() {
         <main>
             <Nav />
 
-            <div className="min-h-screen flex flex-col justify-center px-6 md:px-14 pt-28 pb-20">
+            <div className="min-h-screen flex flex-col justify-center px-6 md:px-14 page-top pb-16 md:pb-20">
 
-                <span className="block text-[9px] tracking-[.28em] uppercase text-[#9a9188] mb-8">
+                <span className="block text-[9px] tracking-[.28em] uppercase text-[#9a9188] mb-6 md:mb-8">
                     About
                 </span>
 
                 <h1
-                    className="font-serif italic font-light text-[#1a1816] leading-[.9] mb-16"
-                    style={{ fontSize: "clamp(44px, 7vw, 88px)" }}
+                    className="font-serif italic font-light text-[#1a1816] leading-[.9] mb-10 md:mb-16"
+                    style={{ fontSize: "clamp(36px, 7vw, 88px)" }}
                 >
                     Sylviane<br />Paris-Dickson
                 </h1>

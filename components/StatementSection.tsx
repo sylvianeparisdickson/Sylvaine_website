@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function StatementSection() {
   return (
-    <section className="flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-20 items-center px-6 md:px-14 py-16 md:py-24 border-b border-black/10 reveal">
+    <section className="flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-20 items-center px-6 md:px-14 py-12 sm:py-16 md:py-24 border-b border-black/10 reveal">
       {/* Text */}
       <div>
         <span className="block text-[9px] tracking-[.28em] uppercase text-[#9a9188] mb-6">Artist statement</span>

@@ -57,7 +57,7 @@ export default function CommissionClient() {
       <Nav />
 
       {/* HERO */}
-      <section className="relative w-full overflow-hidden" style={{ height: "100vh" }}>
+      <section className="relative w-full min-h-screen-safe overflow-hidden">
         <Image
           src="/souls-of-the-park.jpg"
           alt="The Souls of the Park — Sylviane Paris-Dickson"
@@ -69,16 +69,16 @@ export default function CommissionClient() {
         <div className="absolute inset-0" style={{
           background: "linear-gradient(135deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,.1) 100%)"
         }} />
-        <div className="absolute top-1/2 -translate-y-1/2 left-6 md:left-14 max-w-lg">
-          <p className="flex items-center gap-3 text-[9px] tracking-[.32em] uppercase text-white/42 mb-6">
-            <span className="block w-8 h-px bg-white/30" />
+        <div className="absolute top-1/2 -translate-y-1/2 left-6 right-6 sm:right-auto md:left-14 max-w-lg pr-2">
+          <p className="flex items-center gap-3 text-[8px] sm:text-[9px] tracking-[.28em] sm:tracking-[.32em] uppercase text-white/42 mb-5 sm:mb-6">
+            <span className="block w-8 h-px bg-white/30 shrink-0" />
             Commission
           </p>
-          <h1 className="font-serif font-light text-white leading-[.88] tracking-[.02em] mb-7"
-            style={{ fontSize: "clamp(52px, 7vw, 96px)", fontWeight: 200 }}>
+          <h1 className="font-serif font-light text-white leading-[.88] tracking-[.02em] mb-5 sm:mb-7"
+            style={{ fontSize: "clamp(40px, 9vw, 96px)", fontWeight: 200 }}>
             Creating<br />Together
           </h1>
-          <p className="font-serif italic font-light text-white/65 leading-[1.7] text-[18px] max-w-sm mb-10">
+          <p className="font-serif italic font-light text-white/65 leading-[1.7] text-[16px] sm:text-[18px] max-w-sm mb-8 sm:mb-10">
             Each painting begins with a conversation — about a place, a memory, and what you wish to hold onto.
           </p>
           <a href="#form"
@@ -221,7 +221,7 @@ export default function CommissionClient() {
 
               <div className="flex justify-center mt-12">
                 <button type="submit" disabled={loading}
-                  className="group bg-[#1a1816] text-white text-[9.5px] tracking-[.26em] uppercase font-light px-16 py-5 hover:bg-[#3a3835] transition-all duration-400 flex items-center gap-3 disabled:opacity-50">
+                  className="group w-full sm:w-auto justify-center bg-[#1a1816] text-white text-[9.5px] tracking-[.26em] uppercase font-light px-10 sm:px-16 py-5 hover:bg-[#3a3835] transition-all duration-400 flex items-center gap-3 disabled:opacity-50">
                   {loading ? "Sending..." : "Send enquiry"}
                   {!loading && <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>}
                 </button>

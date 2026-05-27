@@ -20,13 +20,12 @@ export default function SelectedWorks() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-7">
         {featured.map((p, i) => (
           <Link key={p.title} href={p.href} className="group reveal" style={{ transitionDelay: `${i * 0.1}s` }}>
-            <div className="relative overflow-hidden mb-4">
+            <div className="relative overflow-hidden mb-4 w-full aspect-[4/5]">
               <Image
                 src={p.img}
                 alt={p.title}
-                width={600}
-                height={750}
-                className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                fill
+                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             </div>

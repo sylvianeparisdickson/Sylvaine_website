@@ -8,6 +8,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -16,6 +17,21 @@ body {
   color: #1a1816;
   background: #fff;
   overflow-x: hidden;
+}
+
+/* Consistent page top spacing below sticky nav */
+.page-top {
+  padding-top: 7rem;
+}
+@media (min-width: 768px) {
+  .page-top {
+    padding-top: 10rem;
+  }
+}
+
+/* Full-viewport sections that respect mobile browser chrome */
+.min-h-screen-safe {
+  min-height: 100dvh;
 }
 
 @keyframes heroZoom {

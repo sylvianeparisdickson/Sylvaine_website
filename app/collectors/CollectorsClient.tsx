@@ -43,7 +43,7 @@ export default function CollectorsClient() {
             <Nav />
 
             {/* HERO */}
-            <section className="relative w-full overflow-hidden" style={{ height: "72vh" }}>
+            <section className="relative w-full min-h-[55dvh] sm:min-h-[65dvh] md:min-h-[72vh] overflow-hidden">
                 <Image
                     src="/natures-guardians.jpg"
                     alt="Nature's Guardians — Sylviane Paris-Dickson"
@@ -114,7 +114,7 @@ export default function CollectorsClient() {
                         </div>
                     )}
                 </div>
-                <div className="md:border-l border-white/8 md:pl-20 hidden md:block">
+                <div className="border-t md:border-t-0 md:border-l border-white/8 pt-8 md:pt-0 md:pl-20">
                     <p className="font-serif text-[96px] leading-[.6] text-white/5 mb-4">"</p>
                     <p className="font-serif italic font-light text-white/55 leading-[1.6]"
                         style={{ fontSize: "clamp(18px, 2.5vw, 28px)" }}>
@@ -162,7 +162,7 @@ export default function CollectorsClient() {
                     </p>
                 </div>
                 <a href="/commission"
-                    className="group inline-flex items-center gap-3 bg-[#1a1816] text-white text-[9.5px] tracking-[.24em] uppercase font-light px-10 py-5 hover:bg-[#3a3835] transition-all duration-300 whitespace-nowrap">
+                    className="group inline-flex w-full sm:w-auto justify-center items-center gap-3 bg-[#1a1816] text-white text-[9.5px] tracking-[.24em] uppercase font-light px-10 py-5 hover:bg-[#3a3835] transition-all duration-300 sm:whitespace-nowrap">
                     Begin a conversation
                     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </a>

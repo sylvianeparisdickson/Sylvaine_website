@@ -27,7 +27,7 @@ export default function Nav() {
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className={`font-serif text-[12px] md:text-[13.5px] font-light tracking-[.24em] md:tracking-[.28em] uppercase transition-colors duration-500 text-[#1a1816]`}
+          className={`font-serif text-[10px] sm:text-[12px] md:text-[13.5px] font-light tracking-[.18em] sm:tracking-[.24em] md:tracking-[.28em] uppercase transition-colors duration-500 text-[#1a1816] max-w-[55vw] sm:max-w-none truncate sm:overflow-visible sm:whitespace-normal`}
         >
           Sylviane Paris-Dickson
         </Link>
@@ -69,7 +69,7 @@ export default function Nav() {
       </nav>
 
       {/* Mobile full-screen menu */}
-      <div className={`fixed inset-0 z-40 bg-white flex flex-col justify-center items-center gap-10 transition-all duration-500 md:hidden ${
+      <div className={`fixed inset-0 z-40 bg-white flex flex-col justify-center items-center gap-8 sm:gap-10 px-6 overflow-y-auto overscroll-contain transition-all duration-500 md:hidden pb-[env(safe-area-inset-bottom)] ${
         open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}>
         {links.map(({ label, href }, i) => (
@@ -77,7 +77,7 @@ export default function Nav() {
             key={label}
             href={href}
             onClick={() => setOpen(false)}
-            className="font-serif italic text-[32px] font-light text-[#1a1816] tracking-[.02em] transition-colors duration-300 hover:text-[#6a6560]"
+            className="font-serif italic text-[28px] sm:text-[32px] font-light text-[#1a1816] tracking-[.02em] transition-colors duration-300 hover:text-[#6a6560]"
             style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
           >
             {label}

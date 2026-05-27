@@ -23,7 +23,7 @@ export default function StudyPage() {
 
       <section className="px-6 md:px-14 py-12 md:py-20">
         {/* 2 col on mobile, 3 on desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-16">
           {allSeries.map((series, i) => (
             <Link key={series.id} href={series.href} className="group" style={{ animationDelay: `${i * 0.08}s` }}>
               <div className="relative overflow-hidden mb-4 w-full" style={{ aspectRatio: "4/5" }}>
@@ -32,7 +32,7 @@ export default function StudyPage() {
                   alt={series.name}
                   fill
                   className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  sizes="(max-width: 768px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/8" />
                 <div className="absolute top-3 md:top-5 left-3 md:left-5">

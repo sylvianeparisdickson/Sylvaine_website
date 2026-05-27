@@ -54,10 +54,10 @@ export default function ContactClient() {
     <main>
       <Nav />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen pt-[68px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 min-h-0 md:min-h-screen">
 
         {/* LEFT — painting */}
-        <div className="relative overflow-hidden h-[60vw] md:h-auto min-h-[260px]">
+        <div className="relative overflow-hidden h-[50vh] sm:h-[55vw] md:h-auto md:min-h-[320px]">
           <Image
             src="/morning-visit.jpg"
             alt="Morning Visit — Sylviane Paris-Dickson"
@@ -68,8 +68,8 @@ export default function ContactClient() {
           />
           <div className="absolute inset-0"
             style={{ background: "linear-gradient(to top, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 50%)" }} />
-          <div className="absolute bottom-7 left-7">
-            <p className="font-serif italic text-[12px] text-white/55 tracking-[.06em]">
+          <div className="absolute bottom-5 left-5 sm:bottom-7 sm:left-7 right-5 sm:right-auto">
+            <p className="font-serif italic text-[11px] sm:text-[12px] text-white/55 tracking-[.06em]">
               Morning Visit &nbsp;·&nbsp; Divine Presence
             </p>
           </div>
@@ -99,8 +99,8 @@ export default function ContactClient() {
               { label: "Instagram", value: "@sylvianeparisdickson", href: "https://www.instagram.com/sylvianeparisdickson" },
             ].map((item) => (
               <div key={item.label}
-                className="group flex items-baseline gap-5 py-4 border-t border-black/10 last:border-b transition-all duration-300 hover:pl-2">
-                <span className="text-[8.5px] tracking-[.22em] uppercase text-[#9a9188] min-w-[72px] shrink-0">{item.label}</span>
+                className="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-5 py-4 border-t border-black/10 last:border-b transition-all duration-300 sm:hover:pl-2">
+                <span className="text-[8.5px] tracking-[.22em] uppercase text-[#9a9188] sm:min-w-[72px] shrink-0">{item.label}</span>
                 <a href={item.href}
                   target={item.href.startsWith("http") ? "_blank" : undefined}
                   rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
@@ -108,7 +108,7 @@ export default function ContactClient() {
                   style={{ fontSize: "clamp(13px, 1.6vw, 19px)" }}>
                   {item.value}
                 </a>
-                <span className="ml-auto text-[14px] text-[#9a9188] opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">→</span>
+                <span className="hidden sm:inline ml-auto text-[14px] text-[#9a9188] opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">→</span>
               </div>
             ))}
           </div>
@@ -160,7 +160,7 @@ export default function ContactClient() {
               {error && <p className="text-[12px] text-red-500 mt-4">{error}</p>}
 
               <button type="submit" disabled={loading}
-                className="group self-start mt-8 bg-[#1a1816] text-white text-[9.5px] tracking-[.24em] uppercase font-light px-11 py-[18px] transition-all duration-300 hover:bg-[#3a3835] disabled:opacity-50">
+                className="group w-full sm:w-auto self-stretch sm:self-start mt-8 bg-[#1a1816] text-white text-[9.5px] tracking-[.24em] uppercase font-light px-11 py-[18px] transition-all duration-300 hover:bg-[#3a3835] disabled:opacity-50 text-center">
                 {loading ? "Sending..." : "Send message"}
                 {!loading && <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>}
               </button>
