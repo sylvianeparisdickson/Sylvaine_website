@@ -2,8 +2,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Press & Recognition — Sylviane Paris-Dickson",
-  description: "Press and recognition for Sylviane Paris-Dickson.",
+  title: "Press & Recognition — Sylviane Paris",
+  description: "Press and recognition for Sylviane Paris.",
 };
 
 export default function PressPage() {

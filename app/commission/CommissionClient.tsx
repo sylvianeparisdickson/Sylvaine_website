@@ -60,7 +60,7 @@ export default function CommissionClient() {
       <section className="relative w-full min-h-screen-safe overflow-hidden">
         <Image
           src="/souls-of-the-park.jpg"
-          alt="The Souls of the Park — Sylviane Paris-Dickson"
+          alt="The Souls of the Park — Sylviane Paris"
           fill
           priority
           className="object-cover object-center"

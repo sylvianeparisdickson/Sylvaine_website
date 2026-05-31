@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import { allSeries } from "@/lib/data";
 
 export const metadata = {
-  title: "Studies — Sylviane Paris-Dickson",
-  description: "Collections of paintings by Sylviane Paris-Dickson.",
+  title: "Studies — Sylviane Paris",
+  description: "Collections of paintings by Sylviane Paris.",
 };
 
 export default function StudyPage() {

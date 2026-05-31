@@ -18,16 +18,16 @@ const testimonials = [
         label: "Collector",
         title: "A Moment Forever",
         by: "DM",
-        en: "I gifted my husband a drawing by Sylviane Paris-Dickson. She beautifully captured our marsh and the most divine sunset we had ever seen. Thanks to her talent, we are able to relive that magical moment forever.",
-        fr: "J'ai offert à mon mari un dessin réalisé par Sylviane Paris-Dickson. Elle a magnifiquement capturé notre marais et le plus beau coucher de soleil que nous ayons jamais vu. Grâce à son talent, nous pouvons revivre ce moment magique pour toujours.",
+        en: "I gifted my husband a drawing by Sylviane Paris. She beautifully captured our marsh and the most divine sunset we had ever seen. Thanks to her talent, we are able to relive that magical moment forever.",
+        fr: "J'ai offert à mon mari un dessin réalisé par Sylviane Paris. Elle a magnifiquement capturé notre marais et le plus beau coucher de soleil que nous ayons jamais vu. Grâce à son talent, nous pouvons revivre ce moment magique pour toujours.",
     },
     {
         id: "js",
         label: "Collector",
         title: "A Home Remembered",
         by: "JS",
-        en: "Sylviane Paris-Dickson beautifully captured the essence of our home. Looking at the painting brings back all the special moments shared with family and friends, and the love we felt there. It is a treasured keepsake to be enjoyed now and passed on to our children and grandchildren.",
-        fr: "Sylviane Paris-Dickson a magnifiquement capté l'essence de notre maison. En regardant ce tableau, tous les moments précieux partagés en famille et entre amis reviennent à la mémoire, ainsi que l'amour que nous avons vécu en ces lieux. C'est un souvenir précieux, à apprécier aujourd'hui et à transmettre à nos enfants et petits-enfants.",
+        en: "Sylviane Paris beautifully captured the essence of our home. Looking at the painting brings back all the special moments shared with family and friends, and the love we felt there. It is a treasured keepsake to be enjoyed now and passed on to our children and grandchildren.",
+        fr: "Sylviane Paris a magnifiquement capté l'essence de notre maison. En regardant ce tableau, tous les moments précieux partagés en famille et entre amis reviennent à la mémoire, ainsi que l'amour que nous avons vécu en ces lieux. C'est un souvenir précieux, à apprécier aujourd'hui et à transmettre à nos enfants et petits-enfants.",
     },
 ];
 
@@ -46,7 +46,7 @@ export default function CollectorsClient() {
             <section className="relative w-full min-h-[55dvh] sm:min-h-[65dvh] md:min-h-[72vh] overflow-hidden">
                 <Image
                     src="/natures-guardians.jpg"
-                    alt="Nature's Guardians — Sylviane Paris-Dickson"
+                    alt="Nature's Guardians — Sylviane Paris"
                     fill
                     priority
                     className="object-cover object-center"

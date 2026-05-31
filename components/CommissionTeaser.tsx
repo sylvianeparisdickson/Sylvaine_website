@@ -7,7 +7,7 @@ export default function CommissionTeaser() {
       <div className="relative w-full h-72 sm:h-96 md:h-auto md:min-h-[520px] overflow-hidden">
         <Image
           src="/timeless-craft.jpg"
-          alt="Timeless Craft — Sylviane Paris-Dickson"
+          alt="Timeless Craft — Sylviane Paris"
           fill
           className="object-cover object-center"
           sizes="(max-width: 768px) 100vw, 50vw"

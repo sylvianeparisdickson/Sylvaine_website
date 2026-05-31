@@ -1,8 +1,8 @@
 import CommissionClient from "./CommissionClient";
 
 export const metadata = {
-    title: "Commission — Sylviane Paris-Dickson",
-    description: "Commission an original painting by Sylviane Paris-Dickson.",
+    title: "Commission — Sylviane Paris",
+    description: "Commission an original painting by Sylviane Paris.",
 };
 
 export default function CommissionPage() {

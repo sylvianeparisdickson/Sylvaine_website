@@ -6,6 +6,7 @@ const links = [
   { label: "Studies", href: "/study" },
   { label: "Commission", href: "/commission" },
   { label: "Collectors", href: "/collectors" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -29,7 +30,7 @@ export default function Nav() {
           onClick={() => setOpen(false)}
           className={`font-serif text-[10px] sm:text-[12px] md:text-[13.5px] font-normal tracking-[.12em] sm:tracking-[.16em] md:tracking-[.2em] uppercase transition-colors duration-500 text-[#1a1816] max-w-[55vw] sm:max-w-none truncate sm:overflow-visible sm:whitespace-normal`}
         >
-          Sylviane Paris-Dickson
+          Sylviane Paris
         </Link>
 
         {/* Desktop links */}

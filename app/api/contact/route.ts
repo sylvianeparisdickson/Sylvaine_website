@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const { first_name, last_name, email, subject, message } = body;
 
     await resend.emails.send({
-      from: "Sylviane Paris-Dickson Website <onboarding@resend.dev>",
+      from: "Sylviane Paris Website <onboarding@resend.dev>",
       to: "sylvianeparisdickson@gmail.com",
       replyTo: email,
       subject: `New message from ${first_name} ${last_name}`,
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
               New contact message
             </h2>
             <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #9a9188; margin: 0;">
-              Sylviane Paris-Dickson — Website
+              Sylviane Paris — Website
             </p>
           </div>
 

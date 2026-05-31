@@ -2,8 +2,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Exhibitions — Sylviane Paris-Dickson",
-  description: "Exhibitions and selected recognitions by Sylviane Paris-Dickson.",
+  title: "Exhibitions — Sylviane Paris",
+  description: "Exhibitions and selected recognitions by Sylviane Paris.",
 };
 
 export default function ExhibitionsPage() {

@@ -222,7 +222,7 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <span className="font-serif italic text-[12px] md:text-[14px] tracking-[.14em] uppercase"
                   style={{ color: "rgba(255,255,255,.14)", transform: "rotate(-25deg)", whiteSpace: "nowrap" }}>
-                  © Sylviane Paris-Dickson
+                  © Sylviane Paris
                 </span>
               </div>
             )}
@@ -297,7 +297,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
                 {painting.noReproduction && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="font-serif italic text-[10px] md:text-[11px] tracking-[.14em] uppercase text-white/22" style={{ transform: "rotate(-25deg)" }}>
-                      © Sylviane Paris-Dickson
+                      © Sylviane Paris
                     </span>
                   </div>
                 )}

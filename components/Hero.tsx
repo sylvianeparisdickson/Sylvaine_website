@@ -7,7 +7,7 @@ export default function Hero() {
         <div className="relative h-full w-full">
           <Image
             src="/artisans.jpg"
-            alt="Inner Illumination — Sylviane Paris-Dickson"
+            alt="Inner Illumination — Sylviane Paris"
             fill
             priority
             className="object-cover object-center"
@@ -39,7 +39,7 @@ export default function Hero() {
         </p>
         <h1 className="font-serif text-white leading-[.92] tracking-[.01em] md:tracking-[.015em] drop-shadow-lg"
           style={{ fontSize: "clamp(38px, 10vw, 96px)", fontWeight: 400 }}>
-          Sylviane<br />Paris-Dickson
+          Sylviane<br />Paris
         </h1>
       </div>
     </section>

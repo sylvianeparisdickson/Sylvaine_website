@@ -2,7 +2,7 @@ import SeriesPageTemplate from "@/components/SeriesPageTemplate";
 import { getSeriesById } from "@/lib/data";
 
 export const metadata = {
-  title: "Enchanted Path — Sylviane Paris-Dickson",
+  title: "Enchanted Path — Sylviane Paris",
 };
 
 export default function EnchantedPath() {

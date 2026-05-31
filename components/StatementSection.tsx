@@ -19,7 +19,7 @@ export default function StatementSection() {
         <div className="artwork-frame w-full">
           <Image
             src="/morning-visit.jpg"
-            alt="Morning Visit — Sylviane Paris-Dickson"
+            alt="Morning Visit — Sylviane Paris"
             fill
             className="object-cover object-center"
             sizes="(max-width: 768px) 100vw, 50vw"

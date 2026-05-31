@@ -21,12 +21,12 @@ export default function Footer() {
       {/* Footer */}
       <footer className="flex flex-col sm:flex-row justify-between items-center gap-6 px-6 md:px-14 py-8 border-t border-black/10">
         <div className="text-[9.5px] md:text-[10px] text-[#9a9188] tracking-[.04em] leading-[1.8] text-center sm:text-left">
-          <p>© Sylviane Paris-Dickson. All rights reserved.</p>
+          <p>© Sylviane Paris. All rights reserved.</p>
           <p>No image on this site may be reproduced without written permission.</p>
         </div>
         <ul className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6 md:gap-7 list-none">
           {[
-            { label: "Instagram", href: "https://www.instagram.com/sylvianeparisdickson" },
+            { label: "Instagram", href: "https://www.instagram.com/sylvianeparis" },
             { label: "Facebook", href: "https://www.facebook.com/sylvianeparisdickson" },
             { label: "Contact", href: "/contact" },
           ].map(({ label, href }) => (

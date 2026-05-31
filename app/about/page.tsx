@@ -2,8 +2,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-    title: "About — Sylviane Paris-Dickson",
-    description: "About Sylviane Paris-Dickson, painter based in Minneapolis, Minnesota.",
+    title: "About — Sylviane Paris",
+    description: "About Sylviane Paris, painter based in Minneapolis, Minnesota.",
 };
 
 export default function AboutPage() {
@@ -21,11 +21,11 @@ export default function AboutPage() {
                     className="font-serif italic font-light text-[#1a1816] leading-[.9] mb-10 md:mb-16"
                     style={{ fontSize: "clamp(36px, 7vw, 88px)" }}
                 >
-                    Sylviane<br />Paris-Dickson
+                    Sylviane<br />Paris
                 </h1>
 
                 <div className="max-w-xl">
-                    <div className="border-t border-black/10 pt-10">
+                    <div className="border-t border-black/10 pt-10 space-y-8">
                         <p
                             className="font-serif italic font-light text-[#6a6560] leading-[1.8]"
                             style={{ fontSize: "clamp(17px, 2vw, 22px)" }}
@@ -33,6 +33,12 @@ export default function AboutPage() {
                             Painter · Minneapolis, Minnesota<br />
                             Northrup King Building · Studio 439
                         </p>
+
+                        <div className="pt-6 border-t border-black/5">
+                            <p className="font-serif italic text-[15px] md:text-[16px] text-[#6a6560] leading-[1.85] max-w-lg">
+                                Earlier works may be signed Sylviane Dickson. All works are by the same artist, Sylviane Paris.
+                            </p>
+                        </div>
                     </div>
                 </div>
 

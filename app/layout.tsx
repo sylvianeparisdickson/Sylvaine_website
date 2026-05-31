@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "Sylviane Paris-Dickson",
+  title: "Sylviane Paris",
   description: "I paint spaces shaped by human hands, exploring the quiet presence and memory they hold.",
 };
 

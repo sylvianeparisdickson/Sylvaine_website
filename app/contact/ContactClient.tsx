@@ -60,7 +60,7 @@ export default function ContactClient() {
         <div className="relative overflow-hidden h-[50vh] sm:h-[55vw] md:h-auto md:min-h-[320px]">
           <Image
             src="/morning-visit.jpg"
-            alt="Morning Visit — Sylviane Paris-Dickson"
+            alt="Morning Visit — Sylviane Paris"
             fill
             className="object-cover object-center"
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -96,8 +96,8 @@ export default function ContactClient() {
           <div className="flex flex-col mb-8">
             {[
               { label: "Email",     value: "sylviane.paris_dickson@yahoo.com", href: "mailto:sylviane.paris_dickson@yahoo.com" },
-              { label: "Instagram", value: "@sylvianeparisdickson", href: "https://www.instagram.com/sylvianeparisdickson" },
-              { label: "Facebook",  value: "Sylviane Paris-Dickson", href: "https://www.facebook.com/sylvianeparisdickson" },
+              { label: "Instagram", value: "@sylvianeparis", href: "https://www.instagram.com/sylvianeparis" },
+              { label: "Facebook",  value: "Sylviane Paris", href: "https://www.facebook.com/sylvianeparisdickson" },
             ].map((item) => (
               <div key={item.label}
                 className="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-5 py-4 border-t border-black/10 last:border-b transition-all duration-300 sm:hover:pl-2">
