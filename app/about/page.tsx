@@ -204,14 +204,14 @@ export default function AboutPage() {
                 className="font-serif italic font-light text-[#1a1816] leading-[1.55] mb-10 max-w-3xl"
                 style={{ fontSize: "clamp(20px, 2.4vw, 30px)" }}
               >
-                I am drawn to spaces shaped by human hands: parks,
-                architectural structures, sculptures, and intimate arrangements
-                that carry care, intention, and time.
+                I am drawn to spaces shaped by human hands - parks,
+                architectural structures, sculptures, and constructed
+                environments that carry intention, care, and time.
               </p>
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 md:gap-10 text-[15px] text-[#6a6560] leading-[1.95]">
                 <div className="space-y-6">
                   <p>
-                    In painting, I return to these places not only for their
+                    In my paintings, I explore these places not only for their
                     visual presence, but for what they hold beyond it: the quiet
                     imprint of those who created them and those who have passed
                     through them.
@@ -221,26 +221,30 @@ export default function AboutPage() {
                     sites of contemplation where absence and presence coexist.
                   </p>
                   <p>
-                    Alongside these shared spaces, I am also drawn to still
-                    lifes and quieter interiors, where simple arrangements carry
-                    traces of living, attention, and time.
+                    Alongside these public and shared spaces, I am also drawn to
+                    more intimate scenes - still lifes that reflect a quieter,
+                    personal dimension of experience. Within these moments, I
+                    see a gentle celebration of life, where simple objects and
+                    arrangements hold traces of living, time, and attention.
                   </p>
                 </div>
                 <div className="space-y-6">
                   <p>
                     Light, perspective, and composition guide my process. I am
-                    interested in moments when a shift in angle or atmosphere
-                    reveals something subtle, and a place begins to feel
-                    inhabited, even in stillness.
+                    particularly interested in moments where a shift in angle or
+                    atmosphere reveals something subtle - when a place or an
+                    object begins to feel inhabited, even in stillness.
                   </p>
                   <p>
                     Through painting, I seek to honor these spaces and moments
-                    by allowing their atmosphere to emerge with quiet clarity.
+                    by capturing their atmosphere and allowing their silent
+                    presence to emerge.
                   </p>
                   <p>
                     My work invites a slower way of seeing, where the ordinary
-                    becomes quietly significant and memory can be felt within
-                    both the built environment and intimate spaces.
+                    becomes quietly significant and where memory - and a quiet
+                    celebration of life - can be sensed within both the built
+                    environment and intimate spaces.
                   </p>
                 </div>
               </div>
