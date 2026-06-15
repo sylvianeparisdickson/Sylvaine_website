@@ -1,18 +1,32 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const links = [
-  { label: "Series", href: "/study" },
-  { label: "Commission", href: "/commission" },
-  { label: "Collectors", href: "/collectors" },
-  { label: "Limited Editions", href: "/limited-editions" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
+import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/routing";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const t = useTranslations("Nav");
+  const pathname = usePathname();
+  const router = useRouter();
+  const [locale, setLocale] = useState("en");
+
+  useEffect(() => {
+    const currentLocale = window.location.pathname.split("/")[1] || "en";
+    setLocale(currentLocale);
+  }, [pathname]);
+
+  const links = [
+    { label: t("series"), href: "/study" },
+    { label: t("commission"), href: "/commission" },
+    { label: t("collectors"), href: "/collectors" },
+    { label: t("about"), href: "/about" },
+    { label: t("contact"), href: "/contact" },
+  ];
+
+  const switchLocale = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
+  };
 
   // Lock body scroll when menu open
   useEffect(() => {
@@ -35,7 +49,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex gap-11 list-none">
+        <ul className="hidden md:flex gap-11 list-none items-center">
           {links.map(({ label, href }) => (
             <li key={label}>
               <Link
@@ -46,6 +60,14 @@ export default function Nav() {
               </Link>
             </li>
           ))}
+          <li>
+            <button
+              onClick={() => switchLocale(locale === "en" ? "fr" : "en")}
+              className="text-[9.5px] tracking-[.18em] uppercase font-normal transition-colors duration-300 text-[#6a6560] hover:text-[#1a1816] ml-4"
+            >
+              {locale === "en" ? "FR" : "EN"}
+            </button>
+          </li>
         </ul>
 
         {/* Mobile hamburger */}
@@ -84,6 +106,15 @@ export default function Nav() {
             {label}
           </Link>
         ))}
+        <button
+          onClick={() => {
+            switchLocale(locale === "en" ? "fr" : "en");
+            setOpen(false);
+          }}
+          className="font-serif italic text-[24px] sm:text-[28px] font-normal text-[#1a1816] tracking-[.01em] hover:text-[#6a6560]"
+        >
+          {locale === "en" ? "Français" : "English"}
+        </button>
         <p className="text-[9px] tracking-[.22em] uppercase text-[#9a9188] mt-4">
           Northrup King Building · Studio 439
         </p>

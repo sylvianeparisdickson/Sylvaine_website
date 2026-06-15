@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Series, Painting } from "@/lib/data";
+import { useTranslations } from "next-intl";
 
 function PaintingDetails({ painting, variant = "card" }: { painting: Painting; variant?: "card" | "zoom" }) {
   if (variant === "zoom") {
@@ -21,7 +22,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
           </p>
         )}
         <p className="text-[8px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase hidden sm:block" style={{ color: "rgba(255,255,255,.38)" }}>
-          {painting.year ? `${painting.medium} · ${painting.year}` : painting.medium}
+          {painting.medium} · {painting.year}
         </p>
       </div>
     );
@@ -40,7 +41,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
         </p>
       )}
       <p className="text-[9px] md:text-[9.5px] tracking-[.1em] md:tracking-[.12em] uppercase text-[#9a9188]">
-        {painting.year ? `${painting.medium} · ${painting.year}` : painting.medium}
+        {painting.medium} · {painting.year}
       </p>
     </div>
   );
@@ -48,6 +49,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
 
 /* ── Zoom Viewer ── */
 function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => void }) {
+  const t = useTranslations("SeriesPageTemplate");
   const viewportRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -204,7 +206,7 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
           <div className="w-px h-5 mx-0.5 hidden md:block" style={{ background: "rgba(255,255,255,.12)" }} />
           <button onClick={onClose} className="px-3 md:px-4 h-8 md:h-9 rounded text-[8.5px] md:text-[9px] tracking-[.14em] md:tracking-[.16em] uppercase font-light transition-all duration-250"
             style={{ background: "rgba(255,255,255,.06)", border: ".5px solid rgba(255,255,255,.1)", color: "rgba(255,255,255,.6)" }}>
-            Close ×
+            {t("close")}
           </button>
         </div>
       </div>
@@ -236,21 +238,17 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
         {/* Hint text — smaller on mobile */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 max-w-[calc(100%-2rem)] text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.18em] uppercase px-3 md:px-4 py-2 rounded pointer-events-none text-center whitespace-normal sm:whitespace-nowrap"
           style={{ color: "rgba(255,255,255,.4)", background: "rgba(0,0,0,.4)", backdropFilter: "blur(4px)" }}>
-          <span className="hidden md:inline">Scroll to zoom · Drag to pan · Double-click to zoom in</span>
-          <span className="md:hidden">Pinch to zoom · Drag to pan</span>
+          <span className="hidden md:inline">{t("zoomHintDesktop")}</span>
+          <span className="md:hidden">{t("zoomHintMobile")}</span>
         </div>
       </div>
 
       {/* Hint bar */}
-      {(painting.hint || painting.availabilityLabel || painting.noReproduction) && (
+      {painting.hint && (
         <div className="px-4 md:px-7 py-3 md:py-4 border-t shrink-0" style={{ borderColor: "rgba(255,255,255,.06)", background: "rgba(10,9,8,.6)" }}>
-          {painting.hint && (
-            <p className="font-serif italic text-[12px] md:text-[14px] leading-[1.6]" style={{ color: "rgba(255,255,255,.38)" }}>{painting.hint}</p>
-          )}
-          {painting.availabilityLabel ? (
-            <p className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.16em] uppercase mt-1" style={{ color: "rgba(255,255,255,.22)" }}>{painting.availabilityLabel}</p>
-          ) : painting.noReproduction && (
-            <p className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.16em] uppercase mt-1" style={{ color: "rgba(255,255,255,.22)" }}>Not available for reproduction</p>
+          <p className="font-serif italic text-[12px] md:text-[14px] leading-[1.6]" style={{ color: "rgba(255,255,255,.38)" }}>{painting.hint}</p>
+          {painting.noReproduction && (
+            <p className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.16em] uppercase mt-1" style={{ color: "rgba(255,255,255,.22)" }}>{t("notForReproduction")}</p>
           )}
         </div>
       )}
@@ -260,6 +258,8 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
 
 /* ── Series Page ── */
 export default function SeriesPageTemplate({ series }: { series: Series }) {
+  const t = useTranslations("SeriesPageTemplate");
+  const tc = useTranslations("common");
   const [selected, setSelected] = useState<Painting | null>(null);
 
   return (
@@ -270,7 +270,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
       {/* Header */}
       <div className="pt-28 md:pt-40 pb-10 md:pb-14 px-6 md:px-14 border-b border-black/10">
         <div className="flex items-center gap-3 mb-6 md:mb-8">
-          <Link href="/study" className="text-[9px] tracking-[.18em] uppercase text-[#9a9188] hover:text-[#1a1816] transition-colors duration-300">Series</Link>
+          <Link href="/study" className="text-[9px] tracking-[.18em] uppercase text-[#9a9188] hover:text-[#1a1816] transition-colors duration-300">{t("studies")}</Link>
           <span className="text-[#9a9188] text-[9px]">→</span>
           <span className="text-[9px] tracking-[.22em] uppercase text-[#1a1816]">{series.name}</span>
         </div>
@@ -282,7 +282,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
               {series.name}
             </h1>
             <p className="text-[9px] md:text-[9.5px] tracking-[.16em] md:tracking-[.18em] uppercase text-[#9a9188]">
-              {series.paintings.length} {series.paintings.length === 1 ? "work" : "works"} · {series.subtitle}
+              {series.paintings.length === 1 ? tc("work_one") : tc("work_other", { count: series.paintings.length })} · {series.subtitle}
             </p>
           </div>
           <p className="text-[14px] md:text-[14.5px] text-[#6a6560] leading-[1.9]">{series.description}</p>
@@ -308,19 +308,17 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
                 )}
                 <div className="absolute inset-0 flex items-end justify-end p-3 md:p-4 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.18em] uppercase text-white bg-black/35 px-2 md:px-3 py-1.5 md:py-2">
-                    View &amp; zoom →
+                    {t("viewZoom")}
                   </span>
                 </div>
               </div>
               <p className="font-serif italic text-[16px] md:text-[18px] text-[#1a1816] mb-1.5">
                 {painting.title}
-                {painting.noReproduction && <span className="font-serif not-italic text-[10px] md:text-[11px] text-[#9a9188] ml-2">(study)</span>}
+                {painting.noReproduction && <span className="font-serif not-italic text-[10px] md:text-[11px] text-[#9a9188] ml-2">({t("study")})</span>}
               </p>
               <PaintingDetails painting={painting} />
               {painting.hint && <p className="text-[12.5px] md:text-[13px] text-[#6a6560] leading-[1.75]">{painting.hint}</p>}
-              {painting.availabilityLabel ? (
-                <p className="text-[8.5px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase text-[#9a9188] mt-2">{painting.availabilityLabel}</p>
-              ) : painting.noReproduction && <p className="text-[8.5px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase text-[#9a9188] mt-2">Not available for reproduction</p>}
+              {painting.noReproduction && <p className="text-[8.5px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase text-[#9a9188] mt-2">{t("notForReproduction")}</p>}
             </div>
           ))}
         </div>
@@ -328,8 +326,8 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
 
       {/* Bottom nav */}
       <div className="border-t border-black/10 px-6 md:px-14 py-7 md:py-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#f8f5ef]">
-        <Link href="/study" className="text-[9px] tracking-[.22em] uppercase text-[#9a9188] hover:text-[#1a1816] transition-colors duration-300">← All series</Link>
-        <span className="font-serif italic text-[12px] md:text-[13px] text-[#9a9188]">{series.numeral} of V</span>
+        <Link href="/study" className="text-[9px] tracking-[.22em] uppercase text-[#9a9188] hover:text-[#1a1816] transition-colors duration-300">{t("allCollections")}</Link>
+        <span className="font-serif italic text-[12px] md:text-[13px] text-[#9a9188]">{series.numeral} {t("ofV")}</span>
       </div>
 
       <Footer />

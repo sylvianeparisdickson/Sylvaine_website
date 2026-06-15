@@ -1,0 +1,380 @@
+{
+  "common": {
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "unsure": "I am not sure yet",
+    "edition": "Edition of {count}",
+    "available": "Available",
+    "sold": "Sold",
+    "study": "study",
+    "notForSale": "Not for sale and reproduction",
+    "work_one": "1 work",
+    "work_other": "{count} works"
+  },
+  "Nav": {
+    "series": "Series",
+    "commission": "Commission",
+    "collectors": "Collectors",
+    "limitedEditions": "Limited Editions",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "Hero": {
+    "tagline": "I paint spaces shaped by human hands,\nexploring the quiet presence and memory they hold.",
+    "subtext": "Painter · Minneapolis, Minnesota",
+    "name": "Sylviane Paris",
+    "alt": "Inner Illumination — Sylviane Paris"
+  },
+  "NorthrupStrip": {
+    "text": "Permanent exhibition at the <building>Northrup King Building</building><desktop> · Studio 439 · Minneapolis</desktop><mobile><br />Studio 439 · Minneapolis</mobile>"
+  },
+  "StatementSection": {
+    "heading": "Artist statement",
+    "text1": "I am drawn to spaces shaped by human hands — parks, architectural structures, sculptures, and constructed environments that carry intention, care, and time.",
+    "text2": "My background in theatre design deeply shaped the way I perceive space, light, composition, and atmosphere.",
+    "text3": "In my paintings, I explore these places not only for their visual presence, but for what they hold beyond it: the quiet imprint of those who created them and those who have passed through them.",
+    "text4": "Alongside these public spaces, I am also drawn to more intimate scenes — still lifes that reflect a quieter, personal dimension of experience. A gentle celebration of life."
+  },
+  "CollectionsSection": {
+    "heading": "Collections",
+    "archOfLight": "Architecture of Light",
+    "archOfLightSub": "Sacred & contemplative spaces",
+    "divinePresence": "Divine Presence",
+    "divinePresenceSub": "Form, sculpture & quiet encounter",
+    "livingMoments": "Living Moments",
+    "livingMomentsSub": "Intimate spaces & everyday beauty",
+    "enchantedPath": "Enchanted Path",
+    "enchantedPathSub": "Nature as passage & transformation",
+    "collections": "Collections",
+    "collectionsSub": "Early works & explorations"
+  },
+  "SelectedWorks": {
+    "heading": "Selected works",
+    "viewAll": "View all →"
+  },
+  "CommissionTeaser": {
+    "heading": "Commission",
+    "title": "Creating Together",
+    "text": "A commissioned painting begins with a conversation. It is a process of listening — to a place, a feeling, or a memory someone wishes to preserve. Together, we shape an artwork that becomes personal, meaningful, and deeply connected to its story.",
+    "button": "Begin a conversation"
+  },
+  "CollectorQuote": {
+    "quote": "We own a painting by Sylviane in our living room — a moment beautifully suspended in time, inspired by our old family bread oven. Every detail feels true. The stone bench, where my grandfather once sat, seems as if it is still waiting for him.",
+    "subtext": "BM · Private commission"
+  },
+  "Footer": {
+    "title": "Visit the Studio Gallery",
+    "text": "The permanent exhibition is open to the public every Saturday from 12:00 PM to 4:00 PM and by appointment.",
+    "phone": "Phone:",
+    "studio": "Northrup King Building",
+    "studioSub": "Studio 439 · Minneapolis, MN",
+    "copyright": "© Sylviane Paris. All rights reserved.",
+    "warning": "No image on this site may be reproduced without written permission.",
+    "contact": "Contact"
+  },
+  "About": {
+    "title": "About — Sylviane Paris",
+    "description": "About Sylviane Paris, painter born in France and based in Minneapolis, Minnesota. Theater designer turned fine artist exploring space, light, and memory.",
+    "heading": "A life shaped by\nspace, light,\nand quiet presence.",
+    "text1": "Born in France and now based in Minneapolis, Sylviane Paris paints places, interiors, and still moments with an attentiveness that comes from years of looking closely at how atmosphere, memory, and form live together.",
+    "studioLabel": "Studio",
+    "studioTitle": "Northrup King Building\nStudio 439",
+    "studioSub": "Minneapolis, Minnesota\nPainter working between architectural space, gardens, still life, and memory.",
+    "theArtist": "The Artist",
+    "quote": "Her work begins in observation, but it stays for the emotional atmosphere a place leaves behind.",
+    "bio1": "Sylviane's artistic path began in France, where she worked as a theater designer. That early practice sharpened her sensitivity to composition, perspective, and the expressive power of light within constructed space.",
+    "bio2": "Today, that same sensibility continues through painting. Whether depicting a park, a sculpture garden, an interior, or a still life, she is drawn to scenes that hold a sense of presence, memory, and quiet reflection.",
+    "bio3": "Her paintings have been exhibited in France, Denmark, and the United States, and are held in private collections.",
+    "practiceLabel": "Practice",
+    "practiceThemes": "Themes: architectural presence, public gardens, interiors, still life, memory.",
+    "practiceFocus": "Focus: atmosphere, perspective, and the quiet relationship between people and place.",
+    "practiceNote": "Earlier works may be signed Sylviane Dickson. All works are by the same artist, Sylviane Paris.",
+    "foundation": "Foundation",
+    "foundationTitle": "From theater\nto painting",
+    "foundationText": "A background in stage design informs the way space is arranged, lit, and emotionally felt within each composition.",
+    "perspective": "Perspective",
+    "perspectiveTitle": "The life\nwithin places",
+    "perspectiveText": "Gardens, structures, and intimate objects become vessels for memory, stillness, and the traces of human presence.",
+    "studioLife": "Studio Life",
+    "studioLifeTitle": "Rooted in\nMinneapolis",
+    "studioLifeText": "Her studio at Northrup King Building offers a place where visitors can encounter the work closely and in person.",
+    "statementLabel": "Artist Statement",
+    "statementHeading": "On space,\nlight,\nand presence.",
+    "statementQuote": "I am drawn to spaces shaped by human hands - parks, architectural structures, sculptures, and constructed environments that carry intention, care, and time.",
+    "statementCol1Para1": "In my paintings, I explore these places not only for their visual presence, but for what they hold beyond it: the quiet imprint of those who created them and those who have passed through them.",
+    "statementCol1Para2": "These environments, often familiar and open to all, become sites of contemplation where absence and presence coexist.",
+    "statementCol1Para3": "Alongside these public and shared spaces, I am also drawn to more intimate scenes - still lifes that reflect a quieter, personal dimension of experience. Within these moments, I see a gentle celebration of life, where simple objects and arrangements hold traces of living, time, and attention.",
+    "statementCol2Para1": "Light, perspective, and composition guide my process. I am particularly interested in moments where a shift in angle or atmosphere reveals something subtle - when a place or an object begins to feel inhabited, even in stillness.",
+    "statementCol2Para2": "Through painting, I seek to honor these spaces and moments by capturing their atmosphere and allowing their silent presence to emerge.",
+    "statementCol2Para3": "My work invites a slower way of seeing, where the ordinary becomes quietly significant and where memory - and a quiet celebration of life - can be sensed within both the built environment and intimate spaces.",
+    "connectLabel": "Visit or connect",
+    "connectTitle": "See the work in person\nor begin a conversation.",
+    "connectText": "The studio gallery is located at Northrup King Building, Studio 439, in Minneapolis. For commissions, exhibitions, or general inquiries, the contact page is the best place to reach out.",
+    "connectButton": "Contact the studio"
+  },
+  "Collectors": {
+    "title": "Collector Stories — Sylviane Paris",
+    "description": "Words from collectors of Sylviane Paris's work.",
+    "badge": "Collector Stories",
+    "heading": "Words from those\nwho carry the work.",
+    "subheading": "About these works",
+    "intro1": "Each piece I create holds a presence — of a place, a moment, or a memory quietly lived.",
+    "intro2": "Over time, these works become part of the homes and lives of those who receive them.",
+    "intro3": "Here are a few words from collectors who share that experience.",
+    "bmLabel": "Collector · Private commission",
+    "bmTitle": "Where Memory Breathes",
+    "bmText": "We own a painting by Sylviane in our living room — a moment beautifully suspended in time, inspired by our old family bread oven. Every detail feels true. The stone bench, where my grandfather once sat, seems as if it is still waiting for him. The 17th-century stones carry a deep sense of memory, evoking emotions from another era. And on the table, the freshly baked bread seems to still release its warm aroma.",
+    "bmQuote": "A moment beautifully suspended in time — the stone bench, where my grandfather once sat, seems as if it is still waiting for him.",
+    "bmBtnShow": "Read testimonial in French",
+    "bmBtnHide": "Hide French version",
+    "bmTextFr": "Nous possédons un tableau de Sylviane dans notre séjour, véritable vision figée dans le temps, inspirée de notre ancien four à pain familial. Chaque détail est empreint de justesse. Le banc de pierre, où mon grand-père s'asseyait, semble encore attendre son retour. Les pierres du XVIIe siècle, chargées de mémoire, font naître une émotion profonde, comme venue d'une autre époque. Et sur la table, les pains tout juste sortis du four semblent encore en diffuser le parfum.",
+    "ssTitle": "A Quiet Joy",
+    "ssText": "This painting fills our home with a sense of calm and peace — it truly brings us joy. We will cherish its beauty and artistry for years to come.",
+    "dmTitle": "A Moment Forever",
+    "dmText": "I gifted my husband a drawing by Sylviane Paris. She beautifully captured our marsh and the most divine sunset we had ever seen. Thanks to her talent, we are able to relive that magical moment forever.",
+    "jsTitle": "A Home Remembered",
+    "jsText": "Sylviane Paris beautifully captured the essence of our home. Looking at the painting brings back all the special moments shared with family and friends, and the love we felt there. It is a treasured keepsake to be enjoyed now and passed on to our children and grandchildren.",
+    "btnHide": "Hide",
+    "btnShow": "Read in French",
+    "ctaTitle": "Commission your own painting.",
+    "ctaText": "A place, a memory, a moment — translated into something you will keep forever.",
+    "ctaButton": "Begin a conversation"
+  },
+  "Commission": {
+    "title": "Commission — Sylviane Paris",
+    "description": "Commission an original painting by Sylviane Paris.",
+    "badge": "Commission",
+    "heading": "Creating\nTogether",
+    "heroText": "Each painting begins with a conversation — about a place, a memory, and what you wish to hold onto.",
+    "beginConversation": "Begin a conversation",
+    "bmText": "We own a painting by Sylviane in our living room — a moment beautifully suspended in time, inspired by our old family bread oven. Every detail feels true. The stone bench, where my grandfather once sat, seems as if it is still waiting for him.",
+    "bmLabel": "BM · Private commission",
+    "aboutLabel": "About commissions",
+    "aboutHeading": "A place.\nA memory.\nA painting.",
+    "aboutText1": "I create commissioned paintings inspired by meaningful places, spaces, and moments.",
+    "aboutText2": "Whether it is a park, a garden, an architectural setting, or a personal environment, I work closely with each client to understand what draws them to the subject and how they wish to experience it through painting.",
+    "aboutText3": "Commissions may be based on your own photographs or on images I create specifically for the project.",
+    "aboutText4": "Each piece is developed through a thoughtful exchange, allowing the project to take shape with clarity and intention. My aim is to translate not only the visual elements, but also the atmosphere and presence that make a place significant.",
+    "formatLabel": "Format & scale",
+    "formatText1": "Most commissioned works are created in medium formats that allow space for detail, atmosphere, and the perception of light to fully develop.",
+    "formatTypical": "Typical dimensions range around:",
+    "formatOr": "or",
+    "formatText2": "However, each project is approached individually, and dimensions may vary depending on the subject, composition, and the nature of the reference material.",
+    "formTitle": "Begin a conversation",
+    "formSub": "If you have a project in mind, I would be happy to discuss it with you.",
+    "formFirstName": "First name",
+    "formFirstNamePlaceholder": "Your first name",
+    "formLastName": "Last name",
+    "formLastNamePlaceholder": "Your last name",
+    "formEmail": "Email",
+    "formSubject": "Tell me about the place or subject you have in mind",
+    "formSubjectPlaceholder": "Describe the place, space, or moment you would like me to paint...",
+    "formSize": "Approximate size",
+    "formSizeSelect": "Select a size",
+    "formTimeline": "Your timeline (if any)",
+    "formTimelinePlaceholder": "e.g. No rush · By December · Gift for June",
+    "formFindUs": "How did you find me?",
+    "formFindUsPlaceholder": "Instagram · Word of mouth · Northrup King Building · Other",
+    "formRefImage": "Reference image (optional)",
+    "formRefImageUpload": "Upload image",
+    "formRefImageNote": "JPG, PNG or HEIC · Max 10MB",
+    "formError": "Something went wrong. Please try again or email directly.",
+    "formSubmittedTitle": "Thank you.",
+    "formSubmittedText": "Your enquiry has been received.\nI will be in touch with you soon to discuss your project.",
+    "sending": "Sending...",
+    "sendEnquiry": "Send enquiry"
+  },
+  "Contact": {
+    "title": "Contact — Sylviane Paris",
+    "description": "Get in touch with Sylviane Paris.",
+    "badge": "Contact",
+    "heading": "Let's begin\na conversation.",
+    "heroText": "Whether you are interested in a commission, a print, or simply wish to connect — I would be glad to hear from you.",
+    "orSend": "or send a message",
+    "formFirstName": "First name",
+    "formFirstNamePlaceholder": "Your first name",
+    "formLastName": "Last name",
+    "formLastNamePlaceholder": "Your last name",
+    "formEmail": "Email",
+    "formSubject": "Tell me about the place or subject you have in mind",
+    "formSubjectPlaceholder": "Commission · Print · General enquiry",
+    "formMessage": "Message",
+    "formMessagePlaceholder": "Tell me what is on your mind...",
+    "sending": "Sending...",
+    "sendMessage": "Send message",
+    "formError": "Something went wrong. Please try again or email directly.",
+    "formSubmittedTitle": "Thank you.",
+    "submittedText": "Your message has been sent.\nI will be in touch with you soon."
+  },
+  "Exhibitions": {
+    "title": "Exhibitions — Sylviane Paris",
+    "description": "Exhibitions and selected recognitions by Sylviane Paris.",
+    "badge": "Exhibitions",
+    "heading": "Exhibitions &\nRecognitions",
+    "award1Title": "Light Space & Time Online Art Gallery — 15th Nature Art Exhibition",
+    "award1Text": "Special Merit Award",
+    "award2Title": "Teravarna International Art Competition — 10th Figurative Exhibition",
+    "award2Text": "Honorable Mention",
+    "award3Title": "Teravarna International Art Competition — 13th Open Exhibition",
+    "award3Text": "Honorable Mention",
+    "bottomText": "Further exhibition history and upcoming shows\nwill be added shortly."
+  },
+  "LimitedEditions": {
+    "title": "Limited Editions — Sylviane Paris",
+    "description": "Selected paintings available as museum-quality archival Giclée Limited Editions, signed, numbered, and accompanied by a Certificate of Authenticity.",
+    "badge": "Limited Editions",
+    "heading": "Selected paintings available as archival Giclée.",
+    "desc": "Limited editions are produced using museum-quality archival Giclée materials, signed and numbered by the artist, and accompanied by a Certificate of Authenticity. Editions are offered in carefully controlled quantities for a select group of works.",
+    "bullet1": "Museum-quality archival Giclée",
+    "bullet2": "Signed, numbered, authenticated",
+    "bullet3": "Sold unframed, shipped carefully",
+    "bullet4": "Once sold out, editions are final",
+    "originalPainting": "Original Painting",
+    "statusAvailable": "Available",
+    "statusSold": "Sold",
+    "statusLabel": "Status: {status}",
+    "cardHeading": "Limited Edition Available",
+    "cardText": "Museum-quality archival Giclée, signed and numbered by the artist, and accompanied by a Certificate of Authenticity. Editions are offered in carefully controlled quantities and selected sizes.",
+    "bottomText": "Please contact the artist for inquiries about additional limited editions or custom presentation options."
+  },
+  "Press": {
+    "title": "Press & Recognition — Sylviane Paris",
+    "description": "Press and recognition for Sylviane Paris.",
+    "badge": "Press & Recognition",
+    "heading": "Press &\nRecognition",
+    "text": "Press features and further recognitions\nwill be added here as they become available."
+  },
+  "SeriesPageTemplate": {
+    "close": "Close ×",
+    "zoomHintDesktop": "Scroll to zoom · Drag to pan · Double-click to zoom in",
+    "zoomHintMobile": "Pinch to zoom · Drag to pan",
+    "notForReproduction": "Not available for reproduction",
+    "studies": "Studies",
+    "study": "study",
+    "viewZoom": "View & zoom →",
+    "allCollections": "← All collections",
+    "ofV": "of V"
+  },
+  "Series": {
+    "title": "Series — Sylviane Paris",
+    "description": "Collections of paintings by Sylviane Paris.",
+    "badge": "Collections",
+    "heading": "Series"
+  },
+  "data": {
+    "architecture-of-light": {
+      "name": "Architecture of Light",
+      "subtitle": "Sacred & contemplative spaces",
+      "description": "Architecture of Light is an exploration of what people have built, and what remains of them through time. I look at architectural and sculptural forms not as objects, but as traces of human presence that continue to exist. Through light, these structures are revealed again — gently transformed into atmosphere, memory, and perception. My work is an act of attention and respect toward what has been made and left behind, where light becomes a way of seeing what still lives within form.",
+      "paintings": {
+        "inner-illumination": {
+          "title": "Inner Illumination",
+          "medium": "Acrylic painting",
+          "hint": "Inner Illumination is inspired by the Basilica of Saint Mary in Minnesota and based on my own photograph. This work captures the quiet dialogue between structure and light. As illumination moves through the space, architecture becomes not only visible, but deeply felt.",
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "sizeLabel_medium": "Medium",
+          "sizeLabel_large": "Large",
+          "edition_small": "Edition of 50",
+          "edition_medium": "Edition of 25",
+          "edition_large": "Edition of 10"
+        }
+      }
+    },
+    "divine-presence": {
+      "name": "Divine Presence",
+      "subtitle": "Form, sculpture & quiet encounter",
+      "description": "Divine Presence explores moments where form carries a sense of something beyond the visible. Whether emerging through sculpture, landscape, or quiet spaces, these works reflect a perception of presence that feels both human and beyond human. Light, form, and atmosphere come together to suggest a subtle spiritual dimension — where what is seen opens into what is felt.",
+      "paintings": {
+        "morning-visit": {
+          "title": "Morning Visit",
+          "medium": "Acrylic painting",
+          "hint": "A quiet encounter between figure, architecture, and stillness, where presence unfolds in silence.",
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "sizeLabel_medium": "Medium",
+          "sizeLabel_large": "Large",
+          "edition_small": "Edition of 50",
+          "edition_medium": "Edition of 25",
+          "edition_large": "Edition of 10"
+        },
+        "souls-of-the-park": {
+          "title": "The Souls of the Park",
+          "medium": "Acrylic painting",
+          "hint": "Inspired by my experience as a theatre designer working with neutral masks for actors, The Souls of the Park reflects on how still forms come alive through presence and perception. In stone figures set within nature, I see a similar transformation — where what is silent becomes inhabited.",
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "sizeLabel_medium": "Medium",
+          "sizeLabel_large": "Large",
+          "edition_small": "Edition of 50",
+          "edition_medium": "Edition of 25",
+          "edition_large": "Edition of 10"
+        }
+      }
+    },
+    "living-moments": {
+      "name": "Living Moments",
+      "subtitle": "Intimate spaces & everyday beauty",
+      "description": "Living Moments explores the quiet beauty of everyday life within intimate spaces. These works focus on simple scenes shaped by human presence — objects, gestures, and arrangements that carry warmth, memory, and a sense of lived experience. Through light and atmosphere, ordinary moments are transformed into spaces of attention, where what is simple becomes quietly meaningful.",
+      "paintings": {
+        "art-of-indulgence": {
+          "title": "The Art of Indulgence",
+          "medium": "Acrylic painting",
+          "hint": "A quiet celebration of enjoyment in everyday life, where simple gestures and objects carry warmth and presence.",
+          "status": "Available"
+        },
+        "timeless-craft": {
+          "title": "Timeless Craft",
+          "medium": "Acrylic painting",
+          "hint": "Originally built in the 17th century and later acquired by my ancestor, this piece now lives as a space for gathering and celebrating important family moments, where history and present life quietly overlap.",
+          "status": "Sold"
+        },
+        "balcony-refreshment": {
+          "title": "Balcony Refreshment",
+          "medium": "Acrylic painting",
+          "hint": "A suspended moment between interior life and horizon, shaped by light, air, and stillness.",
+          "status": "Available"
+        }
+      }
+    },
+    "enchanted-path": {
+      "name": "Enchanted Path",
+      "subtitle": "Nature as passage & transformation",
+      "description": "Enchanted Path explores nature as a place of passage, transformation, and quiet mystery. These works are not only landscapes, but experiences of movement — where colour, light, and form invite a sense of transition between the visible and the imagined. Each path suggests a journey, both physical and inward.",
+      "paintings": {
+        "whispering-passage": {
+          "title": "Whispering Passage",
+          "medium": "Acrylic painting",
+          "hint": "A journey through nature as a place of transition and quiet mystery, where form, light, and color suggest movement between the visible and the imagined.",
+          "status": "Available"
+        }
+      }
+    },
+    "studies": {
+      "name": "Studies",
+      "subtitle": "Early works & explorations",
+      "description": "Studies brings together early works and explorations created through direct reference. These pieces reflect a stage of learning and observation that contributed to the development of my current practice, now rooted in my own photographic sources.",
+      "paintings": {
+        "poseidon": {
+          "title": "Poseidon, The Magnificent",
+          "medium": "Acrylic painting",
+          "hint": "An early exploration of form, strength, and sculptural presence.",
+          "availabilityLabel": "Not for sale and reproduction"
+        },
+        "natures-guardians": {
+          "title": "Nature's Guardians",
+          "medium": "Acrylic painting",
+          "hint": "A study of protective figures emerging within natural forms.",
+          "availabilityLabel": "Not for sale and reproduction"
+        },
+        "beauty-of-venus": {
+          "title": "The Beauty of Venus",
+          "medium": "Acrylic painting",
+          "hint": "A study of classical form and timeless presence, where light reveals the softness and quiet vitality of the figure.",
+          "availabilityLabel": "Not for sale and reproduction"
+        }
+      }
+    }
+  }
+}
