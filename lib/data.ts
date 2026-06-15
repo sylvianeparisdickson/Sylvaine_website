@@ -9,6 +9,8 @@ export type Painting = {
   framedDimensions?: string;
   hint?: string;
   noReproduction?: boolean;
+  limitedEditions?: { sizeLabel: string; edition: string; dimensions: string; price: string }[];
+  status?: string;
 };
 
 export type Series = {
