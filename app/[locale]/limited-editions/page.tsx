@@ -1,7 +1,6 @@
 import { Link } from "@/i18n/routing";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import { getLimitedEditionWorks } from "@/lib/data";
 import { getTranslations } from "next-intl/server";
 import { getLocalizedSeries } from "@/lib/localizedData";
 import { allSeries } from "@/lib/data";
