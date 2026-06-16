@@ -20,6 +20,7 @@ export default function Nav() {
     { label: t("series"), href: "/study" },
     { label: t("commission"), href: "/commission" },
     { label: t("collectors"), href: "/collectors" },
+    { label: t("limitedEditions"), href: "/limited-editions" },
     { label: t("about"), href: "/about" },
     { label: t("contact"), href: "/contact" },
   ];
