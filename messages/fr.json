@@ -236,6 +236,7 @@
     "statusLabel": "Statut : {status}",
     "cardHeading": "Édition limitée disponible",
     "cardText": "Giclée d'art de qualité musée, signée et numérotée par l'artiste, et accompagnée d'un certificat d'authenticité. Les éditions sont proposées en quantités contrôlées et dans des tailles sélectionnées.",
+    "contactForEdition": "Intéressé par une édition limitée de cette œuvre ? Veuillez contacter l'artiste.",
     "bottomText": "Veuillez contacter l'artiste pour toute demande concernant d'autres éditions limitées ou des options de présentation personnalisées."
   },
   "Press": {

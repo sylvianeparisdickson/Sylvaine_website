@@ -52,6 +52,12 @@ export const allSeries: Series[] = [
         framedDimensions: "Framed 30 × 36.5 in / 77 × 93 cm",
         hint:
           "Inner Illumination is inspired by the Basilica of Saint Mary in Minnesota and based on my own photograph. This work captures the quiet dialogue between structure and light. As illumination moves through the space, architecture becomes not only visible, but deeply felt.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 21.46", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "24 x 32", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 x 34.75", price: "$1,950" },
+        ],
       },
     ],
   },
@@ -75,6 +81,12 @@ export const allSeries: Series[] = [
         dimensions: "20.5 × 28.5 in / 52 × 72.5 cm",
         framedDimensions: "Framed 30 × 37.5 in / 72 × 90 cm",
         hint: "A quiet encounter between figure, architecture, and stillness, where presence unfolds in silence.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 22.25", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "22 x 30.5", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "25 x 34.78", price: "$1,950" },
+        ],
       },
       {
         id: "souls-of-the-park",
@@ -87,6 +99,12 @@ export const allSeries: Series[] = [
         framedDimensions: "Framed 37.5 × 28.5 in / 95 × 72.5 cm",
         hint:
           "Inspired by my experience as a theatre designer working with neutral masks for actors, The Souls of the Park reflects on how still forms come alive through presence and perception. In stone figures set within nature, I see a similar transformation — where what is silent becomes inhabited.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 23.6", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "22 x 32.5", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "24 x 35.36", price: "$1,950" },
+        ],
       },
     ],
   },
@@ -110,6 +128,7 @@ export const allSeries: Series[] = [
         dimensions: "21.5 × 20 in / 52 × 51 cm",
         framedDimensions: "Framed 30.5 × 28.5 in / 77.5 × 72.5 cm",
         hint: "A quiet celebration of enjoyment in everyday life, where simple gestures and objects carry warmth and presence.",
+        status: "Available",
       },
       {
         id: "timeless-craft",
@@ -122,6 +141,7 @@ export const allSeries: Series[] = [
         framedDimensions: "Framed 34 × 26 in / 86.5 × 66 cm",
         hint:
           "Originally built in the 17th century and later acquired by my ancestor, this piece now lives as a space for gathering and celebrating important family moments, where history and present life quietly overlap.",
+        status: "Sold",
       },
       {
         id: "balcony-refreshment",
@@ -133,6 +153,7 @@ export const allSeries: Series[] = [
         dimensions: "25 × 17 in / 63.5 × 43 cm",
         framedDimensions: "Framed 34 × 26 in / 86.5 × 66 cm",
         hint: "A suspended moment between interior life and horizon, shaped by light, air, and stillness.",
+        status: "Available",
       },
     ],
   },
@@ -157,6 +178,7 @@ export const allSeries: Series[] = [
         framedDimensions: "Framed 29 × 37 in / 73.5 × 94 cm",
         hint:
           "A journey through nature as a place of transition and quiet mystery, where form, light, and color suggest movement between the visible and the imagined.",
+        status: "Available",
       },
     ],
   },
