@@ -1,15 +1,26 @@
 "use client";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 export default function Footer() {
   const t = useTranslations("Footer");
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Integrate with newsletter service
+    console.log("Newsletter subscription:", email);
+    setSubscribed(true);
+    setEmail("");
+  };
 
   return (
     <>
-      {/* Studio strip */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 px-6 md:px-14 py-8 md:py-10 bg-[#f8f5ef] border-t border-b border-black/10 text-left">
-        <div className="space-y-2 max-w-xl">
+      {/* Studio strip with newsletter */}
+      <div className="flex flex-col md:flex-row justify-between items-start gap-6 px-6 md:px-14 py-8 md:py-10 bg-[#f8f5ef] border-t border-b border-black/10 text-left">
+        <div className="space-y-3 max-w-xl">
           <p className="font-serif italic text-[16px] sm:text-[18px] md:text-[20px] text-[#1a1816]">
             {t("title")}
           </p>
@@ -19,14 +30,39 @@ export default function Footer() {
           <p className="text-[12px] text-[#6a6560]">
             {t("phone")} <a href="tel:+16127500998" className="hover:text-[#1a1816] transition-colors underline decoration-black/20 hover:decoration-black">(612) 750-0998</a>
           </p>
+          <div className="space-y-1 pt-2">
+            <p className="text-[9.5px] tracking-[.2em] uppercase text-[#1a1816] font-normal">
+              {t("studio")}
+            </p>
+            <p className="text-[9px] tracking-[.16em] uppercase text-[#9a9188]">
+              {t("studioSub")}
+            </p>
+          </div>
         </div>
-        <div className="shrink-0 space-y-1">
-          <p className="text-[9.5px] tracking-[.2em] uppercase text-[#1a1816] font-normal">
-            {t("studio")}
+        <div className="shrink-0 w-full md:w-auto max-w-md">
+          <p className="text-[9.5px] tracking-[.2em] uppercase text-[#1a1816] mb-2">
+            {t("newsletterHeading")}
           </p>
-          <p className="text-[9px] tracking-[.16em] uppercase text-[#9a9188]">
-            {t("studioSub")}
+          <p className="text-[12px] text-[#6a6560] mb-4">
+            {t("newsletterText")}
           </p>
+          <form onSubmit={handleSubscribe} className="flex gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t("newsletterPlaceholder")}
+              required
+              className="flex-1 bg-transparent border border-black/12 px-4 py-2 text-[13px] text-[#1a1816] placeholder:text-black/20 outline-none focus:border-black/30 transition-colors"
+            />
+            <button
+              type="submit"
+              disabled={subscribed}
+              className="px-5 py-2 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {subscribed ? "✓" : t("newsletterButton")}
+            </button>
+          </form>
         </div>
       </div>
 

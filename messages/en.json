@@ -46,8 +46,8 @@
     "livingMomentsSub": "Intimate spaces & everyday beauty",
     "enchantedPath": "Enchanted Path",
     "enchantedPathSub": "Nature as passage & transformation",
-    "collections": "Collections",
-    "collectionsSub": "Early works & explorations"
+    "studies": "Studies",
+    "studiesSub": "Early works & explorations"
   },
   "SelectedWorks": {
     "heading": "Selected works",
@@ -71,7 +71,11 @@
     "studioSub": "Studio 439 · Minneapolis, MN",
     "copyright": "© Sylviane Paris. All rights reserved.",
     "warning": "No image on this site may be reproduced without written permission.",
-    "contact": "Contact"
+    "contact": "Contact",
+    "newsletterHeading": "Stay Connected",
+    "newsletterText": "Subscribe to receive updates on new works, exhibitions, and studio news.",
+    "newsletterPlaceholder": "Your email address",
+    "newsletterButton": "Subscribe"
   },
   "About": {
     "title": "About — Sylviane Paris",
