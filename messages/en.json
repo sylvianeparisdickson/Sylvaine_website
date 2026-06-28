@@ -327,7 +327,13 @@
           "title": "The Art of Indulgence",
           "medium": "Acrylic painting",
           "hint": "A quiet celebration of enjoyment in everyday life, where simple gestures and objects carry warmth and presence.",
-          "status": "Available"
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "edition_small": "Edition of 50",
+          "sizeLabel_medium": "Medium",
+          "edition_medium": "Edition of 25",
+          "sizeLabel_large": "Large",
+          "edition_large": "Edition of 10"
         },
         "timeless-craft": {
           "title": "Timeless Craft",
@@ -339,7 +345,13 @@
           "title": "Balcony Refreshment",
           "medium": "Acrylic painting",
           "hint": "A suspended moment between interior life and horizon, shaped by light, air, and stillness.",
-          "status": "Available"
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "edition_small": "Edition of 50",
+          "sizeLabel_medium": "Medium",
+          "edition_medium": "Edition of 25",
+          "sizeLabel_large": "Large",
+          "edition_large": "Edition of 10"
         }
       }
     },
@@ -352,7 +364,25 @@
           "title": "Whispering Passage",
           "medium": "Acrylic painting",
           "hint": "A journey through nature as a place of transition and quiet mystery, where form, light, and color suggest movement between the visible and the imagined.",
-          "status": "Available"
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "edition_small": "Edition of 50",
+          "sizeLabel_medium": "Medium",
+          "edition_medium": "Edition of 25",
+          "sizeLabel_large": "Large",
+          "edition_large": "Edition of 10"
+        },
+        "path-of-wonder": {
+          "title": "The Path of Wonder",
+          "medium": "Acrylic painting",
+          "hint": "A winding path disappears beneath a canopy of luminous foliage, inviting the viewer into a landscape of quiet discovery. Bathed in soft light and vibrant color, the forest becomes a place where imagination and memory meet. Part of the Enchanted Paths series, this painting explores the sense of wonder that can emerge when we slow our pace and allow ourselves to wander. The path leads beyond the visible destination, suggesting a journey of curiosity, reflection, and possibility.",
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "edition_small": "Edition of 50",
+          "sizeLabel_medium": "Medium",
+          "edition_medium": "Edition of 25",
+          "sizeLabel_large": "Large",
+          "edition_large": "Edition of 10"
         }
       }
     },

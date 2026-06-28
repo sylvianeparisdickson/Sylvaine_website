@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 
@@ -28,6 +29,12 @@ export default function Nav() {
   const switchLocale = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale });
   };
+
+  const locales = [
+    { code: "en", flag: "/flags/us.svg" },
+    { code: "fr", flag: "/flags/fr.svg" },
+    { code: "es", flag: "/flags/es.svg" },
+  ];
 
   // Lock body scroll when menu open
   useEffect(() => {
@@ -61,13 +68,21 @@ export default function Nav() {
               </Link>
             </li>
           ))}
-          <li>
-            <button
-              onClick={() => switchLocale(locale === "en" ? "fr" : "en")}
-              className="text-[9.5px] tracking-[.18em] uppercase font-normal transition-colors duration-300 text-[#6a6560] hover:text-[#1a1816] ml-4"
-            >
-              {locale === "en" ? "FR" : "EN"}
-            </button>
+          <li className="flex gap-2 ml-4">
+            {locales.map(({ code, flag }) => (
+              <button
+                key={code}
+                onClick={() => switchLocale(code)}
+                className={`relative w-6 h-4 transition-opacity duration-300 ${locale === code ? 'opacity-100' : 'opacity-40 hover:opacity-100'}`}
+              >
+                <Image
+                  src={flag}
+                  alt={code}
+                  fill
+                  className="object-cover rounded-sm"
+                />
+              </button>
+            ))}
           </li>
         </ul>
 
@@ -107,15 +122,25 @@ export default function Nav() {
             {label}
           </Link>
         ))}
-        <button
-          onClick={() => {
-            switchLocale(locale === "en" ? "fr" : "en");
-            setOpen(false);
-          }}
-          className="font-serif italic text-[24px] sm:text-[28px] font-normal text-[#1a1816] tracking-[.01em] hover:text-[#6a6560]"
-        >
-          {locale === "en" ? "Français" : "English"}
-        </button>
+        <div className="flex gap-4">
+          {locales.map(({ code, flag }) => (
+            <button
+              key={code}
+              onClick={() => {
+                switchLocale(code);
+                setOpen(false);
+              }}
+              className={`relative w-8 h-5 transition-opacity duration-300 ${locale === code ? 'opacity-100' : 'opacity-40 hover:opacity-100'}`}
+            >
+              <Image
+                src={flag}
+                alt={code}
+                fill
+                className="object-cover rounded-sm"
+              />
+            </button>
+          ))}
+        </div>
         <p className="text-[9px] tracking-[.22em] uppercase text-[#9a9188] mt-4">
           Northrup King Building · Studio 439
         </p>

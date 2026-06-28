@@ -129,6 +129,11 @@ export const allSeries: Series[] = [
         framedDimensions: "Framed 30.5 × 28.5 in / 77.5 × 72.5 cm",
         hint: "A quiet celebration of enjoyment in everyday life, where simple gestures and objects carry warmth and presence.",
         status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "18 x 16.74", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "23 x 21.4", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "32 x 29.77", price: "$1,950" },
+        ],
       },
       {
         id: "timeless-craft",
@@ -154,6 +159,11 @@ export const allSeries: Series[] = [
         framedDimensions: "Framed 34 × 26 in / 86.5 × 66 cm",
         hint: "A suspended moment between interior life and horizon, shaped by light, air, and stillness.",
         status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 26.35", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "20 x 32.94", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "22 x 36.2", price: "$1,950" },
+        ],
       },
     ],
   },
@@ -179,6 +189,28 @@ export const allSeries: Series[] = [
         hint:
           "A journey through nature as a place of transition and quiet mystery, where form, light, and color suggest movement between the visible and the imagined.",
         status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 22.4", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "20 x 28", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "25 x 35", price: "$1,950" },
+        ],
+      },
+      {
+        id: "path-of-wonder",
+        title: "The Path of Wonder",
+        year: "2026",
+        medium: "Acrylic painting",
+        img: "/path.jpg",
+        alt: "The Path of Wonder — Sylviane Paris",
+        dimensions: "19 × 28 in / 48 × 71 cm",
+        hint:
+          "A winding path disappears beneath a canopy of luminous foliage, inviting the viewer into a landscape of quiet discovery. Bathed in soft light and vibrant color, the forest becomes a place where imagination and memory meet. Part of the Enchanted Paths series, this painting explores the sense of wonder that can emerge when we slow our pace and allow ourselves to wander. The path leads beyond the visible destination, suggesting a journey of curiosity, reflection, and possibility.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 23.5", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "19 x 28", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 x 38.3", price: "$1,950" },
+        ],
       },
     ],
   },

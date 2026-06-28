@@ -327,7 +327,13 @@
           "title": "L'Art de l'Indulgence",
           "medium": "Peinture acrylique",
           "hint": "Une célébration discrète des plaisirs du quotidien, où des gestes et des objets simples sont porteurs de chaleur et de présence.",
-          "status": "Disponible"
+          "status": "Disponible",
+          "sizeLabel_small": "Petit",
+          "edition_small": "Édition de 50",
+          "sizeLabel_medium": "Moyen",
+          "edition_medium": "Édition de 25",
+          "sizeLabel_large": "Grand",
+          "edition_large": "Édition de 10"
         },
         "timeless-craft": {
           "title": "Savoir-faire Intemporel",
@@ -339,7 +345,13 @@
           "title": "Rafraîchissement au Balcon",
           "medium": "Peinture acrylique",
           "hint": "Un moment suspendu entre vie intérieure et horizon, façonné par la lumière, l'air et la tranquillité.",
-          "status": "Disponible"
+          "status": "Disponible",
+          "sizeLabel_small": "Petit",
+          "edition_small": "Édition de 50",
+          "sizeLabel_medium": "Moyen",
+          "edition_medium": "Édition de 25",
+          "sizeLabel_large": "Grand",
+          "edition_large": "Édition de 10"
         }
       }
     },
@@ -352,7 +364,25 @@
           "title": "Le Passage des Murmures",
           "medium": "Peinture acrylique",
           "hint": "Un voyage à travers la nature comme lieu de transition et de mystère tranquille, où la forme, la lumière et la couleur suggèrent un mouvement entre le visible et l'imaginaire.",
-          "status": "Disponible"
+          "status": "Disponible",
+          "sizeLabel_small": "Petit",
+          "edition_small": "Édition de 50",
+          "sizeLabel_medium": "Moyen",
+          "edition_medium": "Édition de 25",
+          "sizeLabel_large": "Grand",
+          "edition_large": "Édition de 10"
+        },
+        "path-of-wonder": {
+          "title": "Le Sentier de la Merveille",
+          "medium": "Peinture acrylique",
+          "hint": "Un sentier sinueux disparaît sous un couvert de feuillage lumineux, invitant le spectateur dans un paysage de découverte silencieuse. Baigné d'une lumière douce et de couleurs vibrantes, la forêt devient un lieu où l'imagination et la mémoire se rencontrent. Faisant partie de la série Les Chemins Enchantés, cette peinture explore le sens de la merveille qui peut émerger lorsque nous ralentissons notre rythme et nous permettons de nous promener. Le sentier mène au-delà de la destination visible, suggérant un voyage de curiosité, de réflexion et de possibilité.",
+          "status": "Disponible",
+          "sizeLabel_small": "Petit",
+          "edition_small": "Édition de 50",
+          "sizeLabel_medium": "Moyen",
+          "edition_medium": "Édition de 25",
+          "sizeLabel_large": "Grand",
+          "edition_large": "Édition de 10"
         }
       }
     },
