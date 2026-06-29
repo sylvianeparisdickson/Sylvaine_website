@@ -222,8 +222,8 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
               style={{ display: "block", maxWidth: "none", maxHeight: "none", opacity: loaded ? 1 : 0, transition: "opacity .4s" }} />
             {painting.noReproduction && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="font-serif italic text-[12px] md:text-[14px] tracking-[.14em] uppercase"
-                  style={{ color: "rgba(255,255,255,.14)", transform: "rotate(-25deg)", whiteSpace: "nowrap" }}>
+                <span className="font-serif italic text-[24px] md:text-[32px] tracking-[.14em] uppercase"
+                  style={{ color: "rgba(255,255,255,.22)", transform: "rotate(-25deg)", whiteSpace: "nowrap" }}>
                   © Sylviane Paris
                 </span>
               </div>
@@ -289,6 +289,10 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
         </div>
       </div>
 
+      <div className="px-6 md:px-14 py-6 md:py-8 text-[10px] tracking-[.18em] uppercase text-[#9a9188] text-center font-bold">
+        {t("fulfillmentHeader")}
+      </div>
+
       {/* Paintings — 1 col mobile, 2 col sm, 3 col md */}
       <section className="px-6 md:px-14 py-16 md:py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
@@ -301,7 +305,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
                   style={{ width: "100%", height: "auto", display: "block" }} />
                 {painting.noReproduction && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="font-serif italic text-[10px] md:text-[11px] tracking-[.14em] uppercase text-white/22" style={{ transform: "rotate(-25deg)" }}>
+                    <span className="font-serif italic text-[18px] md:text-[24px] tracking-[.14em] uppercase text-white/28" style={{ transform: "rotate(-25deg)" }}>
                       © Sylviane Paris
                     </span>
                   </div>
@@ -323,6 +327,18 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
           ))}
         </div>
       </section>
+
+      <div className="px-6 md:px-14 py-12 md:py-16 border-t border-black/10">
+        <h3 className="text-[11px] tracking-[.22em] uppercase text-[#1a1816] mb-6">
+          {t("fulfillmentTitle")}
+        </h3>
+        <div className="space-y-4 text-[13px] md:text-[14px] text-[#6a6560] leading-[1.8] font-bold">
+          <p>{t("fulfillmentTimeline")}</p>
+          <p>{t("fulfillmentSigning")}</p>
+          <p>{t("fulfillmentShipping")}</p>
+          <p>{t("fulfillmentTracking")}</p>
+        </div>
+      </div>
 
       {/* Bottom nav */}
       <div className="border-t border-black/10 px-6 md:px-14 py-7 md:py-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#f8f5ef]">

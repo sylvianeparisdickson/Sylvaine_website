@@ -74,6 +74,10 @@ export default async function LimitedEditionsPage({
         </div>
       </div>
 
+      <div className="px-6 md:px-14 py-6 md:py-8 text-[10px] tracking-[.18em] uppercase text-[#9a9188] text-center font-bold">
+        {t("fulfillmentHeader")}
+      </div>
+
       <section className="px-6 md:px-14 py-16 md:py-24 space-y-24">
         {localizedWorks.map((work) => (
           <article
@@ -138,10 +142,29 @@ export default async function LimitedEditionsPage({
                 alt={work.alt}
                 className="object-cover w-full h-full"
               />
+              {work.noReproduction && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span className="font-serif italic text-[18px] md:text-[24px] tracking-[.14em] uppercase text-white/28" style={{ transform: "rotate(-25deg)" }}>
+                    © Sylviane Paris
+                  </span>
+                </div>
+              )}
             </div>
           </article>
         ))}
       </section>
+
+      <div className="px-6 md:px-14 py-12 md:py-16 border-t border-black/10">
+        <h3 className="text-[11px] tracking-[.22em] uppercase text-[#1a1816] mb-6">
+          {t("fulfillmentTitle")}
+        </h3>
+        <div className="space-y-4 text-[13px] md:text-[14px] text-[#6a6560] leading-[1.8] font-bold">
+          <p>{t("fulfillmentTimeline")}</p>
+          <p>{t("fulfillmentSigning")}</p>
+          <p>{t("fulfillmentShipping")}</p>
+          <p>{t("fulfillmentTracking")}</p>
+        </div>
+      </div>
 
       <div className="px-6 md:px-14 pb-20 text-[10px] tracking-[.18em] uppercase text-[#9a9188]">
         {t("bottomText")}

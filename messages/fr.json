@@ -241,7 +241,13 @@
     "cardHeading": "Édition limitée disponible",
     "cardText": "Giclée d'art de qualité musée, signée et numérotée par l'artiste, et accompagnée d'un certificat d'authenticité. Les éditions sont proposées en quantités contrôlées et dans des tailles sélectionnées.",
     "contactForEdition": "Intéressé par une édition limitée de cette œuvre ? Veuillez contacter l'artiste.",
-    "bottomText": "Veuillez contacter l'artiste pour toute demande concernant d'autres éditions limitées ou des options de présentation personnalisées."
+    "bottomText": "Veuillez contacter l'artiste pour toute demande concernant d'autres éditions limitées ou des options de présentation personnalisées.",
+    "fulfillmentHeader": "Tirages à la commande · Veuillez prévoir 3-4 jours ouvrables pour l'impression · Chaque tirage est signé à la main avec certificat d'authenticité",
+    "fulfillmentTitle": "Expédition",
+    "fulfillmentTimeline": "Les tirages sont réalisés à la commande après achat. Veuillez prévoir 3-4 jours ouvrables pour l'impression.",
+    "fulfillmentSigning": "Chaque tirage est signé à la main et inclut un certificat d'authenticité.",
+    "fulfillmentShipping": "Expédition : USPS pour les États-Unis, FedEx pour l'international.",
+    "fulfillmentTracking": "Vous recevrez une confirmation d'expédition avec suivi."
   },
   "Press": {
     "title": "Presse & Distinctions — Sylviane Paris",
@@ -265,7 +271,13 @@
     "study": "étude",
     "viewZoom": "Voir & zoomer →",
     "allCollections": "← Toutes les collections",
-    "ofV": "sur V"
+    "ofV": "sur V",
+    "fulfillmentHeader": "Tirages à la commande · Veuillez prévoir 3-4 jours ouvrables pour l'impression · Chaque tirage est signé à la main avec certificat d'authenticité",
+    "fulfillmentTitle": "Expédition",
+    "fulfillmentTimeline": "Les tirages sont réalisés à la commande après achat. Veuillez prévoir 3-4 jours ouvrables pour l'impression.",
+    "fulfillmentSigning": "Chaque tirage est signé à la main et inclut un certificat d'authenticité.",
+    "fulfillmentShipping": "Expédition : USPS pour les États-Unis, FedEx pour l'international.",
+    "fulfillmentTracking": "Vous recevrez une confirmation d'expédition avec suivi."
   },
   "data": {
     "architecture-of-light": {
@@ -373,9 +385,9 @@
           "edition_large": "Édition de 10"
         },
         "path-of-wonder": {
-          "title": "Le Sentier de la Merveille",
+          "title": "Le Sentier Merveilleux",
           "medium": "Peinture acrylique",
-          "hint": "Un sentier sinueux disparaît sous un couvert de feuillage lumineux, invitant le spectateur dans un paysage de découverte silencieuse. Baigné d'une lumière douce et de couleurs vibrantes, la forêt devient un lieu où l'imagination et la mémoire se rencontrent. Faisant partie de la série Les Chemins Enchantés, cette peinture explore le sens de la merveille qui peut émerger lorsque nous ralentissons notre rythme et nous permettons de nous promener. Le sentier mène au-delà de la destination visible, suggérant un voyage de curiosité, de réflexion et de possibilité.",
+          "hint": "Un sentier sinueux disparaît sous un couvert de feuillage lumineux, invitant le spectateur dans un paysage de découverte silencieuse. Baigné d'une lumière douce et de couleurs vibrantes, la forêt devient un lieu où l'imagination et la mémoire se rencontrent. Cette peinture explore le sens de la merveille qui peut émerger lorsque nous ralentissons notre rythme et nous permettons de nous promener. Le sentier mène au-delà de la destination visible, suggérant un voyage de curiosité, de réflexion et de possibilité.",
           "status": "Disponible",
           "sizeLabel_small": "Petit",
           "edition_small": "Édition de 50",

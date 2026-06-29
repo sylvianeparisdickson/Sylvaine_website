@@ -241,7 +241,13 @@
     "cardHeading": "Edición Limitada Disponible",
     "cardText": "Giclée de archivo de calidad de museo, firmada y numerada por la artista, y acompañada de un Certificado de Autenticidad. Las ediciones se ofrecen en cantidades cuidadosamente controladas y tamaños seleccionados.",
     "contactForEdition": "¿Interesado en una edición limitada de esta obra? Por favor contacte a la artista.",
-    "bottomText": "Por favor contacte a la artista para consultas sobre ediciones limitadas adicionales u opciones de presentación personalizadas."
+    "bottomText": "Por favor contacte a la artista para consultas sobre ediciones limitadas adicionales u opciones de presentación personalizadas.",
+    "fulfillmentHeader": "Impresiones bajo pedido · Por favor permita 3-4 días hábiles para impresión · Cada impresión está firmada a mano con certificado de autenticidad",
+    "fulfillmentTitle": "Entrega",
+    "fulfillmentTimeline": "Las impresiones se realizan bajo pedido después de la compra. Por favor permita 3-4 días hábiles para la impresión.",
+    "fulfillmentSigning": "Cada impresión está firmada a mano e incluye un certificado de autenticidad.",
+    "fulfillmentShipping": "Envío: USPS para nacional, FedEx para internacional.",
+    "fulfillmentTracking": "Recibirá confirmación de envío con seguimiento."
   },
   "Press": {
     "title": "Prensa y Reconocimiento — Sylviane Paris",
@@ -259,7 +265,13 @@
     "study": "estudio",
     "viewZoom": "Ver y hacer zoom →",
     "allCollections": "← Todas las colecciones",
-    "ofV": "de V"
+    "ofV": "de V",
+    "fulfillmentHeader": "Impresiones bajo pedido · Por favor permita 3-4 días hábiles para impresión · Cada impresión está firmada a mano con certificado de autenticidad",
+    "fulfillmentTitle": "Entrega",
+    "fulfillmentTimeline": "Las impresiones se realizan bajo pedido después de la compra. Por favor permita 3-4 días hábiles para la impresión.",
+    "fulfillmentSigning": "Cada impresión está firmada a mano e incluye un certificado de autenticidad.",
+    "fulfillmentShipping": "Envío: USPS para nacional, FedEx para internacional.",
+    "fulfillmentTracking": "Recibirá confirmación de envío con seguimiento."
   },
   "Series": {
     "title": "Series — Sylviane Paris",
@@ -373,9 +385,9 @@
           "edition_large": "Edición de 10"
         },
         "path-of-wonder": {
-          "title": "El Camino de la Maravilla",
+          "title": "El Camino Maravilloso",
           "medium": "Pintura acrílica",
-          "hint": "Un camino sinuoso desaparece bajo un dosel de follaje luminoso, invitando al espectador a un paisaje de descubrimiento silencioso. Bañado en luz suave y colores vibrantes, el bosque se convierte en un lugar donde la imaginación y la memoria se encuentran. Parte de la serie Caminos Encantados, esta pintura explora el sentido de maravilla que puede surgir cuando ralentizamos nuestro paso y nos permitimos vagar. El camino conduce más allá del destino visible, sugiriendo un viaje de curiosidad, reflexión y posibilidad.",
+          "hint": "Un camino sinuoso desaparece bajo un dosel de follaje luminoso, invitando al espectador a un paisaje de descubrimiento silencioso. Bañado en luz suave y colores vibrantes, el bosque se convierte en un lugar donde la imaginación y la memoria se encuentran. Esta pintura explora el sentido de maravilla que puede surgir cuando ralentizamos nuestro paso y nos permitimos vagar. El camino conduce más allá del destino visible, sugiriendo un viaje de curiosidad, reflexión y posibilidad.",
           "status": "Disponible",
           "sizeLabel_small": "Pequeño",
           "edition_small": "Edición de 50",

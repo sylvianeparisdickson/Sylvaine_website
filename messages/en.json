@@ -241,7 +241,13 @@
     "cardHeading": "Limited Edition Available",
     "cardText": "Museum-quality archival Giclée, signed and numbered by the artist, and accompanied by a Certificate of Authenticity. Editions are offered in carefully controlled quantities and selected sizes.",
     "contactForEdition": "Interested in a limited edition of this work? Please contact the artist.",
-    "bottomText": "Please contact the artist for inquiries about additional limited editions or custom presentation options."
+    "bottomText": "Please contact the artist for inquiries about additional limited editions or custom presentation options.",
+    "fulfillmentHeader": "Prints made to order · Please allow 3-4 business days for printing · Each print is hand-signed with certificate of authenticity",
+    "fulfillmentTitle": "Fulfillment",
+    "fulfillmentTimeline": "Prints are made to order upon purchase. Please allow 3-4 business days for printing.",
+    "fulfillmentSigning": "Each print is hand-signed and includes a certificate of authenticity.",
+    "fulfillmentShipping": "Shipping: USPS for domestic, FedEx for international.",
+    "fulfillmentTracking": "You will receive shipping confirmation with tracking."
   },
   "Press": {
     "title": "Press & Recognition — Sylviane Paris",
@@ -259,7 +265,13 @@
     "study": "study",
     "viewZoom": "View & zoom →",
     "allCollections": "← All collections",
-    "ofV": "of V"
+    "ofV": "of V",
+    "fulfillmentHeader": "Prints made to order · Please allow 3-4 business days for printing · Each print is hand-signed with certificate of authenticity",
+    "fulfillmentTitle": "Fulfillment",
+    "fulfillmentTimeline": "Prints are made to order upon purchase. Please allow 3-4 business days for printing.",
+    "fulfillmentSigning": "Each print is hand-signed and includes a certificate of authenticity.",
+    "fulfillmentShipping": "Shipping: USPS for domestic, FedEx for international.",
+    "fulfillmentTracking": "You will receive shipping confirmation with tracking."
   },
   "Series": {
     "title": "Series — Sylviane Paris",
@@ -375,7 +387,7 @@
         "path-of-wonder": {
           "title": "The Path of Wonder",
           "medium": "Acrylic painting",
-          "hint": "A winding path disappears beneath a canopy of luminous foliage, inviting the viewer into a landscape of quiet discovery. Bathed in soft light and vibrant color, the forest becomes a place where imagination and memory meet. Part of the Enchanted Paths series, this painting explores the sense of wonder that can emerge when we slow our pace and allow ourselves to wander. The path leads beyond the visible destination, suggesting a journey of curiosity, reflection, and possibility.",
+          "hint": "A winding path disappears beneath a canopy of luminous foliage, inviting the viewer into a landscape of quiet discovery. Bathed in soft light and vibrant color, the forest becomes a place where imagination and memory meet. This painting explores the sense of wonder that can emerge when we slow our pace and allow ourselves to wander. The path leads beyond the visible destination, suggesting a journey of curiosity, reflection, and possibility.",
           "status": "Available",
           "sizeLabel_small": "Small",
           "edition_small": "Edition of 50",
