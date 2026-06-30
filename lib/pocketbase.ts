@@ -39,8 +39,7 @@ export type PBSeries = {
 
 // Get image URL from Pocketbase
 export function pbImageUrl(record: PBPainting | PBSeries, field: string): string {
-  const filename = (record as Record<string, string>)[field];
-  if (!filename) return "";
+const filename = (record as unknown as Record<string, string>)[field];  if (!filename) return "";
   return `${PB_URL}/api/files/${record.collectionName}/${record.id}/${filename}`;
 }
 

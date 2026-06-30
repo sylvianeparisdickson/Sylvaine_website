@@ -2,18 +2,29 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { subscribeToNewsletter } from "@/lib/pocketbase";
 
 export default function Footer() {
   const t = useTranslations("Footer");
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Integrate with newsletter service
-    console.log("Newsletter subscription:", email);
-    setSubscribed(true);
-    setEmail("");
+    setLoading(true);
+    setError(false);
+
+    const success = await subscribeToNewsletter(email);
+
+    if (success) {
+      setSubscribed(true);
+      setEmail("");
+    } else {
+      setError(true);
+    }
+    setLoading(false);
   };
 
   return (
@@ -46,23 +57,37 @@ export default function Footer() {
           <p className="text-[12px] text-[#6a6560] mb-4">
             {t("newsletterText")}
           </p>
-          <form onSubmit={handleSubscribe} className="flex gap-2">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t("newsletterPlaceholder")}
-              required
-              className="flex-1 bg-transparent border border-black/12 px-4 py-2 text-[13px] text-[#1a1816] placeholder:text-black/20 outline-none focus:border-black/30 transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={subscribed}
-              className="px-5 py-2 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {subscribed ? "✓" : t("newsletterButton")}
-            </button>
-          </form>
+
+          {!subscribed ? (
+            <>
+              <form onSubmit={handleSubscribe} className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t("newsletterPlaceholder")}
+                  required
+                  className="flex-1 bg-transparent border border-black/12 px-4 py-2 text-[13px] text-[#1a1816] placeholder:text-black/20 outline-none focus:border-black/30 transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-5 py-2 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? "..." : t("newsletterButton")}
+                </button>
+              </form>
+              {error && (
+                <p className="text-[11px] text-red-500 mt-2">
+                  Something went wrong. Please try again.
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="text-[13px] text-[#1a1816] font-serif italic">
+              Thank you for subscribing.
+            </p>
+          )}
         </div>
       </div>
 
