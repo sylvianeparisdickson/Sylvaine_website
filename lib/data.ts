@@ -205,7 +205,7 @@ export const allSeries: Series[] = [
         alt: "The Path of Wonder — Sylviane Paris",
         dimensions: "19 × 28 in / 48 × 71 cm",
         hint:
-          "A winding path disappears beneath a canopy of luminous foliage, inviting the viewer into a landscape of quiet discovery. Bathed in soft light and vibrant color, the forest becomes a place where imagination and memory meet. This painting explores the sense of wonder that can emerge when we slow our pace and allow ourselves to wander. The path leads beyond the visible destination, suggesting a journey of curiosity, reflection, and possibility.",
+          "A winding path disappears beneath a canopy of luminous foliage, inviting the viewer into a landscape of quiet discovery. Bathed in soft light and vibrant color, the forest becomes a place where imagination and memory meet",
         status: "Available",
         noReproduction: true,
         limitedEditions: [

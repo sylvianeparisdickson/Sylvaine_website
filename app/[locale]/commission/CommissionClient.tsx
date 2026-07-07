@@ -107,7 +107,7 @@ export default function CommissionClient() {
         <div className="px-6 md:px-14 py-12 md:py-20 border-b md:border-b-0 md:border-r border-black/10 flex flex-col justify-start">
           <span className="block text-[9px] tracking-[.28em] uppercase text-[#9a9188] mb-8">{t("aboutLabel")}</span>
           <h2 className="font-serif italic font-light text-[#1a1816] leading-[1.15]"
-            style={{ fontSize: "clamp(24px, 3vw, 38px)" }}>
+            style={{ fontSize: "clamp(24px, 3vw, 38px)", whiteSpace: "pre-line" }}>
             {t("aboutHeading")}
           </h2>
         </div>
