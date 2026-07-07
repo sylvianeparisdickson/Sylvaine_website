@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { updateOrderStatus, getOrderByPaymentId } from "@/lib/pocketbase";
 import crypto from "crypto";
 
-const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID!;
-const PAYPAL_MODE = process.env.PAYPAL_MODE || "sandbox";
-
 async function verifyPayPalWebhook(headers: Headers, body: string): Promise<boolean> {
+  const PAYPAL_MODE = process.env.PAYPAL_MODE || "sandbox";
+  const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID;
+  
+  if (!PAYPAL_WEBHOOK_ID) {
+    return false;
+  }
+
   const paypalApiUrl = PAYPAL_MODE === "live" 
     ? "https://api-m.paypal.com" 
     : "https://api-m.sandbox.paypal.com";
@@ -36,6 +40,7 @@ async function verifyPayPalWebhook(headers: Headers, body: string): Promise<bool
 }
 
 async function getPayPalAccessToken() {
+  const PAYPAL_MODE = process.env.PAYPAL_MODE || "sandbox";
   const paypalApiUrl = PAYPAL_MODE === "live" 
     ? "https://api-m.paypal.com" 
     : "https://api-m.sandbox.paypal.com";
@@ -59,6 +64,10 @@ async function getPayPalAccessToken() {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET || !process.env.PAYPAL_WEBHOOK_ID) {
+      return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+    }
+
     const body = await req.text();
     const headers = req.headers;
 

@@ -25,6 +25,10 @@ async function getPayPalAccessToken() {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      return NextResponse.json({ error: "Payment not configured" }, { status: 503 });
+    }
+
     const body = await req.json();
     const {
       paintingId,

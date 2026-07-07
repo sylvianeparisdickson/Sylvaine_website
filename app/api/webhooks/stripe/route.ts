@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { updateOrderStatus, getOrderByPaymentId } from "@/lib/pocketbase";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-06-24.dahlia",
-});
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
+      return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+    }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2026-06-24.dahlia",
+    });
+
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
     const body = await req.text();
     const signature = req.headers.get("stripe-signature")!;
 
