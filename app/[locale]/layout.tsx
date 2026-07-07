@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import NewsletterPopup from "@/components/NewsletterPopup";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -55,6 +56,7 @@ export default async function RootLayout({
       <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           {children}
+          <NewsletterPopup />
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
