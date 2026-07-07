@@ -22,7 +22,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
           </p>
         )}
         <p className="text-[8px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase hidden sm:block" style={{ color: "rgba(255,255,255,.38)" }}>
-          {painting.medium} · {painting.year}
+          {painting.medium}
         </p>
       </div>
     );
@@ -41,7 +41,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
         </p>
       )}
       <p className="text-[9px] md:text-[9.5px] tracking-[.1em] md:tracking-[.12em] uppercase text-[#9a9188]">
-        {painting.medium} · {painting.year}
+        {painting.medium}
       </p>
     </div>
   );
@@ -299,7 +299,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
               </p>
               <PaintingDetails painting={painting} />
               {painting.hint && <p className="text-[12.5px] md:text-[13px] text-[#6a6560] leading-[1.75]">{painting.hint}</p>}
-              {painting.status !== "Sold" && (
+              {series.id !== "studies" && painting.status !== "Sold" && (
                 <Link
                   href="/contact"
                   onClick={(e) => e.stopPropagation()}
