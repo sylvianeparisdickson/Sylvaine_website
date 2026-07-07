@@ -220,14 +220,6 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
             <img ref={imgRef} src={painting.img} alt={painting.alt} draggable={false}
               onLoad={() => { setLoaded(true); reset(false); }}
               style={{ display: "block", maxWidth: "none", maxHeight: "none", opacity: loaded ? 1 : 0, transition: "opacity .4s" }} />
-            {painting.noReproduction && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="font-serif italic text-[24px] md:text-[32px] tracking-[.14em] uppercase"
-                  style={{ color: "rgba(255,255,255,.22)", transform: "rotate(-25deg)", whiteSpace: "nowrap" }}>
-                  © Sylviane Paris
-                </span>
-              </div>
-            )}
           </div>
         </div>
         {!loaded && (
@@ -247,9 +239,6 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
       {painting.hint && (
         <div className="px-4 md:px-7 py-3 md:py-4 border-t shrink-0" style={{ borderColor: "rgba(255,255,255,.06)", background: "rgba(10,9,8,.6)" }}>
           <p className="font-serif italic text-[12px] md:text-[14px] leading-[1.6]" style={{ color: "rgba(255,255,255,.38)" }}>{painting.hint}</p>
-          {painting.noReproduction && (
-            <p className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.16em] uppercase mt-1" style={{ color: "rgba(255,255,255,.22)" }}>{t("notForReproduction")}</p>
-          )}
         </div>
       )}
     </div>
@@ -289,10 +278,6 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
         </div>
       </div>
 
-      <div className="px-6 md:px-14 py-6 md:py-8 text-[10px] tracking-[.18em] uppercase text-[#9a9188] text-center font-bold">
-        {t("fulfillmentHeader")}
-      </div>
-
       {/* Paintings — 1 col mobile, 2 col sm, 3 col md */}
       <section className="px-6 md:px-14 py-16 md:py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
@@ -303,13 +288,6 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
                   width={0} height={0}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   style={{ width: "100%", height: "auto", display: "block" }} />
-                {painting.noReproduction && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="font-serif italic text-[18px] md:text-[24px] tracking-[.14em] uppercase text-white/28" style={{ transform: "rotate(-25deg)" }}>
-                      © Sylviane Paris
-                    </span>
-                  </div>
-                )}
                 <div className="absolute inset-0 flex items-end justify-end p-3 md:p-4 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.18em] uppercase text-white bg-black/35 px-2 md:px-3 py-1.5 md:py-2">
                     {t("viewZoom")}
@@ -318,7 +296,6 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
               </div>
               <p className="font-serif italic text-[16px] md:text-[18px] text-[#1a1816] mb-1.5">
                 {painting.title}
-                {painting.noReproduction && <span className="font-serif not-italic text-[10px] md:text-[11px] text-[#9a9188] ml-2">({t("study")})</span>}
               </p>
               <PaintingDetails painting={painting} />
               {painting.hint && <p className="text-[12.5px] md:text-[13px] text-[#6a6560] leading-[1.75]">{painting.hint}</p>}
@@ -331,23 +308,11 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
                   Please inquire for availability and pricing
                 </Link>
               )}
-              {painting.noReproduction && <p className="text-[8.5px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase text-[#9a9188] mt-2">{t("notForReproduction")}</p>}
+
             </div>
           ))}
         </div>
       </section>
-
-      <div className="px-6 md:px-14 py-12 md:py-16 border-t border-black/10">
-        <h3 className="text-[11px] tracking-[.22em] uppercase text-[#1a1816] mb-6">
-          {t("fulfillmentTitle")}
-        </h3>
-        <div className="space-y-4 text-[13px] md:text-[14px] text-[#6a6560] leading-[1.8] font-bold">
-          <p>{t("fulfillmentTimeline")}</p>
-          <p>{t("fulfillmentSigning")}</p>
-          <p>{t("fulfillmentShipping")}</p>
-          <p>{t("fulfillmentTracking")}</p>
-        </div>
-      </div>
 
       {/* Bottom nav */}
       <div className="border-t border-black/10 px-6 md:px-14 py-7 md:py-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#f8f5ef]">

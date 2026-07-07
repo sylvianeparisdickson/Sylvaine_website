@@ -13,11 +13,12 @@ export default function LimitedEditionsClient({ works }: LimitedEditionsClientPr
   return (
     <>
       {paymentPainting && <PaymentModal painting={paymentPainting} onClose={() => setPaymentPainting(null)} />}
-      {works.map((work) => (
-        <article
-          key={work.id}
-          className="grid gap-10 lg:grid-cols-[1fr_320px] items-start"
-        >
+      <div className="space-y-16 md:space-y-24">
+        {works.map((work) => (
+          <article
+            key={work.id}
+            className="grid gap-10 lg:grid-cols-[1fr_320px] items-start"
+          >
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <span className="text-[9px] tracking-[.22em] uppercase text-[#9a9188]">
@@ -84,16 +85,10 @@ export default function LimitedEditionsClient({ works }: LimitedEditionsClientPr
               alt={work.alt}
               className="object-cover w-full h-full"
             />
-            {work.noReproduction && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="font-serif italic text-[18px] md:text-[24px] tracking-[.14em] uppercase text-white/28" style={{ transform: "rotate(-25deg)" }}>
-                  © Sylviane Paris
-                </span>
-              </div>
-            )}
           </div>
         </article>
       ))}
+      </div>
     </>
   );
 }
