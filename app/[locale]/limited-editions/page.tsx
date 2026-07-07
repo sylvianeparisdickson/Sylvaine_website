@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/routing";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
+import LimitedEditionsClient from "@/components/LimitedEditionsClient";
 import { getTranslations } from "next-intl/server";
 import { getLocalizedSeries } from "@/lib/localizedData";
 import { allSeries } from "@/lib/data";
@@ -78,80 +79,8 @@ export default async function LimitedEditionsPage({
         {t("fulfillmentHeader")}
       </div>
 
-      <section className="px-6 md:px-14 py-16 md:py-24 space-y-24">
-        {localizedWorks.map((work) => (
-          <article
-            key={work.id}
-            className="grid gap-10 lg:grid-cols-[1fr_320px] items-start"
-          >
-            <div>
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="text-[9px] tracking-[.22em] uppercase text-[#9a9188]">
-                  {t("originalPainting")}
-                </span>
-                <span className="text-[9px] tracking-[.18em] uppercase text-[#1a1816]">
-                  {t("statusLabel", { status: work.status ?? t("statusAvailable") })}
-                </span>
-              </div>
-              <h2 className="font-serif italic text-[32px] md:text-[40px] text-[#1a1816] leading-[1.03] mb-3">
-                {work.title}
-              </h2>
-              <p className="text-[9px] md:text-[9.5px] uppercase tracking-[.18em] text-[#9a9188] mb-7">
-                <Link
-                  href={work.seriesHref}
-                  className="hover:text-[#1a1816] transition-colors duration-300"
-                >
-                  {work.seriesName}
-                </Link>
-              </p>
-
-              <div className="rounded-3xl border border-black/10 bg-[#f8f5ef] p-7">
-                <p className="text-[9px] tracking-[.24em] uppercase text-[#9a9188] mb-4">
-                  {t("cardHeading")}
-                </p>
-                <p className="text-[13px] md:text-[14px] leading-[1.9] text-[#1a1816] mb-6">
-                  {t("cardText")}
-                </p>
-                <div className="space-y-4">
-                  {work.limitedEditions?.map((edition) => (
-                    <div
-                      key={edition.sizeLabel}
-                      className="grid grid-cols-[1fr_auto] gap-4 items-center border-t border-black/10 pt-4"
-                    >
-                      <div>
-                        <p className="text-[14px] md:text-[15px] font-semibold text-[#1a1816]">
-                          {edition.sizeLabel}
-                        </p>
-                        <p className="text-[9px] uppercase tracking-[.18em] text-[#9a9188]">
-                          {edition.edition} · {edition.dimensions}
-                        </p>
-                      </div>
-                      <p className="text-[14px] md:text-[15px] font-medium text-[#1a1816]">
-                        {edition.price}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-[#f8f5ef] min-h-[320px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={work.img}
-                alt={work.alt}
-                className="object-cover w-full h-full"
-              />
-              {work.noReproduction && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="font-serif italic text-[18px] md:text-[24px] tracking-[.14em] uppercase text-white/28" style={{ transform: "rotate(-25deg)" }}>
-                    © Sylviane Paris
-                  </span>
-                </div>
-              )}
-            </div>
-          </article>
-        ))}
+      <section className="px-6 md:px-14 py-16 md:py-24">
+        <LimitedEditionsClient works={localizedWorks} />
       </section>
 
       <div className="px-6 md:px-14 py-12 md:py-16 border-t border-black/10">

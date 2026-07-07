@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import PaymentModal from "@/components/PaymentModal";
 import { Series, Painting } from "@/lib/data";
 import { useTranslations } from "next-intl";
 
@@ -261,11 +262,13 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
   const t = useTranslations("SeriesPageTemplate");
   const tc = useTranslations("common");
   const [selected, setSelected] = useState<Painting | null>(null);
+  const [paymentPainting, setPaymentPainting] = useState<Painting | null>(null);
 
   return (
     <main>
       <Nav />
       {selected && <ZoomViewer painting={selected} onClose={() => setSelected(null)} />}
+      {paymentPainting && <PaymentModal painting={paymentPainting} onClose={() => setPaymentPainting(null)} />}
 
       {/* Header */}
       <div className="pt-28 md:pt-40 pb-10 md:pb-14 px-6 md:px-14 border-b border-black/10">
@@ -322,6 +325,14 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
               </p>
               <PaintingDetails painting={painting} />
               {painting.hint && <p className="text-[12.5px] md:text-[13px] text-[#6a6560] leading-[1.75]">{painting.hint}</p>}
+              {painting.status !== "Sold" && painting.limitedEditions && painting.limitedEditions.length > 0 && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setPaymentPainting(painting); }}
+                  className="mt-3 px-4 py-2 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors w-full"
+                >
+                  Buy Now
+                </button>
+              )}
               {painting.noReproduction && <p className="text-[8.5px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase text-[#9a9188] mt-2">{t("notForReproduction")}</p>}
             </div>
           ))}

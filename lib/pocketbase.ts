@@ -123,3 +123,78 @@ export async function subscribeToNewsletter(email: string): Promise<boolean> {
     return false;
   }
 }
+
+// Order types
+export type Order = {
+  id: string;
+  customerEmail: string;
+  customerName: string;
+  paintingId: string;
+  paintingTitle: string;
+  edition: string;
+  sizeLabel: string;
+  dimensions: string;
+  price: number;
+  paymentMethod: "stripe" | "paypal";
+  paymentId: string;
+  status: "pending" | "paid" | "processing" | "shipped" | "delivered";
+  paymentPlan?: "full" | "3month";
+  trackingNumber?: string;
+  shippingAddress: string;
+  created: string;
+  collectionId: string;
+  collectionName: string;
+};
+
+// Create order
+export async function createOrder(orderData: Omit<Order, "id" | "collectionId" | "collectionName" | "created">): Promise<Order | null> {
+  try {
+    const res = await fetch(
+      `${PB_URL}/api/collections/orders/records`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      }
+    );
+    if (!res.ok) throw new Error("Failed to create order");
+    const data = await res.json();
+    return data as Order;
+  } catch (error) {
+    console.error("createOrder error:", error);
+    return null;
+  }
+}
+
+// Update order status
+export async function updateOrderStatus(orderId: string, status: Order["status"], trackingNumber?: string): Promise<boolean> {
+  try {
+    const res = await fetch(
+      `${PB_URL}/api/collections/orders/records/${orderId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, ...(trackingNumber && { trackingNumber }) }),
+      }
+    );
+    return res.ok;
+  } catch (error) {
+    console.error("updateOrderStatus error:", error);
+    return false;
+  }
+}
+
+// Get order by payment ID
+export async function getOrderByPaymentId(paymentId: string): Promise<Order | null> {
+  try {
+    const res = await fetch(
+      `${PB_URL}/api/collections/orders/records?filter=(paymentId='${paymentId}')&perPage=1`
+    );
+    if (!res.ok) throw new Error("Failed to fetch order");
+    const data = await res.json();
+    return data.items[0] ?? null;
+  } catch (error) {
+    console.error("getOrderByPaymentId error:", error);
+    return null;
+  }
+}
