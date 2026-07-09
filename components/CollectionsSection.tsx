@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
@@ -25,7 +24,8 @@ export default function CollectionsSection() {
             <Link href={s.href} className="group flex items-center gap-4 sm:gap-5 md:gap-8 py-6 md:py-8">
               <span className="font-serif italic text-[11px] sm:text-[12px] md:text-[13px] text-[#9a9188] w-6 sm:w-7 md:w-10 shrink-0">{s.num}</span>
               <div className="relative w-11 sm:w-[44px] aspect-[4/5] overflow-hidden shrink-0 bg-[#ede9e1]">
-                <Image src={s.img} alt={s.name} fill className="object-cover object-center" sizes="52px" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.img} alt={s.name} className="w-full h-full object-cover object-center" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-serif italic text-[16px] sm:text-[18px] md:text-[22px] font-normal text-[#3a3835] group-hover:text-[#1a1816] mb-1.5 leading-tight">{s.name}</p>

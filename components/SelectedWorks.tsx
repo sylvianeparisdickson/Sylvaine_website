@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
 const featuredConfig = [
@@ -48,13 +47,8 @@ export default function SelectedWorks() {
           return (
             <Link key={title} href={p.href} className="group reveal">
               <div className="artwork-frame w-full mb-5">
-                <Image
-                  src={p.img}
-                  alt={title}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.img} alt={title} className="w-full h-auto" />
               </div>
               <p className="font-serif italic text-[16px] md:text-[17px] text-[#1a1816] mb-1.5">
                 {title}

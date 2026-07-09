@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 export default function Hero() {
   const t = useTranslations("Hero");
@@ -8,13 +7,11 @@ export default function Hero() {
     <section className="relative w-full h-screen min-h-screen-safe overflow-hidden bg-[#1a1816]">
       <div className="absolute inset-0">
         <div className="relative h-full w-full">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/artisans.jpg"
             alt={t("alt")}
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       </div>

@@ -284,10 +284,8 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
           {series.paintings.map((painting) => (
             <div key={painting.id} className="group cursor-pointer" onClick={() => setSelected(painting)}>
               <div className="relative w-full mb-5 bg-[#f8f5ef] overflow-hidden">
-                <Image src={painting.img} alt={painting.alt}
-                  width={0} height={0}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  style={{ width: "100%", height: "auto", display: "block" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={painting.img} alt={painting.alt} className="w-full h-auto" />
                 <div className="absolute inset-0 flex items-end justify-end p-3 md:p-4 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-[8px] md:text-[9px] tracking-[.14em] md:tracking-[.18em] uppercase text-white bg-black/35 px-2 md:px-3 py-1.5 md:py-2">
                     {t("viewZoom")}

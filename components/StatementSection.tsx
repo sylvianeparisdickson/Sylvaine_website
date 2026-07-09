@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 export default function StatementSection() {
   const t = useTranslations("StatementSection");
@@ -23,12 +22,11 @@ export default function StatementSection() {
       {/* Image */}
       <div>
         <div className="artwork-frame w-full">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/morning-visit.jpg"
             alt={`${td("divine-presence.paintings.morning-visit.title")} — Sylviane Paris`}
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            className="w-full h-auto object-cover object-center"
           />
         </div>
         <div className="flex justify-between items-baseline mt-4">

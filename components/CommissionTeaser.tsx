@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
 export default function CommissionTeaser() {
@@ -9,12 +8,11 @@ export default function CommissionTeaser() {
   return (
     <section className="flex flex-col md:grid md:grid-cols-2 bg-[#141210]" id="commission">
       <div className="relative w-full h-72 sm:h-96 md:h-auto md:min-h-[520px] overflow-hidden">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src="/timeless-craft.jpg"
           alt={`${td("living-moments.paintings.timeless-craft.title")} — Sylviane Paris`}
-          fill
-          className="object-cover object-center"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          className="w-full h-full object-cover object-center"
         />
       </div>
 

@@ -78,12 +78,12 @@ export default function LimitedEditionsClient({ works }: LimitedEditionsClientPr
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-[#f8f5ef] min-h-[320px]">
+          <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-[#f8f5ef]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={work.img}
               alt={work.alt}
-              className="object-cover w-full h-full"
+              className="w-full h-auto"
             />
           </div>
         </article>

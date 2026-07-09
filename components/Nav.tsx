@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 
@@ -75,11 +74,11 @@ export default function Nav() {
                 onClick={() => switchLocale(code)}
                 className={`relative w-6 h-4 transition-opacity duration-300 ${locale === code ? 'opacity-100' : 'opacity-40 hover:opacity-100'}`}
               >
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={flag}
                   alt={code}
-                  fill
-                  className="object-cover rounded-sm"
+                  className="w-full h-full object-cover rounded-sm"
                 />
               </button>
             ))}
@@ -132,11 +131,11 @@ export default function Nav() {
               }}
               className={`relative w-8 h-5 transition-opacity duration-300 ${locale === code ? 'opacity-100' : 'opacity-40 hover:opacity-100'}`}
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={flag}
                 alt={code}
-                fill
-                className="object-cover rounded-sm"
+                className="w-full h-full object-cover rounded-sm"
               />
             </button>
           ))}
