@@ -62,14 +62,21 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
 
       const data = await response.json();
 
+      if (!response.ok) {
+        console.error("API Error:", data);
+        alert(`Payment failed: ${data.error || "Unknown error"}`);
+        setLoading(false);
+        return;
+      }
+
       if (data.url || data.approvalUrl) {
         window.location.href = data.url || data.approvalUrl;
       } else {
-        alert("Payment initialization failed");
+        alert("Payment initialization failed: No redirect URL returned");
       }
     } catch (error) {
       console.error("Payment error:", error);
-      alert("Payment initialization failed");
+      alert(`Payment initialization failed: ${error instanceof Error ? error.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
