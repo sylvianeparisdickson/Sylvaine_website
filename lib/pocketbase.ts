@@ -147,18 +147,33 @@ export type Order = {
 };
 
 // Create order
-export async function createOrder(orderData: Omit<Order, "id" | "collectionId" | "collectionName" | "created">): Promise<Order | null> {
+export async function createOrder(
+  orderData: Omit<Order, "id" | "collectionId" | "collectionName" | "created">
+): Promise<Order | null> {
   try {
+    console.log("Sending order to PocketBase:");
+    console.log(orderData);
+
     const res = await fetch(
       `${PB_URL}/api/collections/orders/records`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(orderData),
       }
     );
-    if (!res.ok) throw new Error("Failed to create order");
+
     const data = await res.json();
+
+    console.log("PocketBase Status:", res.status);
+    console.log("PocketBase Response:", data);
+
+    if (!res.ok) {
+      throw new Error(JSON.stringify(data, null, 2));
+    }
+
     return data as Order;
   } catch (error) {
     console.error("createOrder error:", error);

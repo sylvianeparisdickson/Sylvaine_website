@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateOrderStatus, getOrderByPaymentId } from "@/lib/pocketbase";
 import crypto from "crypto";
 
 async function verifyPayPalWebhook(headers: Headers, body: string): Promise<boolean> {
@@ -83,15 +82,12 @@ export async function POST(req: NextRequest) {
     switch (event.event_type) {
       case "PAYMENT.CAPTURE.COMPLETED": {
         const paymentId = event.resource.id;
-        
-        // Get order from PocketBase
-        const order = await getOrderByPaymentId(paymentId);
-        
-        if (order) {
-          // Update order status to paid
-          await updateOrderStatus(order.id, "paid");
-          console.log(`Order ${order.id} paid via PayPal`);
-        }
+        console.log("PayPal payment completed:", {
+          paymentId,
+          amount: event.resource.amount?.value,
+          currency: event.resource.amount?.currency_code,
+          purchaseUnits: event.resource.purchase_units,
+        });
         break;
       }
 

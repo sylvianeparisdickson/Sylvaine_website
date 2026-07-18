@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { updateOrderStatus, getOrderByPaymentId } from "@/lib/pocketbase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,24 +28,17 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        const paymentId = session.id;
-        
-        // Get order from PocketBase
-        const order = await getOrderByPaymentId(paymentId);
-        
-        if (order) {
-          // Update order status to paid
-          await updateOrderStatus(order.id, "paid");
-          console.log(`Order ${order.id} paid via Stripe`);
-        }
+        console.log("Stripe payment completed:", {
+          paymentId: session.id,
+          customerEmail: session.customer_email,
+          metadata: session.metadata,
+          amount: session.amount_total,
+        });
         break;
       }
 
       case "invoice.paid": {
         const invoice = event.data.object as Stripe.Invoice;
-        
-        // For subscription payments (3-month plan), update order if needed
-        // This handles recurring payments
         console.log(`Invoice paid: ${invoice.id}`);
         break;
       }

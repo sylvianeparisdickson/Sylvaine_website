@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createOrder } from "@/lib/pocketbase";
 
 const PAYPAL_API_BASE = process.env.PAYPAL_MODE === "live" 
   ? "https://api-m.paypal.com" 
@@ -25,8 +24,15 @@ async function getPayPalAccessToken() {
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("PayPal Environment check:", {
+      hasPayPalId: !!process.env.PAYPAL_CLIENT_ID,
+      hasPayPalSecret: !!process.env.PAYPAL_CLIENT_SECRET,
+      hasPayPalMode: !!process.env.PAYPAL_MODE,
+      paypalMode: process.env.PAYPAL_MODE,
+    });
+    
     if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
-      return NextResponse.json({ error: "Payment not configured" }, { status: 503 });
+      return NextResponse.json({ error: "Payment not configured - Missing PayPal credentials" }, { status: 503 });
     }
 
     const body = await req.json();
@@ -102,26 +108,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to create PayPal order" }, { status: 500 });
     }
 
-    // Create order record in PocketBase
-    await createOrder({
-      customerEmail,
-      customerName,
-      paintingId,
-      paintingTitle,
-      edition,
-      sizeLabel,
-      dimensions,
-      price: finalPrice,
-      paymentMethod: "paypal",
-      paymentId: paypalOrderData.id,
-      status: "pending",
-      paymentPlan: paymentPlan as "full" | "3month",
-      shippingAddress,
-    });
+    console.log("PayPal order created:", paypalOrderData.id);
 
-    return NextResponse.json({ 
-      orderId: paypalOrderData.id, 
-      approvalUrl: paypalOrderData.links?.find((link: any) => link.rel === "approve")?.href 
+    return NextResponse.json({
+      orderId: paypalOrderData.id,
+      approvalUrl: paypalOrderData.links?.find((link: any) => link.rel === "approve")?.href
     });
   } catch (error) {
     console.error("PayPal checkout error:", error);

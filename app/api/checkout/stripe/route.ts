@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createOrder } from "@/lib/pocketbase";
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("Environment check:", {
+      hasStripeKey: !!process.env.STRIPE_SECRET_KEY,
+      hasPayPalId: !!process.env.PAYPAL_CLIENT_ID,
+      hasPayPalSecret: !!process.env.PAYPAL_CLIENT_SECRET,
+    });
+    
     if (!process.env.STRIPE_SECRET_KEY) {
-      return NextResponse.json({ error: "Payment not configured" }, { status: 503 });
+      return NextResponse.json({ error: "Payment not configured - Missing STRIPE_SECRET_KEY" }, { status: 503 });
     }
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -65,22 +70,7 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create(sessionParams);
 
-    // Create order record in PocketBase
-    await createOrder({
-      customerEmail,
-      customerName,
-      paintingId,
-      paintingTitle,
-      edition,
-      sizeLabel,
-      dimensions,
-      price,
-      paymentMethod: "stripe",
-      paymentId: session.id,
-      status: "pending",
-      paymentPlan: paymentPlan as "full" | "3month",
-      shippingAddress,
-    });
+    console.log("Stripe checkout session created:", session.id);
 
     return NextResponse.json({ sessionId: session.id, url: session.url });
   } catch (error) {
