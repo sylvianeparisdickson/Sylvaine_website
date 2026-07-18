@@ -109,10 +109,19 @@ export async function POST(req: NextRequest) {
     }
 
     console.log("PayPal order created:", paypalOrderData.id);
+    console.log("PayPal links array:", JSON.stringify(paypalOrderData.links, null, 2));
+
+    const approvalUrl = paypalOrderData.links?.find((link: any) => link.rel === "approve")?.href ||
+                       paypalOrderData.links?.find((link: any) => link.rel === "payer-action")?.href;
+
+    if (!approvalUrl) {
+      console.error("No approval URL found in links array");
+      return NextResponse.json({ error: "No redirect URL returned" }, { status: 500 });
+    }
 
     return NextResponse.json({
       orderId: paypalOrderData.id,
-      approvalUrl: paypalOrderData.links?.find((link: any) => link.rel === "approve")?.href
+      approvalUrl
     });
   } catch (error) {
     console.error("PayPal checkout error:", error);
