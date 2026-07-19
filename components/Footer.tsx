@@ -99,7 +99,8 @@ export default function Footer() {
         </div>
         <ul className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6 md:gap-7 list-none">
           {[
-            { label: "Instagram", href: "https://www.instagram.com/sylvianeparis" },
+            { label: "Instagram", href: "https://www.instagram.com/SylvianeParisArt" },
+            { label: "Pinterest", href: "https://www.pinterest.com/SylvianeParisArt/" },
             { label: "Facebook", href: "https://www.facebook.com/sylvianeparisdickson" },
             { label: t("contact"), href: "/contact" },
           ].map(({ label, href }) => (

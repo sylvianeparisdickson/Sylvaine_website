@@ -26,6 +26,9 @@ export async function generateMetadata({
   return {
     title: t("name"),
     description: t("tagline").replace("\n", " "),
+    other: {
+      "p:domain_verify": "244b1d89656f53067b3090b0bd3cb711",
+    },
   };
 }
 
