@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="About Sire - Sirewrites">
+  <style>
+    body {
+      background-color: #FAF7F2 !important;
+    }
+  </style>
+  <Navbar />
+  
+  <section class="min-h-screen text-charcoal py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+      
+      <!-- Hero -->
+      <div class="text-center mb-10 sm:mb-12 lg:mb-16">
+        <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-charcoal mb-4 sm:mb-6">
+          Meet <span class="text-transparent bg-clip-text bg-gradient-to-r from-terracotta via-rose-gold to-champagne">Sire</span>
+        </h1>
+        <p class="text-charcoal/70 text-base sm:text-lg lg:text-xl font-sans max-w-2xl mx-auto">
+          Hi there! 👋 Sit back, relax, and enjoy the read.
+        </p>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <div class="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
+          <!-- Image -->
+          <div class="relative">
+            <div class="aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden">
+              <img
+                src="/Sire.jpeg"
+                alt="Sire portrait"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="absolute -bottom-3 sm:-bottom-4 -right-3 sm:-right-4 bg-gradient-to-br from-terracotta to-rose-gold rounded-xl sm:rounded-2xl p-3 sm:p-4 text-white shadow-xl">
+              <div class="text-xl sm:text-2xl font-serif">✨</div>
+              <div class="text-xs sm:text-sm">Christian</div>
+            </div>
+          </div>
+
+          <!-- Quick Info -->
+          <div class="space-y-4 sm:space-y-6">
+            <div class="flex items-center gap-3 sm:gap-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 bg-terracotta/10 rounded-full flex items-center justify-center">
+                <span class="text-xl sm:text-2xl">📍</span>
+              </div>
+              <div>
+                <div class="text-charcoal/60 text-xs sm:text-sm">From</div>
+                <div class="text-charcoal font-medium text-sm sm:text-base">Benin, Edo State</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 sm:gap-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 bg-terracotta/10 rounded-full flex items-center justify-center">
+                <span class="text-xl sm:text-2xl">🎂</span>
+              </div>
+              <div>
+                <div class="text-charcoal/60 text-xs sm:text-sm">Birthday</div>
+                <div class="text-charcoal font-medium text-sm sm:text-base">June 24th</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 sm:gap-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 bg-terracotta/10 rounded-full flex items-center justify-center">
+                <span class="text-xl sm:text-2xl">💞</span>
+              </div>
+              <div>
+                <div class="text-charcoal/60 text-xs sm:text-sm">Relationship</div>
+                <div class="text-charcoal font-medium text-sm sm:text-base">Single</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 sm:gap-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 bg-terracotta/10 rounded-full flex items-center justify-center">
+                <span class="text-xl sm:text-2xl">🖤</span>
+              </div>
+              <div>
+                <div class="text-charcoal/60 text-xs sm:text-sm">Favorite Colors</div>
+                <div class="text-charcoal font-medium text-sm sm:text-base">Black, Royal Blue, White</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Family -->
+      <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <h2 class="font-serif text-2xl sm:text-3xl text-charcoal mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <span>👨‍👩‍👧‍👧</span>
+          Family
+        </h2>
+        <p class="text-charcoal/80 font-sans text-base sm:text-lg leading-relaxed">
+          I'm the second of five children, four girls and one boy.
+        </p>
+      </div>
+
+      <!-- Education -->
+      <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <h2 class="font-serif text-2xl sm:text-3xl text-charcoal mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <span>🎓</span>
+          Education
+        </h2>
+        <p class="text-charcoal/80 font-sans text-base sm:text-lg leading-relaxed">
+          I'm a graduate of Ondo State College of Health Technology, studied Dental Nursing, and I'm an aspiring Esquire.
+        </p>
+      </div>
+
+      <!-- Favorites -->
+      <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10 lg:mb-12">
+        <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg">
+          <h2 class="font-serif text-xl sm:text-2xl text-charcoal mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+            <span>🍩</span>
+            Favorite Food
+          </h2>
+          <p class="text-charcoal/80 font-sans text-sm sm:text-base">
+            Doughnuts and ice cream (don't judge me 😂)
+          </p>
+        </div>
+
+        <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg">
+          <h2 class="font-serif text-xl sm:text-2xl text-charcoal mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+            <span>🛏️</span>
+            Favorite Place
+          </h2>
+          <p class="text-charcoal/80 font-sans text-sm sm:text-base">
+            My room
+          </p>
+        </div>
+      </div>
+
+      <!-- Personality -->
+      <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <h2 class="font-serif text-2xl sm:text-3xl text-charcoal mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <span>🤍</span>
+          Personality
+        </h2>
+        <div class="space-y-3 sm:space-y-4 text-charcoal/80 font-sans text-base sm:text-lg leading-relaxed">
+          <p>
+            I'm an introvert with a small circle of friends, and I like it that way.
+          </p>
+          <p>
+            I'm a veryyyyyy big baby, a certified one. I love soft moments, reassurance, being pampered, and acting like the last born every now and then. Don't let the ambition fool you. 😂
+          </p>
+        </div>
+      </div>
+
+      <!-- Creative Entrepreneur -->
+      <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <h2 class="font-serif text-2xl sm:text-3xl text-charcoal mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <span>🎨</span>
+          Creative Entrepreneur
+        </h2>
+        <p class="text-charcoal/80 font-sans text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
+          I'm a baker, crochet artist, bead artist, writer, sell local snacks, and a makeup artist in training.
+        </p>
+        
+        <h3 class="font-serif text-lg sm:text-xl text-charcoal mb-3 sm:mb-4">My Brands</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          <div class="bg-terracotta/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center">
+            <div class="text-terracotta font-semibold text-sm sm:text-base">SireWrites</div>
+          </div>
+          <div class="bg-rose-gold/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center">
+            <div class="text-rose-gold font-semibold text-sm sm:text-base">Sire's Creation Haven</div>
+          </div>
+          <div class="bg-champagne/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center">
+            <div class="text-champagne font-semibold text-charcoal text-sm sm:text-base">Sire's Treats</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Music & Pet Peeves -->
+      <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10 lg:mb-12">
+        <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg">
+          <h2 class="font-serif text-xl sm:text-2xl text-charcoal mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+            <span>🎶</span>
+            Music
+          </h2>
+          <p class="text-charcoal/80 font-sans text-sm sm:text-base">
+            I absolutely love music.
+          </p>
+        </div>
+
+        <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg">
+          <h2 class="font-serif text-xl sm:text-2xl text-charcoal mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+            <span>🚩</span>
+            Pet Peeves
+          </h2>
+          <p class="text-charcoal/80 font-sans text-xs sm:text-sm leading-relaxed">
+            I dislike dishonesty, please tell me the bitter truth instead. I also can't stand when people can't tell the difference between "am" and "I'm." It's a huge turn-off for me. 😂
+          </p>
+        </div>
+      </div>
+
+      <!-- Aspiration -->
+      <div class="bg-gradient-to-br from-terracotta/10 via-rose-gold/10 to-champagne/10 backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <h2 class="font-serif text-2xl sm:text-3xl text-charcoal mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <span>🌟</span>
+          Biggest Aspiration
+        </h2>
+        <p class="text-charcoal/90 font-sans text-base sm:text-lg leading-relaxed italic">
+          "One of my biggest aspirations is to become a woman who can confidently speak in a room filled with powerful people and have everyone pause to genuinely listen (It's deeper than it sounds)"
+        </p>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="bg-white backdrop-blur-sm border border-cream-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 mb-8 sm:mb-10 lg:mb-12 shadow-lg">
+        <h2 class="font-serif text-2xl sm:text-3xl text-charcoal mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <span>✉️</span>
+          Get in Touch
+        </h2>
+        <p class="text-charcoal/80 font-sans text-base sm:text-lg leading-relaxed mb-3 sm:mb-4">
+          Want to connect? Reach out to me at:
+        </p>
+        <a href="mailto:sirew7473@gmail.com" class="text-terracotta font-semibold text-base sm:text-lg hover:text-rose-gold transition-colors">
+          sirew7473@gmail.com
+        </a>
+      </div>
+
+      <!-- Closing -->
+      <div class="text-center py-8 sm:py-10 lg:py-12">
+        <p class="text-charcoal/70 font-sans mb-4 sm:mb-6 text-sm sm:text-base">
+          I think that's all for now. If there's anything else you'd like to know about me, feel free to ask.
+        </p>
+        <p class="text-rose-gold font-serif text-xl sm:text-2xl">
+          Toodles! 💓🖤
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

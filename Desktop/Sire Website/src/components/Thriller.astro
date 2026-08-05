@@ -1,0 +1,144 @@
+---
+const featuredBooks = [
+  {
+    title: "The Silent Witness",
+    excerpt: "Some secrets are worth killing for...",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop",
+    tag: "Bestseller"
+  },
+  {
+    title: "Shadows in the Night",
+    excerpt: "When darkness falls, the hunter becomes the hunted...",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop",
+    tag: "New"
+  },
+  {
+    title: "The Last Lie",
+    excerpt: "Every lie has a consequence, and hers is deadly...",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop",
+    tag: "Trending"
+  }
+];
+
+const tropes = [
+  "Psychological Thriller",
+  "Suspense",
+  "Murder Mystery",
+  "Unreliable Narrator",
+  "Cat & Mouse",
+  "Dark Secrets"
+];
+---
+<section class="min-h-screen bg-charcoal text-white py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Hero Section -->
+    <div class="text-center mb-12 sm:mb-16 lg:mb-20">
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 text-rose-gold-light">
+        Thriller
+      </h1>
+      <p class="text-base sm:text-lg lg:text-xl xl:text-2xl text-white/70 font-sans max-w-3xl mx-auto leading-relaxed">
+        Where danger lurks in every shadow, suspense builds with every page, and nothing is as it seems
+      </p>
+      <div class="mt-6 sm:mt-8 w-24 sm:w-32 h-1 bg-rose-gold mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Featured Books -->
+    <div class="mb-16 sm:mb-20">
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-center mb-8 sm:mb-12 text-white">
+        Edge-of-Your-Seat Reads
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        {featuredBooks.map((book) => (
+          <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-rose-gold/50 transition-all duration-500 hover:shadow-2xl hover:shadow-rose-gold/20">
+            <div class="aspect-[2/3] overflow-hidden">
+              <img
+                src={book.image}
+                alt={book.title}
+                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+              />
+            </div>
+            <div class="absolute top-2 sm:top-4 right-2 sm:right-4 bg-rose-gold-gradient px-2 sm:px-4 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold text-charcoal">
+              {book.tag}
+            </div>
+            <div class="p-4 sm:p-6">
+              <h3 class="font-serif text-lg sm:text-xl lg:text-2xl text-white mb-2 sm:mb-3">{book.title}</h3>
+              <p class="text-white/60 text-xs sm:text-sm leading-relaxed italic">{book.excerpt}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Trope Badges -->
+    <div class="mb-16 sm:mb-20">
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-center mb-8 sm:mb-12 text-white">
+        Thriller Elements
+      </h2>
+      <div class="flex flex-wrap justify-center gap-2 sm:gap-3 lg:gap-4">
+        {tropes.map((trope) => (
+          <div class="bg-terracotta/20 border border-terracotta/40 px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-full text-white text-xs sm:text-sm font-medium hover:bg-terracotta/30 transition-all duration-300 cursor-default">
+            {trope}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="mb-16 sm:mb-20">
+      <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12">
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div>
+            <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-white mb-4 sm:mb-6">
+              Heart-Pounding Suspense
+            </h2>
+            <p class="text-white/70 text-sm sm:text-base lg:text-lg leading-relaxed mb-4 sm:mb-6">
+              My thrillers are designed to keep you guessing until the very last page. With twists you won't see coming and tension that builds with every chapter, these stories will have you sleeping with one eye open.
+            </p>
+            <p class="text-white/70 text-sm sm:text-base lg:text-lg leading-relaxed">
+              From psychological mind games to high-stakes cat-and-mouse chases, every thriller explores the darkest corners of human nature—and the lengths people will go to survive.
+            </p>
+          </div>
+          <div class="relative">
+            <div class="aspect-square rounded-xl sm:rounded-2xl overflow-hidden border-2 border-rose-gold/30">
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop"
+                alt="Thriller mystery"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 bg-rose-gold-gradient rounded-xl sm:rounded-2xl p-4 sm:p-6 text-charcoal shadow-2xl">
+              <div class="text-2xl sm:text-3xl lg:text-4xl mb-1 sm:mb-2">🔪</div>
+              <div class="font-semibold text-sm sm:text-base">Dare to Look</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="text-center">
+      <div class="bg-terracotta/10 border border-terracotta/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 max-w-3xl mx-auto">
+        <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl text-white mb-3 sm:mb-4">
+          Join the Thriller Club
+        </h2>
+        <p class="text-white/70 text-sm sm:text-base lg:text-lg mb-6 sm:mb-8">
+          Get early access to new releases, exclusive bonus chapters, and behind-the-scenes insights into the darkness
+        </p>
+        <form class="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault();">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            class="flex-1 px-4 sm:px-6 py-3 sm:py-4 bg-white/10 border border-white/20 rounded-full text-white placeholder-white/50 focus:outline-none focus:border-rose-gold focus:ring-2 focus:ring-rose-gold/30 transition-all duration-300 font-sans text-sm sm:text-base"
+            required
+          />
+          <button
+            type="submit"
+            class="bg-rose-gold-gradient text-charcoal px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-sm sm:text-base uppercase tracking-wider hover:shadow-rose-glow transition-all duration-300 transform hover:scale-105 whitespace-nowrap"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

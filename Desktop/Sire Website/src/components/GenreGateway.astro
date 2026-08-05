@@ -1,0 +1,58 @@
+---
+const genres = [
+  {
+    title: 'Erotic & Romance',
+    description: 'Sizzling passion and heart-pounding romance',
+    color: 'from-rose-900/40 to-pink-900/40',
+    borderColor: 'border-rose-gold/30',
+    image: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=600&fit=crop',
+  },
+  {
+    title: 'Thrillers & Mystery',
+    description: 'Edge-of-your-seat suspense and intrigue',
+    color: 'from-slate-900/40 to-blue-900/40',
+    borderColor: 'border-blue-400/30',
+    image: 'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800&h=600&fit=crop',
+  },
+];
+---
+<section id="books" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-charcoal">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section Header -->
+    <div class="text-center mb-12 sm:mb-16">
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-white mb-4">
+        Genre Gateway
+      </h2>
+      <div class="w-16 sm:w-24 h-1 bg-rose-gold-gradient mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Genre Cards -->
+    <div class="grid md:grid-cols-2 gap-6 lg:gap-8 xl:gap-12">
+      {genres.map((genre) => (
+        <div class={`group relative overflow-hidden rounded-xl sm:rounded-2xl border ${genre.borderColor} bg-gradient-to-br ${genre.color} hover:border-rose-gold/50 transition-all duration-500 cursor-pointer`}>
+          <!-- Background Image with Overlay -->
+          <div class="absolute inset-0">
+            <img
+              src={genre.image}
+              alt={genre.title}
+              class="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent"></div>
+          </div>
+
+          <!-- Content -->
+          <div class="relative z-10 p-6 sm:p-8 lg:p-12 h-full flex flex-col justify-between min-h-[300px] sm:min-h-[400px]">
+            <div>
+              <h3 class="font-serif text-2xl sm:text-3xl lg:text-4xl text-rose-gold-light mb-3 sm:mb-4">
+                {genre.title}
+              </h3>
+              <p class="text-white/70 text-base sm:text-lg font-sans">
+                {genre.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

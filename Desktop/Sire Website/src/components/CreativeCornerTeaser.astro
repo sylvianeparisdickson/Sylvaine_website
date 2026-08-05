@@ -1,0 +1,58 @@
+---
+const crochetImages = [
+  'https://images.unsplash.com/photo-1605218427306-022ba6c11592?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
+];
+---
+<section id="creative-corner" class="py-16 sm:py-20 lg:py-24 bg-forest relative overflow-hidden">
+  <!-- Decorative background elements -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-1/2 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-green-400 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-rose-gold rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center mb-8 sm:mb-12">
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-white mb-4">
+        Off the Page
+      </h2>
+      <div class="w-16 sm:w-24 h-1 bg-rose-gold-gradient mx-auto rounded-full"></div>
+    </div>
+
+    <!-- 3-Column Image Gallery -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+      {crochetImages.map((image) => (
+        <div class="relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 group">
+          <img
+            src={image}
+            alt="Crochet project"
+            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-forest/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Quote -->
+    <div class="text-center mb-8 sm:mb-12 max-w-2xl mx-auto">
+      <blockquote class="font-serif text-xl sm:text-2xl lg:text-3xl text-rose-gold-light italic leading-relaxed">
+        "When I'm not writing spicy scenes, I'm crafting cozy things..."
+      </blockquote>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center">
+      <a
+        href="/creative-corner"
+        class="inline-flex items-center bg-rose-gold-gradient text-charcoal px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-sm sm:text-base uppercase tracking-wider hover:shadow-rose-glow transition-all duration-300 transform hover:scale-105"
+      >
+        Visit the Creative Corner
+        <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
