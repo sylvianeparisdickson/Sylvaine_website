@@ -6,7 +6,7 @@ export default function CollectionsSection() {
   const tc = useTranslations("common");
 
   const series = [
-    { num: "I",   name: t("archOfLight"), sub: t("archOfLightSub"),    count: 1,  img: "/artisans.jpg",      href: "/study/architecture-of-light" },
+    { num: "I",   name: t("archOfLight"), sub: t("archOfLightSub"),    count: 2,  img: "/artisans.jpg",      href: "/study/architecture-of-light" },
     { num: "II",  name: t("divinePresence"), sub: t("divinePresenceSub"), count: 2, img: "/morning-visit.jpg",  href: "/study/divine-presence" },
     { num: "III", name: t("livingMoments"),  sub: t("livingMomentsSub"),  count: 3, img: "/art-of-indulgence.jpg", href: "/study/living-moments" },
     { num: "IV",  name: t("enchantedPath"),  sub: t("enchantedPathSub"),  count: 2, img: "/whispering-passage.jpg", href: "/study/enchanted-path" },

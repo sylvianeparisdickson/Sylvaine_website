@@ -60,6 +60,24 @@ export const allSeries: Series[] = [
           { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 x 34.75", price: "$1,950" },
         ],
       },
+      {
+        id: "light-renewed",
+        title: "Light Renewed",
+        year: "2026",
+        medium: "Acrylic on paper",
+        img: "/Light Renewed.jpg",
+        alt: "Light Renewed — Sylviane Paris",
+        dimensions: "20.5 × 27.5 in / 52 × 70 cm",
+        framedDimensions: "Framed 29.5 × 36.5 in / 75 × 93 cm",
+        hint:
+          "Light enters the ancient architecture and transforms it. Stone, arches, stained glass, and gilded details seem to awaken in its warmth, revealing a quiet sense of renewal. In Light Renewed, I wanted to capture the moment when light gives new life to what human hands have created and preserved. The architecture becomes more than structure—it becomes a place of presence, memory, and light.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 x 21.46", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "24 x 32", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 x 34.75", price: "$1,950" },
+        ],
+      },
     ],
   },
   {

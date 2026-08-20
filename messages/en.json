@@ -296,6 +296,18 @@
           "edition_small": "Edition of 50",
           "edition_medium": "Edition of 25",
           "edition_large": "Edition of 10"
+        },
+        "light-renewed": {
+          "title": "Light Renewed",
+          "medium": "Acrylic on paper",
+          "hint": "Light enters the ancient architecture and transforms it. Stone, arches, stained glass, and gilded details seem to awaken in its warmth, revealing a quiet sense of renewal. In Light Renewed, I wanted to capture the moment when light gives new life to what human hands have created and preserved. The architecture becomes more than structure—it becomes a place of presence, memory, and light.",
+          "status": "Available",
+          "sizeLabel_small": "Small",
+          "sizeLabel_medium": "Medium",
+          "sizeLabel_large": "Large",
+          "edition_small": "Edition of 50",
+          "edition_medium": "Edition of 25",
+          "edition_large": "Edition of 10"
         }
       }
     },

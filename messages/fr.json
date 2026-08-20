@@ -296,6 +296,18 @@
           "edition_small": "Édition de 50",
           "edition_medium": "Édition de 25",
           "edition_large": "Édition de 10"
+        },
+        "light-renewed": {
+          "title": "Lumière Renouvelée",
+          "medium": "Acrylique sur papier",
+          "hint": "La lumière pénètre dans cette architecture ancienne et la transforme. La pierre, les arches, les vitraux et les détails dorés semblent s'éveiller dans sa chaleur, révélant un sentiment silencieux de renouveau. Dans Lumière renouvelée, j'ai voulu saisir cet instant où la lumière redonne vie à ce que les mains humaines ont créé et préservé. L'architecture devient alors plus qu'une structure: elle devient un lieu de présence, de mémoire et de lumière.",
+          "status": "Disponible",
+          "sizeLabel_small": "Petit",
+          "sizeLabel_medium": "Moyen",
+          "sizeLabel_large": "Grand",
+          "edition_small": "Édition de 50",
+          "edition_medium": "Édition de 25",
+          "edition_large": "Édition de 10"
         }
       }
     },

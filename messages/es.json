@@ -296,6 +296,18 @@
           "edition_small": "Edición de 50",
           "edition_medium": "Edición de 25",
           "edition_large": "Edición de 10"
+        },
+        "light-renewed": {
+          "title": "Luz Renovada",
+          "medium": "Acrílico sobre papel",
+          "hint": "La luz penetra en esta arquitectura antigua y la transforma. La piedra, los arcos, las vidrieras y los detalles dorados parecen despertar bajo su calidez, revelando una silenciosa sensación de renovación. En Luz Renovada, quise capturar ese instante en que la luz da nueva vida a aquello que las manos humanas han creado y preservado. La arquitectura se convierte en algo más que una estructura: se convierte en un lugar de presencia, memoria y luz.",
+          "status": "Disponible",
+          "sizeLabel_small": "Pequeño",
+          "sizeLabel_medium": "Mediano",
+          "sizeLabel_large": "Grande",
+          "edition_small": "Edición de 50",
+          "edition_medium": "Edición de 25",
+          "edition_large": "Edición de 10"
         }
       }
     },
