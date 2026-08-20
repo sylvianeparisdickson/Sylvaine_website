@@ -67,8 +67,8 @@ export const allSeries: Series[] = [
         medium: "Acrylic on paper",
         img: "/Light Renewed.jpg",
         alt: "Light Renewed — Sylviane Paris",
-        dimensions: "20.5 × 27.5 in / 52 × 70 cm",
-        framedDimensions: "Framed 29.5 × 36.5 in / 75 × 93 cm",
+        dimensions: "20.5x27.5 in / 52x70 cm",
+        framedDimensions: "Framed 29.5x36.5 in / 75x93 cm",
         hint:
           "Light enters the ancient architecture and transforms it. Stone, arches, stained glass, and gilded details seem to awaken in its warmth, revealing a quiet sense of renewal. In Light Renewed, I wanted to capture the moment when light gives new life to what human hands have created and preserved. The architecture becomes more than structure—it becomes a place of presence, memory, and light.",
         status: "Available",
