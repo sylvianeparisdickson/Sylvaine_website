@@ -170,7 +170,7 @@ export const allSeries: Series[] = [
       {
         id: "balcony-refreshment",
         title: "Balcony Refreshment",
-        year: "2020",
+        year: "2025",
         medium: "Acrylic painting",
         img: "/balcony-refreshment.jpg",
         alt: "Balcony Refreshment — Sylviane Paris",
