@@ -1,7 +1,7 @@
 export type Painting = {
   id: string;
   title: string;
-  year: string;
+  year?: string;
   medium: string;
   img: string;
   alt: string;
@@ -247,7 +247,6 @@ export const allSeries: Series[] = [
       {
         id: "poseidon",
         title: "Poseidon, The Magnificent",
-        year: "2024",
         medium: "Acrylic painting",
         img: "/poseidon.jpg",
         alt: "Poseidon, The Magnificent — Sylviane Paris",
@@ -259,7 +258,6 @@ export const allSeries: Series[] = [
       {
         id: "natures-guardians",
         title: "Nature's Guardians",
-        year: "2024",
         medium: "Acrylic painting",
         img: "/natures-guardians.jpg",
         alt: "Nature's Guardians — Sylviane Paris",
@@ -270,7 +268,6 @@ export const allSeries: Series[] = [
       {
         id: "beauty-of-venus",
         title: "The Beauty of Venus",
-        year: "2024",
         medium: "Acrylic painting",
         img: "/beauty-of-venus.jpg",
         alt: "The Beauty of Venus — Sylviane Paris",

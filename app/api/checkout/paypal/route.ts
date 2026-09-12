@@ -29,12 +29,14 @@ export async function POST(req: NextRequest) {
       hasPayPalSecret: !!process.env.PAYPAL_CLIENT_SECRET,
       hasPayPalMode: !!process.env.PAYPAL_MODE,
       paypalMode: process.env.PAYPAL_MODE,
-    });
+      });
     
     if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
       return NextResponse.json({ error: "Payment not configured - Missing PayPal credentials" }, { status: 503 });
     }
-
+if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+  return NextResponse.json({error: "Payment not configured - Misssing Paypal credentials"})
+}
     const body = await req.json();
     const {
       paintingId,

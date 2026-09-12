@@ -22,7 +22,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
           </p>
         )}
         <p className="text-[8px] md:text-[9px] tracking-[.12em] md:tracking-[.14em] uppercase hidden sm:block" style={{ color: "rgba(255,255,255,.38)" }}>
-          {painting.year} · {painting.medium}
+          {painting.year ? `${painting.year} · ` : ''}{painting.medium}
         </p>
       </div>
     );
@@ -31,7 +31,7 @@ function PaintingDetails({ painting, variant = "card" }: { painting: Painting; v
   return (
     <div className="space-y-1 mb-2">
       <p className="text-[9px] md:text-[9.5px] tracking-[.1em] md:tracking-[.12em] uppercase text-[#9a9188]">
-        {painting.year} · {painting.medium}
+        {painting.year ? `${painting.year} · ` : ''}{painting.medium}
       </p>
       {painting.dimensions && (
         <p className="text-[9px] md:text-[9.5px] tracking-[.1em] md:tracking-[.12em] uppercase text-[#9a9188]">
