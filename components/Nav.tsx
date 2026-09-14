@@ -22,6 +22,7 @@ export default function Nav() {
     { label: t("collectors"), href: "/collectors" },
     { label: t("limitedEditions"), href: "/limited-editions" },
     { label: t("about"), href: "/about" },
+    { label: t("cv"), href: "/cv" },
     { label: t("contact"), href: "/contact" },
   ];
 
