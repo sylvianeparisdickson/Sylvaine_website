@@ -4,6 +4,7 @@ import { useState } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useTranslations } from "next-intl";
+import { createContactSubmission, supabase } from "@/lib/supabase";
 
 export default function CommissionClient() {
   const t = useTranslations("Commission");
@@ -22,27 +23,40 @@ export default function CommissionClient() {
     const fileInput = form.elements.namedItem("reference_image") as HTMLInputElement;
     const file = fileInput?.files?.[0];
 
-    // Use FormData to support file upload
-    const formData = new FormData();
-    formData.append("first_name",        (form.elements.namedItem("first_name")        as HTMLInputElement).value);
-    formData.append("last_name",         (form.elements.namedItem("last_name")         as HTMLInputElement).value);
-    formData.append("email",             (form.elements.namedItem("email")             as HTMLInputElement).value);
-    formData.append("subject",           (form.elements.namedItem("subject")           as HTMLTextAreaElement).value);
-    formData.append("size",              (form.elements.namedItem("size")              as HTMLSelectElement).value);
-    formData.append("timeline",          (form.elements.namedItem("timeline")          as HTMLInputElement).value);
-    formData.append("how_did_you_find_us",(form.elements.namedItem("how_did_you_find_us") as HTMLInputElement).value);
-    if (file) formData.append("file", file);
+    let filePath = "";
+    
+    // Upload file to Supabase storage if present
+    if (file) {
+      try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}.${fileExt}`;
+        const { data, error: uploadError } = await supabase.storage
+          .from('submissions')
+          .upload(fileName, file);
+        
+        if (uploadError) throw uploadError;
+        filePath = data.path;
+      } catch (err) {
+        console.error("File upload error:", err);
+        setError(t("formError"));
+        setLoading(false);
+        return;
+      }
+    }
+
+    const data = {
+      first_name:        (form.elements.namedItem("first_name")        as HTMLInputElement).value,
+      last_name:         (form.elements.namedItem("last_name")         as HTMLInputElement).value,
+      email:             (form.elements.namedItem("email")             as HTMLInputElement).value,
+      subject:           (form.elements.namedItem("subject")           as HTMLTextAreaElement).value,
+      size:              (form.elements.namedItem("size")              as HTMLSelectElement).value,
+      timeline:          (form.elements.namedItem("timeline")          as HTMLInputElement).value,
+      how_did_you_find_us:(form.elements.namedItem("how_did_you_find_us") as HTMLInputElement).value,
+      reference_image:   filePath,
+    };
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_POCKETBASE_URL || "https://sgzo0nrujpc3b4h.ba7w.pocketbasecloud.com"}/api/collections/contact_submissions/records`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!res.ok) throw new Error("Submission failed");
+      await createContactSubmission(data);
       setSubmitted(true);
     } catch {
       setError(t("formError"));

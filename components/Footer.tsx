@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { subscribeToNewsletter } from "@/lib/pocketbase";
+import { subscribeToNewsletter } from "@/lib/supabase";
 
 export default function Footer() {
   const t = useTranslations("Footer");

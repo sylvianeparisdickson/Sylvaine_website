@@ -38,7 +38,7 @@ export const allSeries: Series[] = [
     subtitle: "Sacred & contemplative spaces",
     description:
       "Architecture of Light is an exploration of what people have built, and what remains of them through time. I look at architectural and sculptural forms not as objects, but as traces of human presence that continue to exist. Through light, these structures are revealed again — gently transformed into atmosphere, memory, and perception. My work is an act of attention and respect toward what has been made and left behind, where light becomes a way of seeing what still lives within form.",
-    coverImg: "/artisans.jpg",
+    coverImg: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/series/artisans.jpg",
     href: "/study/architecture-of-light",
     paintings: [
       {
@@ -46,7 +46,7 @@ export const allSeries: Series[] = [
         title: "Inner Illumination",
         year: "2026",
         medium: "Acrylic painting",
-        img: "/artisans.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/artisans.jpg",
         alt: "Inner Illumination — Sylviane Paris",
         dimensions: "20.5 × 27.5 in / 52 × 70 cm",
         framedDimensions: "Framed 30 × 36.5 in / 77 × 93 cm",
@@ -65,7 +65,7 @@ export const allSeries: Series[] = [
         title: "Light Renewed",
         year: "2026",
         medium: "Acrylic on paper",
-        img: "/Light Renewed.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/Light%20Renewed.jpg",
         alt: "Light Renewed — Sylviane Paris",
         dimensions: "20.5x27.5 in / 52x70 cm",
         framedDimensions: "Framed 29.5x36.5 in / 75x93 cm",
@@ -87,7 +87,7 @@ export const allSeries: Series[] = [
     subtitle: "Form, sculpture & quiet encounter",
     description:
       "Divine Presence explores moments where form carries a sense of something beyond the visible. Whether emerging through sculpture, landscape, or quiet spaces, these works reflect a perception of presence that feels both human and beyond human. Light, form, and atmosphere come together to suggest a subtle spiritual dimension — where what is seen opens into what is felt.",
-    coverImg: "/morning-visit.jpg",
+    coverImg: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/series/morning-visit.jpg",
     href: "/study/divine-presence",
     paintings: [
       {
@@ -95,7 +95,7 @@ export const allSeries: Series[] = [
         title: "Morning Visit",
         year: "2025",
         medium: "Acrylic painting",
-        img: "/morning-visit.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/morning-visit.jpg",
         alt: "Morning Visit — Sylviane Paris",
         dimensions: "20.5 × 28.5 in / 52 × 72.5 cm",
         framedDimensions: "Framed 30 × 37.5 in / 72 × 90 cm",
@@ -112,7 +112,7 @@ export const allSeries: Series[] = [
         title: "The Souls of the Park",
         year: "2025",
         medium: "Acrylic painting",
-        img: "/souls-of-the-park.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/souls-of-the-park.jpg",
         alt: "The Souls of the Park — Sylviane Paris",
         dimensions: "28.5 × 19.5 in / 72.5 × 49.5 cm",
         framedDimensions: "Framed 37.5 × 28.5 in / 95 × 72.5 cm",
@@ -134,7 +134,7 @@ export const allSeries: Series[] = [
     subtitle: "Intimate spaces & everyday beauty",
     description:
       "Living Moments explores the quiet beauty of everyday life within intimate spaces. These works focus on simple scenes shaped by human presence — objects, gestures, and arrangements that carry warmth, memory, and a sense of lived experience. Through light and atmosphere, ordinary moments are transformed into spaces of attention, where what is simple becomes quietly meaningful.",
-    coverImg: "/art-of-indulgence.jpg",
+    coverImg: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/series/art-of-indulgence.jpg",
     href: "/study/living-moments",
     paintings: [
       {
@@ -142,7 +142,7 @@ export const allSeries: Series[] = [
         title: "The Art of Indulgence",
         year: "2025",
         medium: "Acrylic painting",
-        img: "/art-of-indulgence.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/art-of-indulgence.jpg",
         alt: "The Art of Indulgence — Sylviane Paris",
         dimensions: "21.5 × 20 in / 52 × 51 cm",
         framedDimensions: "Framed 30.5 × 28.5 in / 77.5 × 72.5 cm",
@@ -159,7 +159,7 @@ export const allSeries: Series[] = [
         title: "Timeless Craft",
         year: "2025",
         medium: "Acrylic painting",
-        img: "/timeless-craft.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/timeless-craft.jpg",
         alt: "Timeless Craft — Sylviane Paris",
         dimensions: "25 × 17 in / 63.5 × 43 cm",
         framedDimensions: "Framed 34 × 26 in / 86.5 × 66 cm",
@@ -172,7 +172,7 @@ export const allSeries: Series[] = [
         title: "Balcony Refreshment",
         year: "2025",
         medium: "Acrylic painting",
-        img: "/balcony-refreshment.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/balcony-refreshment.jpg",
         alt: "Balcony Refreshment — Sylviane Paris",
         dimensions: "25 × 17 in / 63.5 × 43 cm",
         framedDimensions: "Framed 34 × 26 in / 86.5 × 66 cm",
@@ -193,7 +193,7 @@ export const allSeries: Series[] = [
     subtitle: "Nature as passage & transformation",
     description:
       "Enchanted Path explores nature as a place of passage, transformation, and quiet mystery. These works are not only landscapes, but experiences of movement — where colour, light, and form invite a sense of transition between the visible and the imagined. Each path suggests a journey, both physical and inward.",
-    coverImg: "/whispering-passage.jpg",
+    coverImg: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/series/whispering-passage.jpg",
     href: "/study/enchanted-path",
     paintings: [
       {
@@ -201,7 +201,7 @@ export const allSeries: Series[] = [
         title: "Whispering Passage",
         year: "2025",
         medium: "Acrylic painting",
-        img: "/whispering-passage.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/whispering-passage.jpg",
         alt: "Whispering Passage — Sylviane Paris",
         dimensions: "20 × 28 in / 51 × 71 cm",
         framedDimensions: "Framed 29 × 37 in / 73.5 × 94 cm",
@@ -219,7 +219,7 @@ export const allSeries: Series[] = [
         title: "The Path of Wonder",
         year: "2026",
         medium: "Acrylic painting",
-        img: "/path.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/path.jpg",
         alt: "The Path of Wonder — Sylviane Paris",
         dimensions: "19 × 28 in / 48 × 71 cm",
         hint:
@@ -241,14 +241,14 @@ export const allSeries: Series[] = [
     subtitle: "Early works & explorations",
     description:
       "Studies brings together early works and explorations created through direct reference. These pieces reflect a stage of learning and observation that contributed to the development of my current practice, now rooted in my own photographic sources.",
-    coverImg: "/natures-guardians.jpg",
+    coverImg: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/series/natures-guardians.jpg",
     href: "/study/studies",
     paintings: [
       {
         id: "poseidon",
         title: "Poseidon, The Magnificent",
         medium: "Acrylic painting",
-        img: "/poseidon.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/poseidon.jpg",
         alt: "Poseidon, The Magnificent — Sylviane Paris",
         dimensions: "20 × 28 in / 51 × 71 cm",
         framedDimensions: "Framed 29 × 37 in / 73.5 × 94 cm",
@@ -259,7 +259,7 @@ export const allSeries: Series[] = [
         id: "natures-guardians",
         title: "Nature's Guardians",
         medium: "Acrylic painting",
-        img: "/natures-guardians.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/natures-guardians.jpg",
         alt: "Nature's Guardians — Sylviane Paris",
         dimensions: "27.75 × 18.5 in / 70.5 × 47 cm",
         framedDimensions: "Framed 36.5 × 27.5 in / 92.5 × 70 cm",
@@ -269,7 +269,7 @@ export const allSeries: Series[] = [
         id: "beauty-of-venus",
         title: "The Beauty of Venus",
         medium: "Acrylic painting",
-        img: "/beauty-of-venus.jpg",
+        img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/beauty-of-venus.jpg",
         alt: "The Beauty of Venus — Sylviane Paris",
         dimensions: "13.75 × 20.75 in / 35 × 53 cm",
         framedDimensions: "Framed 22.75 × 29.75 in / 57.5 × 75.5 cm",

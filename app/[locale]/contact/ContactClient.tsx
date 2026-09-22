@@ -4,6 +4,7 @@ import { useState } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useTranslations } from "next-intl";
+import { createContactSubmission } from "@/lib/supabase";
 
 export default function ContactClient() {
   const t = useTranslations("Contact");
@@ -26,16 +27,8 @@ export default function ContactClient() {
     };
 
     try {
-      // Save to Pocketbase
-      const pbRes = await fetch(
-        `${process.env.NEXT_PUBLIC_POCKETBASE_URL || "https://sgzo0nrujpc3b4h.ba7w.pocketbasecloud.com"}/api/collections/contact_submissions/records`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }
-      );
-      if (!pbRes.ok) throw new Error("Pocketbase failed");
+      // Save to Supabase
+      await createContactSubmission(data);
 
       // Send email notification
       await fetch("/api/contact", {

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: "Sylviane Paris Website <onboarding@resend.dev>",
-      to: "sylvianeparisdickson@gmail.com",
+      to: "sylviane.paris_dickson@yahoo.com",
       replyTo: email,
       subject: `New commission enquiry from ${first_name} ${last_name}`,
       html: `
@@ -57,8 +57,8 @@ export async function POST(req: Request) {
             <p style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9188; margin: 0 0 8px;">Note</p>
             <p style="font-size: 13px; color: #6a6560; margin: 0; line-height: 1.6;">
               If a reference image was attached, view it in your 
-              <a href="https://sgzo0nrujpc3b4h.ba7w.pocketbasecloud.com/_/" style="color: #1a1816;">Pocketbase dashboard</a>
-              under commission_enquiries.
+              <a href="https://edpbkxlcapjmynahvgth.supabase.co/project/default/storage/submissions" style="color: #1a1816;">Supabase dashboard</a>
+              under the submissions bucket.
             </p>
           </div>
 

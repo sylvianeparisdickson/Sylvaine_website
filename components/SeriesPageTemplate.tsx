@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { Series, Painting } from "@/lib/data";
+import { fetchSeriesBySlug, fetchPaintingsBySeries } from "@/lib/supabase";
 import { useTranslations } from "next-intl";
 
 function PaintingDetails({ painting, variant = "card" }: { painting: Painting; variant?: "card" | "zoom" }) {
@@ -246,10 +247,55 @@ function ZoomViewer({ painting, onClose }: { painting: Painting; onClose: () => 
 }
 
 /* ── Series Page ── */
-export default function SeriesPageTemplate({ series }: { series: Series }) {
+export default function SeriesPageTemplate({ series: initialSeries }: { series: Series }) {
   const t = useTranslations("SeriesPageTemplate");
   const tc = useTranslations("common");
   const [selected, setSelected] = useState<Painting | null>(null);
+  const [series, setSeries] = useState<Series>(initialSeries);
+  const [paintings, setPaintings] = useState<Painting[]>(initialSeries.paintings);
+
+  // Fetch from Supabase on mount
+  useEffect(() => {
+    const fetchFromSupabase = async () => {
+      try {
+        const supabaseSeries = await fetchSeriesBySlug(initialSeries.id);
+        const supabasePaintings = await fetchPaintingsBySeries(initialSeries.name);
+        
+        if (supabaseSeries && supabasePaintings.length > 0) {
+          // Transform Supabase data to match data.ts types
+          const transformedPaintings: Painting[] = supabasePaintings.map(p => ({
+            id: p.id,
+            title: p.title,
+            year: p.year,
+            medium: p.medium,
+            img: p.image,
+            alt: `${p.title} — Sylviane Paris`,
+            dimensions: p.dimensions,
+            framedDimensions: p.framed_dimensions,
+            hint: p.hint,
+            noReproduction: p.no_reproduction,
+            status: p.status,
+            availabilityLabel: p.availability_label,
+            limitedEditions: p.limited_editions,
+          }));
+          
+          setPaintings(transformedPaintings);
+          
+          // Update series with Supabase cover image if available
+          if (supabaseSeries.cover_image) {
+            setSeries({
+              ...initialSeries,
+              coverImg: supabaseSeries.cover_image
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch from Supabase:', error);
+      }
+    };
+    
+    fetchFromSupabase();
+  }, [initialSeries]);
 
   return (
     <main>
@@ -271,7 +317,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
               {series.name}
             </h1>
             <p className="text-[9px] md:text-[9.5px] tracking-[.16em] md:tracking-[.18em] uppercase text-[#9a9188]">
-              {series.paintings.length === 1 ? tc("work_one") : tc("work_other", { count: series.paintings.length })} · {series.subtitle}
+              {paintings.length === 1 ? tc("work_one") : tc("work_other", { count: paintings.length })} · {series.subtitle}
             </p>
           </div>
           <p className="text-[14px] md:text-[14.5px] text-[#6a6560] leading-[1.9]">{series.description}</p>
@@ -281,7 +327,7 @@ export default function SeriesPageTemplate({ series }: { series: Series }) {
       {/* Paintings — 1 col mobile, 2 col sm, 3 col md */}
       <section className="px-6 md:px-14 py-16 md:py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
-          {series.paintings.map((painting) => (
+          {paintings.map((painting) => (
             <div key={painting.id} className="group cursor-pointer" onClick={() => setSelected(painting)}>
               <div className="relative w-full mb-5 bg-[#f8f5ef] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

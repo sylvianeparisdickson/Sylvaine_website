@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { subscribeToNewsletter } from "@/lib/pocketbase";
+import { subscribeToNewsletter } from "@/lib/supabase";
 
 const STORAGE_KEY = "sp_newsletter_dismissed";
 const DELAY_MS = 4000; // 4 seconds after load
