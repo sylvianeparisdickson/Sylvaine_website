@@ -189,24 +189,14 @@ export async function fetchSeriesBySlug(slug: string): Promise<Series | null> {
 // Subscribe to newsletter
 export async function subscribeToNewsletter(email: string): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('newsletter_subscribers')
-      .insert({ email });
+    // Call the API route which handles both DB insertion and email notification
+    const res = await fetch('/api/newsletter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
     
-    if (!error) {
-      // Send email notification
-      try {
-        await fetch('/api/newsletter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        });
-      } catch (emailError) {
-        console.error('Failed to send newsletter notification email:', emailError);
-      }
-    }
-    
-    return !error;
+    return res.ok;
   } catch (error) {
     console.error("subscribeToNewsletter error:", error);
     return false;

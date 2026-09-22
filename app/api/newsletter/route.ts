@@ -1,16 +1,32 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { createClient } from '@supabase/supabase-js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://edpbkxlcapjmynahvgth.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkcGJreGxjYXBqbXluYWh2Z3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNDMyODAsImV4cCI6MjEwNTYxOTI4MH0.fmAKxg61vLsPqh4tBVVbJ6mgSEvtyiV76rC5rWcQZ4w';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { email } = body;
 
+    // Insert into Supabase
+    const { error: dbError } = await supabase
+      .from('newsletter_subscribers')
+      .insert({ email });
+    
+    if (dbError && dbError.code !== '23505') {
+      // 23505 is duplicate key error, which is fine
+      console.error('Database error:', dbError);
+    }
+
+    // Send email notification
     await resend.emails.send({
       from: "Sylviane Paris Website <onboarding@resend.dev>",
-      to: "sylviane.paris_dickson@yahoo.com",
+      to: "sylvianeparisdickson@gmail.com",
       subject: `New newsletter subscription: ${email}`,
       html: `
         <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #1a1816;">
@@ -43,7 +59,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Email error:", error);
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    console.error("Newsletter subscription error:", error);
+    return NextResponse.json({ error: "Failed to subscribe" }, { status: 500 });
   }
 }
