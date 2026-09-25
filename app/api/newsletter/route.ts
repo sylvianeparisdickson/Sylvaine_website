@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     // Send email notification
     await resend.emails.send({
       from: "Sylviane Paris Website <onboarding@resend.dev>",
-      to: "sylvianeparisdickson@gmail.com",
+      to: "sylviane.paris_dickson@yahoo.com",
       subject: `New newsletter subscription: ${email}`,
       html: `
         <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #1a1816;">

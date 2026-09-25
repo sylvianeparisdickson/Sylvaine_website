@@ -4,6 +4,7 @@ import { useState } from "react";
 export default function StudioPaymentPage() {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [paymentReady, setPaymentReady] = useState(false);
   const [checkoutUrl, setCheckoutUrl] = useState("");
@@ -16,6 +17,11 @@ export default function StudioPaymentPage() {
       return;
     }
 
+    if (!email || !email.includes("@")) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -25,6 +31,7 @@ export default function StudioPaymentPage() {
         body: JSON.stringify({
           amount: amountNum,
           description: description || undefined,
+          email,
         }),
       });
 
@@ -60,6 +67,7 @@ export default function StudioPaymentPage() {
   const handleReset = () => {
     setAmount("");
     setDescription("");
+    setEmail("");
     setPaymentReady(false);
     setCheckoutUrl("");
   };
@@ -131,6 +139,20 @@ export default function StudioPaymentPage() {
                 className="w-full pl-10 pr-4 py-3 bg-transparent border border-black/20 text-[20px] text-[#1a1816] outline-none focus:border-[#1a1816]"
               />
             </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="customer@email.com"
+              required
+              className="w-full px-4 py-3 bg-transparent border border-black/20 text-[14px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+            />
           </div>
 
           <div className="mb-8">
