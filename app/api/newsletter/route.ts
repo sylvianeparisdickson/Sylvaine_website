@@ -10,13 +10,8 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function POST(req: Request) {
   try {
-    console.log("Newsletter API called");
-    console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
-    
     const body = await req.json();
     const { email } = body;
-
-    console.log("Email to subscribe:", email);
 
     // Insert into Supabase
     const { error: dbError } = await supabase
@@ -29,8 +24,7 @@ export async function POST(req: Request) {
     }
 
     // Send email notification
-    console.log("Attempting to send email via Resend...");
-    const emailResult = await resend.emails.send({
+    await resend.emails.send({
       from: "Sylviane Paris Website <onboarding@resend.dev>",
       to: "sylviane.paris_dickson@yahoo.com",
       subject: `New newsletter subscription: ${email}`,
@@ -62,8 +56,6 @@ export async function POST(req: Request) {
         </div>
       `,
     });
-
-    console.log("Email sent successfully:", emailResult);
 
     return NextResponse.json({ success: true });
   } catch (error) {
