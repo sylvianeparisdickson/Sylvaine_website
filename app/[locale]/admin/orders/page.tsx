@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase, type Order } from "@/lib/supabase";
-import { signOut, useSession } from "@/lib/auth";
+import { signOut } from "@/lib/auth";
+import { useSession } from "next-auth/react";
 import { useRouter } from "@/i18n/routing";
 
 export default function OrdersPage() {
