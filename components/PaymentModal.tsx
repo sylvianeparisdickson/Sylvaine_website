@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Painting } from "@/lib/data";
+import { getShippingRates, type ShippingAddress } from "@/lib/shipping";
 
 interface PaymentModalProps {
   painting: Painting;
@@ -12,11 +13,56 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
   const [paymentMethod, setPaymentMethod] = useState<"stripe" | "paypal">("stripe");
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  
+  // New state for tax/shipping
+  const [country, setCountry] = useState<"US" | "CA" | "other">("US");
+  const [taxExempt, setTaxExempt] = useState(false);
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState<string>("");
+  const [shippingQuote, setShippingQuote] = useState<{ method: string; cost: number; estimatedDays: string }[]>([]);
+  const [taxAmount, setTaxAmount] = useState(0);
+  const [taxRate, setTaxRate] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const edition = painting.limitedEditions?.[selectedEdition];
   if (!edition) return null;
 
   const price = parseFloat(edition.price.replace("$", "").replace(",", ""));
+
+  // Calculate shipping when form is shown
+  useEffect(() => {
+    if (showForm) {
+      const form = document.getElementById("payment-form") as HTMLFormElement;
+      
+      const shippingRates = getShippingRates({ country }, "website", price);
+      setShippingQuote(shippingRates.rates);
+      
+      if (!selectedShippingMethod && shippingRates.rates.length > 0) {
+        setSelectedShippingMethod(shippingRates.rates[0].method);
+      }
+      
+      const shippingCost = selectedShippingMethod 
+        ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
+        : shippingRates.rates[0]?.cost || 0;
+      
+      // Stripe Tax handles tax at checkout, PayPal needs client-side calculation
+      if (paymentMethod === "paypal") {
+        const address = form?.querySelector('textarea[name="address"]') as HTMLTextAreaElement;
+        const stateMatch = address?.value.match(/(?:MN|Minnesota)/i);
+        const isMinnesota = !!stateMatch;
+        const calculatedTaxRate = taxExempt ? 0 : (isMinnesota ? 0.0725 : 0);
+        const calculatedTaxAmount = taxExempt ? 0 : (isMinnesota ? price * 0.0725 : 0);
+        
+        setTaxRate(calculatedTaxRate);
+        setTaxAmount(calculatedTaxAmount);
+        setTotalAmount(price + calculatedTaxAmount + shippingCost);
+      } else {
+        // Stripe - tax calculated at checkout
+        setTaxAmount(0);
+        setTaxRate(0);
+        setTotalAmount(price + shippingCost);
+      }
+    }
+  }, [showForm, country, taxExempt, selectedShippingMethod, price, paymentMethod]);
 
   const handlePayment = async () => {
     if (!showForm) {
@@ -31,10 +77,12 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
     
     const customerEmail = formData.get("email") as string;
     const customerName = formData.get("name") as string;
+    const customerPhone = formData.get("phone") as string;
+    const billingAddress = formData.get("billingAddress") as string;
     const shippingAddress = formData.get("address") as string;
 
     if (!customerEmail || !customerName || !shippingAddress) {
-      alert("Please fill in all fields");
+      alert("Please fill in all required fields");
       setLoading(false);
       return;
     }
@@ -48,7 +96,12 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
       price,
       customerEmail,
       customerName,
+      customerPhone,
+      billingAddress,
       shippingAddress,
+      country,
+      taxExempt,
+      shippingMethod: selectedShippingMethod,
       paymentPlan: "full",
     };
 
@@ -82,6 +135,10 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
     }
   };
 
+  const selectedShippingCost = selectedShippingMethod 
+    ? shippingQuote.find(r => r.method === selectedShippingMethod)?.cost || 0
+    : 0;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(10,9,8,.9)" }}>
       <div className="bg-[#f8f5ef] w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 md:p-8">
@@ -112,7 +169,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
 
         <div className="mb-6">
           <p className="text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Price</p>
-          <p className="font-serif italic text-[24px] text-[#1a1816]">{edition.price}</p>
+          <p className="font-serif italic text-[24px] text-[#1a1816]">${price.toFixed(2)}</p>
         </div>
 
         <div className="mb-6">
@@ -136,7 +193,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
         {showForm && (
           <form id="payment-form" className="mb-6 space-y-4">
             <div>
-              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Email</label>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Email *</label>
               <input
                 type="email"
                 name="email"
@@ -145,7 +202,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               />
             </div>
             <div>
-              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Full Name</label>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Full Name *</label>
               <input
                 type="text"
                 name="name"
@@ -154,13 +211,114 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               />
             </div>
             <div>
-              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping Address</label>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Phone (optional)</label>
+              <input
+                type="tel"
+                name="phone"
+                className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Billing Address (optional)</label>
+              <textarea
+                name="billingAddress"
+                rows={2}
+                className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816] resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping Address *</label>
               <textarea
                 name="address"
                 required
                 rows={3}
                 className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816] resize-none"
+                placeholder="123 Main St, Minneapolis, MN 55401"
               />
+            </div>
+            <div>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Country *</label>
+              <select
+                name="country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value as "US" | "CA" | "other")}
+                className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+              >
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            {/* Tax Exemption */}
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="taxExempt"
+                checked={taxExempt}
+                onChange={(e) => setTaxExempt(e.target.checked)}
+                className="w-4 h-4"
+              />
+              <label htmlFor="taxExempt" className="text-[11px] text-[#6a6560]">Tax Exempt</label>
+            </div>
+
+            {/* Shipping Method Selection */}
+            {shippingQuote.length > 0 && (
+              <div>
+                <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping Method</label>
+                <div className="space-y-2">
+                  {shippingQuote.map((rate) => (
+                    <label key={rate.method} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="shippingMethod"
+                        value={rate.method}
+                        checked={selectedShippingMethod === rate.method}
+                        onChange={(e) => setSelectedShippingMethod(e.target.value)}
+                        className="w-4 h-4"
+                      />
+                      <div className="flex-1">
+                        <p className="text-[12px] text-[#1a1816]">{rate.method}</p>
+                        <p className="text-[10px] text-[#9a9188]">{rate.estimatedDays}</p>
+                      </div>
+                      <p className="text-[12px] text-[#1a1816]">${rate.cost.toFixed(2)}</p>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Price Breakdown */}
+            <div className="border-t border-black/10 pt-4 space-y-2">
+              <div className="flex justify-between text-[12px]">
+                <span className="text-[#6a6560]">Product</span>
+                <span className="text-[#1a1816]">${price.toFixed(2)}</span>
+              </div>
+              {paymentMethod === "paypal" && taxAmount > 0 && (
+                <div className="flex justify-between text-[12px]">
+                  <span className="text-[#6a6560]">Sales Tax ({(taxRate * 100).toFixed(2)}%)</span>
+                  <span className="text-[#1a1816]">${taxAmount.toFixed(2)}</span>
+                </div>
+              )}
+              {paymentMethod === "stripe" && (
+                <div className="flex justify-between text-[12px] text-[#9a9188] italic">
+                  <span>Sales Tax</span>
+                  <span>Calculated at checkout</span>
+                </div>
+              )}
+              <div className="flex justify-between text-[12px]">
+                <span className="text-[#6a6560]">Shipping</span>
+                <span className="text-[#1a1816]">${selectedShippingCost.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-[14px] font-bold pt-2 border-t border-black/10">
+                <span className="text-[#1a1816]">{paymentMethod === "stripe" ? "Subtotal" : "Total"}</span>
+                <span className="text-[#1a1816]">${totalAmount.toFixed(2)}</span>
+              </div>
+              {paymentMethod === "stripe" && (
+                <p className="text-[10px] text-[#9a9188] mt-2">
+                  *Sales tax will be calculated based on your location at checkout
+                </p>
+              )}
             </div>
           </form>
         )}
@@ -178,7 +336,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
           disabled={loading}
           className="w-full px-6 py-3 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "Processing..." : showForm ? "Complete Purchase" : "Continue to Checkout"}
+          {loading ? "Processing..." : showForm ? `Pay $${totalAmount.toFixed(2)}` : "Continue to Checkout"}
         </button>
       </div>
     </div>

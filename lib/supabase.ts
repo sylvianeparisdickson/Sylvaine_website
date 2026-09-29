@@ -26,6 +26,12 @@ export type Painting = {
     dimensions: string;
     price: string;
   }[];
+  // Customs and tax fields
+  hs_code?: string;
+  country_of_origin?: string;
+  international_shipping_notes?: string;
+  taxable?: boolean;
+  tax_category?: string;
   created_at?: string;
   updated_at?: string;
 };
@@ -45,20 +51,62 @@ export type Series = {
 
 export type Order = {
   id: string;
+  order_number?: string;
   customer_email: string;
   customer_name: string;
-  painting_id: string;
-  painting_title: string;
-  edition: string;
-  size_label: string;
-  dimensions: string;
-  price: number;
-  payment_method: "stripe" | "paypal";
-  payment_id: string;
-  status: "pending" | "paid" | "processing" | "shipped" | "delivered";
-  payment_plan?: "full" | "3month";
-  tracking_number?: string;
+  customer_phone?: string;
+  billing_address?: string;
   shipping_address: string;
+  country: string;
+  
+  // Product information
+  painting_id?: string;
+  painting_title?: string;
+  edition?: string;
+  size_label?: string;
+  dimensions?: string;
+  product_type?: "original" | "reproduction" | "studio";
+  description?: string;
+  
+  // Pricing
+  price: number;
+  tax_amount: number;
+  tax_rate?: number;
+  shipping_cost: number;
+  total_amount: number;
+  
+  // Tax exemption
+  tax_exempt: boolean;
+  exemption_reason?: string;
+  exemption_reference?: string;
+  exemption_date?: string;
+  
+  // Payment
+  payment_method: "stripe" | "paypal";
+  payment_id?: string;
+  payment_status: "pending_payment" | "paid" | "processing" | "ready_to_ship" | "shipped" | "delivered" | "cancelled" | "refunded";
+  payment_plan?: "full" | "3month";
+  
+  // Shipping
+  shipping_method?: string;
+  tracking_number?: string;
+  date_shipped?: string;
+  delivery_status?: string;
+  delivery_date?: string;
+  
+  // Order source
+  order_source: "website" | "studio";
+  
+  // International customs
+  hs_code?: string;
+  country_of_origin?: string;
+  declared_value?: number;
+  customs_notes?: string;
+  
+  // Metadata
+  stripe_session_id?: string;
+  notes?: string;
+  
   created_at?: string;
   updated_at?: string;
 };
@@ -240,12 +288,12 @@ export async function createOrder(
 }
 
 // Update order status
-export async function updateOrderStatus(orderId: string, status: Order["status"], trackingNumber?: string): Promise<boolean> {
+export async function updateOrderStatus(orderId: string, paymentStatus: Order["payment_status"], trackingNumber?: string): Promise<boolean> {
   try {
     const { error } = await supabase
       .from('orders')
       .update({ 
-        status, 
+        payment_status: paymentStatus,
         ...(trackingNumber && { tracking_number: trackingNumber }) 
       })
       .eq('id', orderId);

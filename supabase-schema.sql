@@ -34,6 +34,16 @@ CREATE TABLE IF NOT EXISTS paintings (
   status TEXT,
   availability_label TEXT,
   limited_editions JSONB,
+  
+  -- Customs information for international shipping
+  hs_code TEXT,
+  country_of_origin TEXT DEFAULT 'US',
+  international_shipping_notes TEXT,
+  
+  -- Tax configuration
+  taxable BOOLEAN DEFAULT TRUE,
+  tax_category TEXT,
+  
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -48,20 +58,62 @@ CREATE TABLE IF NOT EXISTS newsletter_subscribers (
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  order_number TEXT UNIQUE,
   customer_email TEXT NOT NULL,
   customer_name TEXT NOT NULL,
-  painting_id TEXT NOT NULL,
-  painting_title TEXT NOT NULL,
-  edition TEXT NOT NULL,
-  size_label TEXT NOT NULL,
-  dimensions TEXT NOT NULL,
-  price NUMERIC NOT NULL,
-  payment_method TEXT NOT NULL CHECK (payment_method IN ('stripe', 'paypal')),
-  payment_id TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'processing', 'shipped', 'delivered')),
-  payment_plan TEXT CHECK (payment_plan IN ('full', '3month')),
-  tracking_number TEXT,
+  customer_phone TEXT,
+  billing_address TEXT,
   shipping_address TEXT NOT NULL,
+  country TEXT NOT NULL DEFAULT 'US',
+  
+  -- Product information
+  painting_id TEXT,
+  painting_title TEXT,
+  edition TEXT,
+  size_label TEXT,
+  dimensions TEXT,
+  product_type TEXT CHECK (product_type IN ('original', 'reproduction', 'studio')),
+  description TEXT, -- For studio payments
+  
+  -- Pricing
+  price NUMERIC NOT NULL,
+  tax_amount NUMERIC DEFAULT 0,
+  tax_rate NUMERIC,
+  shipping_cost NUMERIC DEFAULT 0,
+  total_amount NUMERIC NOT NULL,
+  
+  -- Tax exemption
+  tax_exempt BOOLEAN DEFAULT FALSE,
+  exemption_reason TEXT,
+  exemption_reference TEXT,
+  exemption_date TIMESTAMP WITH TIME ZONE,
+  
+  -- Payment
+  payment_method TEXT NOT NULL CHECK (payment_method IN ('stripe', 'paypal')),
+  payment_id TEXT,
+  payment_status TEXT NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending_payment', 'paid', 'processing', 'ready_to_ship', 'shipped', 'delivered', 'cancelled', 'refunded')),
+  payment_plan TEXT CHECK (payment_plan IN ('full', '3month')),
+  
+  -- Shipping
+  shipping_method TEXT,
+  tracking_number TEXT,
+  date_shipped TIMESTAMP WITH TIME ZONE,
+  delivery_status TEXT,
+  delivery_date TIMESTAMP WITH TIME ZONE,
+  
+  -- Order source
+  order_source TEXT NOT NULL DEFAULT 'website' CHECK (order_source IN ('website', 'studio')),
+  
+  -- International customs
+  hs_code TEXT,
+  country_of_origin TEXT,
+  declared_value NUMERIC,
+  customs_notes TEXT,
+  
+  -- Metadata
+  stripe_session_id TEXT,
+  notes TEXT,
+  
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -87,7 +139,11 @@ CREATE INDEX IF NOT EXISTS idx_series_order ON series(order_num);
 CREATE INDEX IF NOT EXISTS idx_paintings_series ON paintings(series);
 CREATE INDEX IF NOT EXISTS idx_paintings_order ON paintings(order_num);
 CREATE INDEX IF NOT EXISTS idx_orders_payment_id ON orders(payment_id);
-CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
+CREATE INDEX IF NOT EXISTS idx_orders_order_source ON orders(order_source);
+CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
+CREATE INDEX IF NOT EXISTS idx_orders_country ON orders(country);
+CREATE INDEX IF NOT EXISTS idx_orders_date ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_newsletter_email ON newsletter_subscribers(email);
 CREATE INDEX IF NOT EXISTS idx_contact_email ON contact_submissions(email);
 

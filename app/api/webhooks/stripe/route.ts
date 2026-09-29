@@ -1,5 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { createClient } from '@supabase/supabase-js';
+import { createOrder } from "@/lib/supabase";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://edpbkxlcapjmynahvgth.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkcGJreGxjYXBqbXluYWh2Z3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNDMyODAsImV4cCI6MjEwNTYxOTI4MH0.fmAKxg61vLsPqh4tBVVbJ6mgSEvtyiV76rC5rWcQZ4w';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Generate order number
+function generateOrderNumber(): string {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `ORD-${year}${month}-${random}`;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,6 +49,92 @@ export async function POST(req: NextRequest) {
           metadata: session.metadata,
           amount: session.amount_total,
         });
+
+        const metadata = session.metadata || {};
+        const isStudioPayment = metadata.type === "studio_payment";
+
+        // Extract tax information from Stripe Tax calculation
+        const taxAmount = session.total_details?.amount_tax 
+          ? session.total_details.amount_tax / 100 
+          : 0;
+        const taxRate = taxAmount > 0 && session.amount_subtotal 
+          ? taxAmount / (session.amount_subtotal / 100) 
+          : undefined;
+        const shippingCost = session.total_details?.amount_shipping 
+          ? session.total_details.amount_shipping / 100 
+          : parseFloat(metadata.shippingCost || "0");
+        const totalAmount = session.amount_total ? session.amount_total / 100 : 0;
+        const price = session.amount_subtotal ? session.amount_subtotal / 100 : parseFloat(metadata.price || metadata.totalAmount || "0");
+
+        // Create order in Supabase with all new fields
+        const orderNumber = metadata.order_number || generateOrderNumber();
+
+        const orderData = {
+          order_number: orderNumber,
+          customer_email: session.customer_email || "",
+          customer_name: metadata.customerName || "",
+          customer_phone: metadata.customerPhone || "",
+          billing_address: "",
+          shipping_address: metadata.shippingAddress || "",
+          country: metadata.country || "US",
+          
+          // Product information
+          painting_id: isStudioPayment ? undefined : metadata.paintingId,
+          painting_title: isStudioPayment ? undefined : metadata.paintingTitle,
+          edition: isStudioPayment ? undefined : metadata.edition,
+          size_label: isStudioPayment ? undefined : metadata.sizeLabel,
+          dimensions: isStudioPayment ? undefined : metadata.dimensions,
+          product_type: (isStudioPayment ? "studio" : "reproduction") as "studio" | "reproduction" | "original",
+          description: metadata.description || "",
+          
+          // Pricing - extracted from Stripe session
+          price,
+          tax_amount: taxAmount,
+          tax_rate: taxRate,
+          shipping_cost: shippingCost,
+          total_amount: totalAmount,
+          
+          // Tax exemption
+          tax_exempt: metadata.taxExempt === "true",
+          exemption_reason: "",
+          exemption_reference: "",
+          exemption_date: undefined,
+          
+          // Payment
+          payment_method: "stripe" as const,
+          payment_id: session.payment_intent as string,
+          payment_status: "paid" as const,
+          payment_plan: (metadata.paymentPlan as "full" | "3month") || "full",
+          
+          // Shipping
+          shipping_method: metadata.shippingMethod || "",
+          tracking_number: "",
+          date_shipped: undefined,
+          delivery_status: "",
+          delivery_date: undefined,
+          
+          // Order source
+          order_source: (isStudioPayment ? "studio" : "website") as "studio" | "website",
+          
+          // International customs
+          hs_code: "",
+          country_of_origin: "",
+          declared_value: undefined,
+          customs_notes: "",
+          
+          // Metadata
+          stripe_session_id: session.id,
+          notes: isStudioPayment ? "Studio payment" : "",
+        };
+
+        try {
+          const order = await createOrder(orderData);
+          console.log("Order created successfully:", order?.order_number);
+        } catch (orderError) {
+          console.error("Failed to create order:", orderError);
+          // Don't fail the webhook - log the error but continue
+        }
+
         break;
       }
 

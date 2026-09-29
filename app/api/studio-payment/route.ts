@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from '@supabase/supabase-js';
+import { getShippingRates } from "@/lib/shipping";
+
+// Generate order number
+function generateOrderNumber(): string {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `ORD-${year}${month}-${random}`;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +27,7 @@ export async function POST(req: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const body = await req.json();
-    const { amount, description, email } = body;
+    const { amount, description, email, customerName, phone, address, country = "US", taxExempt = false } = body;
 
     // Validate amount
     if (!amount || isNaN(amount) || amount <= 0) {
@@ -39,10 +49,21 @@ export async function POST(req: NextRequest) {
       console.error('Database error:', dbError);
     }
 
+    // Calculate shipping for studio payments (default to studio pickup)
+    const shippingQuote = getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amount);
+    const selectedShipping = shippingQuote.rates[0]; // Default to first option (usually studio pickup)
+    const shippingCost = selectedShipping?.cost || 0;
+
+    // Stripe Tax will handle tax calculation automatically
+    const totalAmount = amount + shippingCost; // Tax will be added by Stripe
+
+    // Generate order number
+    const orderNumber = generateOrderNumber();
+
     // Convert to cents (Stripe uses smallest currency unit)
     const amountInCents = Math.round(amount * 100);
 
-    // Create Stripe checkout session
+    // Create Stripe checkout session with automatic tax
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ["card"],
       line_items: [
@@ -52,6 +73,7 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: description || "Studio Purchase",
               description: description || "Custom studio purchase",
+              tax_code: "digital_goods",
             },
             unit_amount: amountInCents,
           },
@@ -62,19 +84,83 @@ export async function POST(req: NextRequest) {
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/studio-payment/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/studio-payment/cancel`,
       customer_email: email,
+      customer_creation: "always",
+      automatic_tax: {
+        enabled: !taxExempt, // Disable automatic tax for exempt customers
+      },
+      shipping_options: shippingQuote.rates.map(rate => ({
+        shipping_rate_data: {
+          display_name: rate.method,
+          type: "fixed_amount",
+          fixed_amount: {
+            amount: Math.round(rate.cost * 100),
+            currency: "usd",
+          },
+          delivery_estimate: {
+            minimum: {
+              unit: "business_day",
+              value: parseEstimatedDays(rate.estimatedDays).min,
+            },
+            maximum: {
+              unit: "business_day",
+              value: parseEstimatedDays(rate.estimatedDays).max,
+            },
+          },
+        },
+      })),
       metadata: {
         type: "studio_payment",
+        order_number: orderNumber,
         description: description || "",
+        customerName: customerName || "",
+        customerPhone: phone || "",
+        shippingAddress: address || "",
+        country,
+        taxExempt: taxExempt.toString(),
+        taxExemptReason: taxExempt ? "customer_exempt" : "",
+        shippingMethod: selectedShipping?.method || "",
+        shippingCost: shippingCost.toString(),
       },
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
 
+    // Extract tax information from the session
+    const taxAmount = session.total_details?.amount_tax 
+      ? session.total_details.amount_tax / 100 
+      : 0;
+    const taxRate = taxAmount > 0 && amount > 0 ? taxAmount / amount : 0;
+    const finalTotal = session.amount_total ? session.amount_total / 100 : totalAmount;
+
     console.log("Studio payment checkout session created:", session.id);
 
-    return NextResponse.json({ sessionId: session.id, url: session.url });
+    return NextResponse.json({ 
+      sessionId: session.id, 
+      url: session.url,
+      orderNumber,
+      shippingQuote,
+      taxAmount,
+      taxRate,
+      totalAmount,
+    });
   } catch (error) {
     console.error("Studio payment checkout error:", error);
     return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
   }
+}
+
+// Helper function to extract state from address string
+function extractState(address: string): string | undefined {
+  const stateMatch = address.match(/(?:MN|Minnesota|WI|Wisconsin|IA|Iowa|ND|North Dakota|SD|South Dakota)/i);
+  return stateMatch ? stateMatch[0] : undefined;
+}
+
+// Parse estimated days string to min/max
+function parseEstimatedDays(estimated: string): { min: number; max: number } {
+  if (estimated.includes("Immediate")) return { min: 0, max: 0 };
+  const match = estimated.match(/(\d+)-(\d+)/);
+  if (match) {
+    return { min: parseInt(match[1]), max: parseInt(match[2]) };
+  }
+  return { min: 3, max: 5 }; // Default
 }

@@ -29,7 +29,6 @@ export default function Hero() {
         </p>
         <div className="w-7 h-px bg-white/28 mt-4" />
       </div>
-
       {/* Name — bottom left */}
       <div className="absolute bottom-0 left-0 right-0 px-6 md:px-14 pb-10 md:pb-16 hero-rise" style={{ animationDelay: "0.4s" }}>
         <p className="flex items-center gap-3 text-[8px] md:text-[9px] tracking-[.18em] md:tracking-[.22em] uppercase text-white/80 mb-3 md:mb-4 drop-shadow-md">

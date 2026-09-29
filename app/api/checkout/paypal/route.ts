@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getShippingRates } from "@/lib/shipping";
 
 const PAYPAL_API_BASE = process.env.PAYPAL_MODE === "live" 
   ? "https://api-m.paypal.com" 
@@ -47,7 +48,12 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
       price,
       customerEmail,
       customerName,
+      customerPhone,
+      billingAddress,
       shippingAddress,
+      country = "US",
+      taxExempt = false,
+      shippingMethod,
       paymentPlan = "full",
     } = body;
 
@@ -55,6 +61,24 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
     if (!paintingId || !paintingTitle || !edition || !price || !customerEmail || !customerName || !shippingAddress) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    // Calculate shipping cost
+    const shippingQuote = getShippingRates(
+      { country, state: extractState(shippingAddress) },
+      "website",
+      price
+    );
+    
+    const selectedShipping = shippingMethod 
+      ? shippingQuote.rates.find(r => r.method === shippingMethod)
+      : shippingQuote.rates[0];
+    
+    const shippingCost = selectedShipping?.cost || 0;
+
+    // Calculate tax (simplified - PayPal doesn't have automatic tax like Stripe Tax)
+    const taxAmount = taxExempt ? 0 : calculateTax(price, country, extractState(shippingAddress));
+    const taxRate = taxExempt ? 0 : getTaxRate(country, extractState(shippingAddress));
+    const totalAmount = price + taxAmount + shippingCost;
 
     const accessToken = await getPayPalAccessToken();
 
@@ -65,7 +89,7 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
       finalPrice = price;
     }
 
-    // Create PayPal order
+    // Create PayPal order with tax and shipping breakdown
     const paypalOrder = {
       intent: "CAPTURE",
       purchase_units: [
@@ -74,8 +98,37 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
           description: `${paintingTitle} - ${sizeLabel}`,
           amount: {
             currency_code: "USD",
-            value: finalPrice.toFixed(2),
+            value: totalAmount.toFixed(2),
+            breakdown: {
+              item_total: {
+                currency_code: "USD",
+                value: finalPrice.toFixed(2),
+              },
+              shipping: {
+                currency_code: "USD",
+                value: shippingCost.toFixed(2),
+              },
+              tax_total: {
+                currency_code: "USD",
+                value: taxAmount.toFixed(2),
+              },
+            },
           },
+          items: [
+            {
+              name: `${paintingTitle} - ${sizeLabel}`,
+              description: `${edition} - ${dimensions}`,
+              unit_amount: {
+                currency_code: "USD",
+                value: finalPrice.toFixed(2),
+              },
+              quantity: "1",
+              tax: {
+                currency_code: "USD",
+                value: taxAmount.toFixed(2),
+              },
+            },
+          ],
         },
       ],
       payment_source: {
@@ -87,7 +140,7 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
             landing_page: "NO_PREFERENCE",
             shipping_preference: "SET_PROVIDED_ADDRESS",
             user_action: "PAY_NOW",
-            return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/success`,
+            return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/success?payment_method=paypal`,
             cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/cancel`,
           },
         },
@@ -123,10 +176,38 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
 
     return NextResponse.json({
       orderId: paypalOrderData.id,
-      approvalUrl
+      approvalUrl,
+      taxAmount,
+      taxRate,
+      shippingCost,
+      totalAmount,
     });
   } catch (error) {
     console.error("PayPal checkout error:", error);
     return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
   }
+}
+
+// Helper function to extract state from address string
+function extractState(address: string): string | undefined {
+  const stateMatch = address.match(/(?:MN|Minnesota|WI|Wisconsin|IA|Iowa|ND|North Dakota|SD|South Dakota)/i);
+  return stateMatch ? stateMatch[0] : undefined;
+}
+
+// Simplified tax calculation for PayPal (PayPal doesn't have automatic tax like Stripe Tax)
+function calculateTax(price: number, country: string, state?: string): number {
+  if (country !== "US") return 0; // No US tax for international
+  
+  // Minnesota tax rates (simplified)
+  if (state === "MN" || state === "Minnesota") {
+    return price * 0.0725; // 7.25% Minneapolis rate
+  }
+  
+  return 0; // Out of state - no tax
+}
+
+function getTaxRate(country: string, state?: string): number {
+  if (country !== "US") return 0;
+  if (state === "MN" || state === "Minnesota") return 0.0725;
+  return 0;
 }
