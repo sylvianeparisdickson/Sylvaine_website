@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { signIn } from "@/lib/auth";
+import { signIn } from "next-auth/react";
 import { useRouter } from "@/i18n/routing";
 
 export default function AdminLoginPage() {
@@ -16,11 +16,14 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
+      console.log("Attempting login with:", email);
       const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
+
+      console.log("Sign in result:", result);
 
       if (result?.error) {
         setError(result.error);
@@ -28,6 +31,7 @@ export default function AdminLoginPage() {
         router.push("/admin/orders");
       }
     } catch (err) {
+      console.error("Login error:", err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
