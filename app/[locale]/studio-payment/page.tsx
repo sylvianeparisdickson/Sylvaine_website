@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getShippingRates } from "@/lib/shipping";
+import { useRouter } from "@/i18n/routing";
 
 export default function StudioPaymentPage() {
+  const router = useRouter();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");

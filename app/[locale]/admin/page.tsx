@@ -14,8 +14,15 @@ export default function AdminPage() {
 
           <div className="space-y-4">
             <a
-              href="/studio-payment"
+              href="/admin/login"
               className="block w-full px-6 py-4 bg-[#1a1816] text-white text-[12px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors text-center"
+            >
+              Admin Login
+            </a>
+
+            <a
+              href="/studio-payment"
+              className="block w-full px-6 py-4 bg-transparent text-[#1a1816] text-[12px] tracking-[.18em] uppercase border border-black/20 hover:border-[#1a1816] transition-colors text-center"
             >
               Studio Payment
             </a>
