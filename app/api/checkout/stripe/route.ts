@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
       shippingAddress,
       country = "US",
       taxExempt = false,
+      exemptionReason = "",
       shippingMethod,
       paymentPlan = "full",
     } = body;
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: `${paintingTitle} - ${sizeLabel}`,
               description: `${edition} - ${dimensions}`,
-              tax_code: "digital_goods", // Adjust based on product type
+              tax_code: "txcd_10000000", // Physical goods - general
             },
             unit_amount: Math.round(price * 100), // Convert to cents
           },
@@ -116,7 +117,7 @@ export async function POST(req: NextRequest) {
         shippingAddress,
         country,
         taxExempt: taxExempt.toString(),
-        taxExemptReason: taxExempt ? "customer_exempt" : "",
+        exemptionReason: exemptionReason || "",
         shippingMethod: selectedShipping?.method || "",
         shippingCost: shippingCost.toString(),
         paymentPlan,

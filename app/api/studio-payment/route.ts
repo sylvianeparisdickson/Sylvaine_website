@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const body = await req.json();
-    const { amount, description, email, customerName, phone, address, country = "US", taxExempt = false } = body;
+    const { amount, description, email, customerName, phone, address, country = "US", taxExempt = false, exemptionReason = "" } = body;
 
     // Validate amount
     if (!amount || isNaN(amount) || amount <= 0) {
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: description || "Studio Purchase",
               description: description || "Custom studio purchase",
-              tax_code: "digital_goods",
+              tax_code: "txcd_10000000", // Physical goods - general
             },
             unit_amount: amountInCents,
           },
@@ -96,16 +96,6 @@ export async function POST(req: NextRequest) {
             amount: Math.round(rate.cost * 100),
             currency: "usd",
           },
-          delivery_estimate: {
-            minimum: {
-              unit: "business_day",
-              value: parseEstimatedDays(rate.estimatedDays).min,
-            },
-            maximum: {
-              unit: "business_day",
-              value: parseEstimatedDays(rate.estimatedDays).max,
-            },
-          },
         },
       })),
       metadata: {
@@ -117,7 +107,7 @@ export async function POST(req: NextRequest) {
         shippingAddress: address || "",
         country,
         taxExempt: taxExempt.toString(),
-        taxExemptReason: taxExempt ? "customer_exempt" : "",
+        exemptionReason: exemptionReason || "",
         shippingMethod: selectedShipping?.method || "",
         shippingCost: shippingCost.toString(),
       },
@@ -145,7 +135,8 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Studio payment checkout error:", error);
-    return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: "Failed to create checkout session", details: errorMessage }, { status: 500 });
   }
 }
 

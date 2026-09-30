@@ -46,15 +46,11 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
       
       // Stripe Tax handles tax at checkout, PayPal needs client-side calculation
       if (paymentMethod === "paypal") {
-        const address = form?.querySelector('textarea[name="address"]') as HTMLTextAreaElement;
-        const stateMatch = address?.value.match(/(?:MN|Minnesota)/i);
-        const isMinnesota = !!stateMatch;
-        const calculatedTaxRate = taxExempt ? 0 : (isMinnesota ? 0.0725 : 0);
-        const calculatedTaxAmount = taxExempt ? 0 : (isMinnesota ? price * 0.0725 : 0);
-        
-        setTaxRate(calculatedTaxRate);
-        setTaxAmount(calculatedTaxAmount);
-        setTotalAmount(price + calculatedTaxAmount + shippingCost);
+        // PayPal: Tax will be calculated by Stripe Tax in the future
+        // For now, set to 0 and let Stripe handle it when integrated
+        setTaxRate(0);
+        setTaxAmount(0);
+        setTotalAmount(price + shippingCost);
       } else {
         // Stripe - tax calculated at checkout
         setTaxAmount(0);
@@ -80,6 +76,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
     const customerPhone = formData.get("phone") as string;
     const billingAddress = formData.get("billingAddress") as string;
     const shippingAddress = formData.get("address") as string;
+    const exemptionReason = formData.get("exemptionReason") as string;
 
     if (!customerEmail || !customerName || !shippingAddress) {
       alert("Please fill in all required fields");
@@ -101,6 +98,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
       shippingAddress,
       country,
       taxExempt,
+      exemptionReason,
       shippingMethod: selectedShippingMethod,
       paymentPlan: "full",
     };
@@ -261,6 +259,18 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               />
               <label htmlFor="taxExempt" className="text-[11px] text-[#6a6560]">Tax Exempt</label>
             </div>
+            
+            {taxExempt && (
+              <div>
+                <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Exemption Reason</label>
+                <input
+                  type="text"
+                  name="exemptionReason"
+                  placeholder="e.g., Resale certificate #12345"
+                  className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+                />
+              </div>
+            )}
 
             {/* Shipping Method Selection */}
             {shippingQuote.length > 0 && (

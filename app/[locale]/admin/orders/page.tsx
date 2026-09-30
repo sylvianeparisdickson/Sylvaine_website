@@ -14,6 +14,8 @@ export default function OrdersPage() {
     status: "all",
     source: "all",
     country: "all",
+    taxExempt: "all",
+    international: "all",
   });
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -54,6 +56,10 @@ export default function OrdersPage() {
     if (filter.status !== "all" && order.payment_status !== filter.status) return false;
     if (filter.source !== "all" && order.order_source !== filter.source) return false;
     if (filter.country !== "all" && order.country !== filter.country) return false;
+    if (filter.taxExempt === "taxable" && order.tax_exempt) return false;
+    if (filter.taxExempt === "exempt" && !order.tax_exempt) return false;
+    if (filter.international === "domestic" && order.country !== "US") return false;
+    if (filter.international === "international" && order.country === "US") return false;
     return true;
   });
 
@@ -107,15 +113,25 @@ export default function OrdersPage() {
       "Date",
       "Customer Name",
       "Customer Email",
+      "Customer Phone",
       "Product",
       "Price",
-      "Tax",
-      "Shipping",
+      "Tax Amount",
+      "Tax Rate",
+      "Tax Exempt",
+      "Exemption Reason",
+      "Shipping Cost",
+      "Shipping Method",
       "Total",
       "Status",
       "Source",
       "Country",
+      "Shipping Address",
       "Tracking Number",
+      "Date Shipped",
+      "HS Code",
+      "Country of Origin",
+      "Customs Notes",
     ];
     
     const rows = filteredOrders.map(order => [
@@ -123,15 +139,25 @@ export default function OrdersPage() {
       new Date(order.created_at || "").toLocaleDateString(),
       order.customer_name,
       order.customer_email,
+      order.customer_phone || "",
       order.painting_title || order.description || "",
       order.price.toFixed(2),
       order.tax_amount.toFixed(2),
+      order.tax_rate ? (order.tax_rate * 100).toFixed(2) + "%" : "",
+      order.tax_exempt ? "Yes" : "No",
+      order.exemption_reason || "",
       order.shipping_cost.toFixed(2),
+      order.shipping_method || "",
       order.total_amount.toFixed(2),
       order.payment_status,
       order.order_source,
       order.country,
+      order.shipping_address,
       order.tracking_number || "",
+      order.date_shipped ? new Date(order.date_shipped).toLocaleDateString() : "",
+      order.hs_code || "",
+      order.country_of_origin || "",
+      order.customs_notes || "",
     ]);
     
     const csvContent = [headers, ...rows].map(row => row.join(",")).join("\n");
@@ -242,7 +268,35 @@ export default function OrdersPage() {
               <option value="all">All</option>
               <option value="US">United States</option>
               <option value="CA">Canada</option>
-              <option value="other">Other</option>
+              <option value="other">Other International</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
+              Tax Status
+            </label>
+            <select
+              value={filter.taxExempt}
+              onChange={(e) => setFilter({ ...filter, taxExempt: e.target.value })}
+              className="px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+            >
+              <option value="all">All</option>
+              <option value="taxable">Taxable</option>
+              <option value="exempt">Tax Exempt</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
+              Order Type
+            </label>
+            <select
+              value={filter.international}
+              onChange={(e) => setFilter({ ...filter, international: e.target.value })}
+              className="px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+            >
+              <option value="all">All</option>
+              <option value="domestic">Domestic (US)</option>
+              <option value="international">International</option>
             </select>
           </div>
         </div>
@@ -493,32 +547,89 @@ export default function OrdersPage() {
                     </div>
                   </div>
                   {selectedOrder.date_shipped && (
-                    <p className="text-[11px] text-[#6a6560]">
-                      Shipped: {new Date(selectedOrder.date_shipped).toLocaleDateString()}
-                    </p>
+                    <div>
+                      <p className="text-[#6a6560]">Date Shipped</p>
+                      <p className="text-[#1a1816]">{new Date(selectedOrder.date_shipped).toLocaleDateString()}</p>
+                    </div>
+                  )}
+                  {selectedOrder.shipping_method && (
+                    <div>
+                      <p className="text-[#6a6560]">Shipping Method</p>
+                      <p className="text-[#1a1816]">{selectedOrder.shipping_method}</p>
+                    </div>
                   )}
                 </div>
               </div>
 
-              {/* International Customs */}
-              {selectedOrder.country !== "US" && (
+              {/* Customs Information (for international orders) */}
+              {(selectedOrder.country !== "US" || selectedOrder.hs_code) && (
                 <div className="mb-6 pb-6 border-b border-black/10">
                   <h3 className="text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-3">
-                    International Customs
+                    Customs / USPS Information
                   </h3>
-                  <div className="text-[13px] space-y-2">
+                  <div className="space-y-3 text-[13px]">
+                    <div>
+                      <p className="text-[#6a6560]">Destination Country</p>
+                      <p className="text-[#1a1816]">{selectedOrder.country}</p>
+                    </div>
                     <div>
                       <p className="text-[#6a6560]">Declared Value</p>
-                      <p className="text-[#1a1816]">${selectedOrder.declared_value || selectedOrder.total_amount.toFixed(2)}</p>
+                      <p className="text-[#1a1816]">${selectedOrder.total_amount.toFixed(2)}</p>
                     </div>
-                    <div>
-                      <p className="text-[#6a6560]">Country of Origin</p>
-                      <p className="text-[#1a1816]">{selectedOrder.country_of_origin || "US"}</p>
-                    </div>
+                    {selectedOrder.hs_code && (
+                      <div>
+                        <p className="text-[#6a6560]">HS Code</p>
+                        <p className="text-[#1a1816]">{selectedOrder.hs_code}</p>
+                      </div>
+                    )}
+                    {selectedOrder.country_of_origin && (
+                      <div>
+                        <p className="text-[#6a6560]">Country of Origin</p>
+                        <p className="text-[#1a1816]">{selectedOrder.country_of_origin}</p>
+                      </div>
+                    )}
                     {selectedOrder.customs_notes && (
                       <div>
                         <p className="text-[#6a6560]">Customs Notes</p>
                         <p className="text-[#1a1816]">{selectedOrder.customs_notes}</p>
+                      </div>
+                    )}
+                    <div className="pt-2 border-t border-black/10">
+                      <p className="text-[10px] text-[#9a9188] italic">
+                        Use this information when preparing international shipments for USPS
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tax Exemption Details */}
+              {selectedOrder.tax_exempt && (
+                <div className="mb-6 pb-6 border-b border-black/10">
+                  <h3 className="text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-3">
+                    Tax Exemption
+                  </h3>
+                  <div className="space-y-2 text-[13px]">
+                    <div className="flex justify-between text-green-600">
+                      <span className="text-[#6a6560]">Status</span>
+                      <span className="text-[#1a1816]">Exempt</span>
+                    </div>
+                    {selectedOrder.exemption_reason && (
+                      <div>
+                        <p className="text-[#6a6560]">Reason</p>
+                        <p className="text-[#1a1816]">{selectedOrder.exemption_reason}</p>
+                      </div>
+                    )}
+                    {selectedOrder.exemption_reference && (
+                      <div>
+                        <p className="text-[#6a6560]">Reference</p>
+                        <p className="text-[#1a1816]">{selectedOrder.exemption_reference}</p>
+                      </div>
+                    )}
+                    {selectedOrder.exemption_date && (
+                      <div>
+                        <p className="text-[#6a6560]">Date Recorded</p>
+                        <p className="text-[#1a1816]">{new Date(selectedOrder.exemption_date).toLocaleDateString()}</p>
                       </div>
                     )}
                   </div>

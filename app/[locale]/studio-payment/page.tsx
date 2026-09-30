@@ -13,6 +13,7 @@ export default function StudioPaymentPage() {
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState<"US" | "CA" | "other">("US");
   const [taxExempt, setTaxExempt] = useState(false);
+  const [exemptionReason, setExemptionReason] = useState("");
   const [selectedShippingMethod, setSelectedShippingMethod] = useState("");
   const [loading, setLoading] = useState(false);
   const [paymentReady, setPaymentReady] = useState(false);
@@ -72,6 +73,7 @@ export default function StudioPaymentPage() {
           address,
           country,
           taxExempt,
+          exemptionReason,
           shippingMethod: selectedShippingMethod,
         }),
       });
@@ -311,6 +313,21 @@ export default function StudioPaymentPage() {
             />
             <label htmlFor="taxExempt" className="text-[11px] text-[#6a6560]">Tax Exempt</label>
           </div>
+
+          {taxExempt && (
+            <div className="mb-6">
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
+                Exemption Reason
+              </label>
+              <input
+                type="text"
+                value={exemptionReason}
+                onChange={(e) => setExemptionReason(e.target.value)}
+                placeholder="e.g., Resale certificate #12345"
+                className="w-full px-4 py-3 bg-transparent border border-black/20 text-[14px] text-[#1a1816] outline-none focus:border-[#1a1816]"
+              />
+            </div>
+          )}
 
           {/* Shipping Method Selection */}
           {shippingQuote.length > 0 && (

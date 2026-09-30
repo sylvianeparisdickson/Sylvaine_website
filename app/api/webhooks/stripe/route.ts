@@ -52,6 +52,30 @@ export async function POST(req: NextRequest) {
 
         const metadata = session.metadata || {};
         const isStudioPayment = metadata.type === "studio_payment";
+        const paintingId = metadata.paintingId;
+
+        // Fetch painting customs information for international orders
+        let hsCode = "";
+        let countryOfOrigin = "US";
+        let customsNotes = "";
+        
+        if (!isStudioPayment && paintingId) {
+          try {
+            const { data: painting } = await supabase
+              .from('paintings')
+              .select('hs_code, country_of_origin, international_shipping_notes')
+              .eq('id', paintingId)
+              .single();
+            
+            if (painting) {
+              hsCode = painting.hs_code || "";
+              countryOfOrigin = painting.country_of_origin || "US";
+              customsNotes = painting.international_shipping_notes || "";
+            }
+          } catch (paintingError) {
+            console.error("Failed to fetch painting customs info:", paintingError);
+          }
+        }
 
         // Extract tax information from Stripe Tax calculation
         const taxAmount = session.total_details?.amount_tax 
@@ -96,7 +120,7 @@ export async function POST(req: NextRequest) {
           
           // Tax exemption
           tax_exempt: metadata.taxExempt === "true",
-          exemption_reason: "",
+          exemption_reason: metadata.exemptionReason || "",
           exemption_reference: "",
           exemption_date: undefined,
           
@@ -117,10 +141,10 @@ export async function POST(req: NextRequest) {
           order_source: (isStudioPayment ? "studio" : "website") as "studio" | "website",
           
           // International customs
-          hs_code: "",
-          country_of_origin: "",
+          hs_code: hsCode,
+          country_of_origin: countryOfOrigin,
           declared_value: undefined,
-          customs_notes: "",
+          customs_notes: customsNotes,
           
           // Metadata
           stripe_session_id: session.id,
