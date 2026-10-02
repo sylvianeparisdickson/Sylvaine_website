@@ -1,6 +1,5 @@
-// Shipping cost calculation system
-// This is a simple, extensible system for calculating shipping costs
-// Can be extended with carrier integrations in the future
+// Shipping cost calculation system using ShipEngine API
+// Live rate shopping for USPS and UPS shipping
 
 export interface ShippingAddress {
   country: string;
@@ -13,6 +12,9 @@ export interface ShippingRate {
   method: string;
   cost: number;
   estimatedDays: string;
+  serviceCode?: string;
+  carrierCode?: string;
+  rateId?: string;
 }
 
 export interface ShippingQuote {
@@ -20,66 +22,61 @@ export interface ShippingQuote {
   selectedRate?: ShippingRate;
 }
 
-// Simple shipping rate configuration
-// This can be moved to a database table for dynamic management
-const SHIPPING_RATES = {
-  // Domestic US shipping
-  US: {
-    domestic: [
-      { method: "UPS Ground", cost: 15, estimatedDays: "3-5 business days" },
-      { method: "UPS 2nd Day Air", cost: 35, estimatedDays: "2 business days" },
-      { method: "UPS Next Day Air", cost: 55, estimatedDays: "1 business day" },
-    ],
-    studio_pickup: [
-      { method: "Studio Pickup (Minneapolis)", cost: 0, estimatedDays: "Immediate" },
-    ],
-  },
-  // International shipping (base rates - can be refined by country)
-  international: {
-    Canada: [
-      { method: "UPS Standard to Canada", cost: 45, estimatedDays: "5-7 business days" },
-      { method: "UPS Express to Canada", cost: 75, estimatedDays: "2-3 business days" },
-    ],
-    other: [
-      { method: "UPS Worldwide Express", cost: 85, estimatedDays: "3-5 business days" },
-      { method: "UPS Worldwide Saver", cost: 65, estimatedDays: "5-7 business days" },
-    ],
-  },
-};
+// API route for shipping rates
+const SHIPPING_API_URL = "/api/shipping/rates";
+
+// Studio pickup option
+const STUDIO_PICKUP = [
+  { method: "Studio Pickup (Minneapolis)", cost: 0, estimatedDays: "Immediate" },
+];
+
+// Call internal API route to get shipping rates from ShipEngine
+async function getShipEngineRates(
+  destinationAddress: ShippingAddress,
+  orderType: "website" | "studio" = "website",
+  orderTotal: number = 0
+): Promise<ShippingRate[]> {
+  try {
+    const response = await fetch(SHIPPING_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        country: destinationAddress.country,
+        state: destinationAddress.state,
+        postalCode: destinationAddress.postalCode,
+        city: destinationAddress.city,
+        orderType,
+        orderTotal,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Shipping API error:", response.status, response.statusText);
+      return [];
+    }
+
+    const data = await response.json();
+    return data.rates || [];
+  } catch (error) {
+    console.error("Error calling shipping API:", error);
+    return [];
+  }
+}
 
 // Get shipping rates based on address and order type
-export function getShippingRates(
+export async function getShippingRates(
   address: ShippingAddress,
   orderType: "website" | "studio" = "website",
   orderTotal: number = 0
-): ShippingQuote {
-  const rates: ShippingRate[] = [];
-
-  // Studio pickup option for studio orders or local customers
-  if (orderType === "studio" || isLocalAddress(address)) {
-    rates.push(...SHIPPING_RATES.US.studio_pickup);
-  }
-
-  // Domestic US shipping
-  if (address.country === "US") {
-    // Free shipping for orders over $500 (can be configured)
-    if (orderTotal >= 500) {
-      rates.push({
-        method: "Free Shipping (UPS Ground)",
-        cost: 0,
-        estimatedDays: "3-5 business days",
-      });
-    } else {
-      rates.push(...SHIPPING_RATES.US.domestic);
-    }
-  }
-  // Canada
-  else if (address.country === "CA") {
-    rates.push(...SHIPPING_RATES.international.Canada);
-  }
-  // Other international
-  else {
-    rates.push(...SHIPPING_RATES.international.other);
+): Promise<ShippingQuote> {
+  // Call the API route which handles ShipEngine integration
+  const rates = await getShipEngineRates(address, orderType, orderTotal);
+  
+  if (rates.length === 0) {
+    console.error("No shipping rates available");
+    return { rates: [] };
   }
 
   return { rates };
@@ -92,28 +89,28 @@ function isLocalAddress(address: ShippingAddress): boolean {
 }
 
 // Get default shipping rate (cheapest option)
-export function getDefaultShippingRate(
+export async function getDefaultShippingRate(
   address: ShippingAddress,
   orderType: "website" | "studio" = "website",
   orderTotal: number = 0
-): ShippingRate | null {
-  const quote = getShippingRates(address, orderType, orderTotal);
+): Promise<ShippingRate | null> {
+  const quote = await getShippingRates(address, orderType, orderTotal);
   if (quote.rates.length === 0) return null;
   
-  // Return the cheapest rate (excluding free shipping if order is under threshold)
+  // Return the cheapest available rate
   return quote.rates.reduce((cheapest, current) => 
     current.cost < cheapest.cost ? current : cheapest
   );
 }
 
 // Calculate shipping cost
-export function calculateShippingCost(
+export async function calculateShippingCost(
   address: ShippingAddress,
   method: string,
   orderType: "website" | "studio" = "website",
   orderTotal: number = 0
-): number {
-  const quote = getShippingRates(address, orderType, orderTotal);
+): Promise<number> {
+  const quote = await getShippingRates(address, orderType, orderTotal);
   const rate = quote.rates.find(r => r.method === method);
   return rate?.cost || 0;
 }

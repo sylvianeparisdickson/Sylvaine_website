@@ -103,6 +103,8 @@ export default function Footer() {
             { label: "Pinterest", href: "https://www.pinterest.com/SylvianeParisArt/" },
             { label: "Facebook", href: "https://www.facebook.com/sylvianeparisdickson" },
             { label: t("contact"), href: "/contact" },
+            { label: t("shippingPolicy"), href: "/shipping-policy" },
+            { label: t("returnsPolicy"), href: "/returns-policy" },
             { label: "Admin", href: "/admin" },
           ].map(({ label, href }) => (
             <li key={label}>

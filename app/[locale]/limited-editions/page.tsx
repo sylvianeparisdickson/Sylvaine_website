@@ -93,6 +93,21 @@ export default async function LimitedEditionsPage({
           <p>{t("fulfillmentShipping")}</p>
           <p>{t("fulfillmentTracking")}</p>
         </div>
+        <div className="mt-6 pt-4 border-t border-black/8 flex flex-wrap items-center gap-3 text-[10px] tracking-[.18em] uppercase">
+          <Link
+            href="/shipping-policy"
+            className="text-[#1a1816] underline decoration-black/20 hover:decoration-black transition-colors"
+          >
+            Shipping Policy →
+          </Link>
+          <span className="text-[#9a9188]">·</span>
+          <Link
+            href="/returns-policy"
+            className="text-[#1a1816] underline decoration-black/20 hover:decoration-black transition-colors"
+          >
+            Returns & Damaged Artwork Policy →
+          </Link>
+        </div>
       </div>
 
       <div className="px-6 md:px-14 pb-20 text-[10px] tracking-[.18em] uppercase text-[#9a9188]">

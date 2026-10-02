@@ -25,24 +25,28 @@ export default function StudioPaymentPage() {
 
   // Calculate shipping when amount or address changes
   useEffect(() => {
-    if (amount) {
-      const amountNum = parseFloat(amount);
-      const shippingRates = getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amountNum);
-      setShippingQuote(shippingRates.rates);
-      
-      if (!selectedShippingMethod && shippingRates.rates.length > 0) {
-        setSelectedShippingMethod(shippingRates.rates[0].method);
+    const fetchShippingRates = async () => {
+      if (amount) {
+        const amountNum = parseFloat(amount);
+        const shippingRates = await getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amountNum);
+        setShippingQuote(shippingRates.rates);
+        
+        if (!selectedShippingMethod && shippingRates.rates.length > 0) {
+          setSelectedShippingMethod(shippingRates.rates[0].method);
+        }
+        
+        const shippingCost = selectedShippingMethod 
+          ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
+          : shippingRates.rates[0]?.cost || 0;
+        
+        // Tax will be calculated by Stripe Tax at checkout
+        setTaxRate(0);
+        setTaxAmount(0);
+        setTotalAmount(amountNum + shippingCost);
       }
-      
-      const shippingCost = selectedShippingMethod 
-        ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
-        : shippingRates.rates[0]?.cost || 0;
-      
-      // Tax will be calculated by Stripe Tax at checkout
-      setTaxRate(0);
-      setTaxAmount(0);
-      setTotalAmount(amountNum + shippingCost);
-    }
+    };
+
+    fetchShippingRates();
   }, [amount, address, country, selectedShippingMethod]);
 
   const handleCreatePayment = async () => {
@@ -55,6 +59,21 @@ export default function StudioPaymentPage() {
 
     if (!email || !email.includes("@")) {
       alert("Please enter a valid email address");
+      return;
+    }
+
+    if (!customerName || customerName.trim() === "") {
+      alert("Please enter your name");
+      return;
+    }
+
+    if (!phone || phone.trim() === "") {
+      alert("Please enter your phone number");
+      return;
+    }
+
+    if (!address || address.trim() === "") {
+      alert("Please enter your shipping address");
       return;
     }
 
@@ -167,7 +186,7 @@ export default function StudioPaymentPage() {
                 <span className="text-[#1a1816]">${totalAmount.toFixed(2)}</span>
               </div>
               <p className="text-[10px] text-[#9a9188] mt-2">
-                *Sales tax will be calculated based on your location at checkout
+                *Sales tax will be calculated based on the delivery address
               </p>
             </div>
 
@@ -237,39 +256,42 @@ export default function StudioPaymentPage() {
 
           <div className="mb-6">
             <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
-              Customer Name
+              Customer Name *
             </label>
             <input
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="John Doe"
+              required
               className="w-full px-4 py-3 bg-transparent border border-black/20 text-[14px] text-[#1a1816] outline-none focus:border-[#1a1816]"
             />
           </div>
 
           <div className="mb-6">
             <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
-              Phone (optional)
+              Phone *
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(555) 123-4567"
+              required
               className="w-full px-4 py-3 bg-transparent border border-black/20 text-[14px] text-[#1a1816] outline-none focus:border-[#1a1816]"
             />
           </div>
 
           <div className="mb-6">
             <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
-              Shipping Address (optional)
+              Shipping Address *
             </label>
             <textarea
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="123 Main St, Minneapolis, MN 55401"
               rows={2}
+              required
               className="w-full px-4 py-3 bg-transparent border border-black/20 text-[14px] text-[#1a1816] outline-none focus:border-[#1a1816] resize-none"
             />
           </div>
@@ -377,14 +399,14 @@ export default function StudioPaymentPage() {
                 <span className="text-[#1a1816]">${totalAmount.toFixed(2)}</span>
               </div>
               <p className="text-[10px] text-[#9a9188] mt-2">
-                *Sales tax will be calculated based on your location at checkout
+                *Sales tax will be calculated based on the delivery address
               </p>
             </div>
           )}
 
           <button
             onClick={handleCreatePayment}
-            disabled={loading || !amount || !email}
+            disabled={loading || !amount || !email || !customerName || !phone || !address}
             className="w-full px-6 py-4 bg-[#1a1816] text-white text-[12px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating Payment..." : `Create Payment - $${totalAmount.toFixed(2)}`}

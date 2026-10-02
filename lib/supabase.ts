@@ -256,8 +256,7 @@ export async function createOrder(
   orderData: Omit<Order, "id" | "created_at" | "updated_at">
 ): Promise<Order | null> {
   try {
-    console.log("Sending order to Supabase:");
-    console.log(orderData);
+    console.log("Sending order to Supabase:", orderData);
 
     const { data, error } = await supabase
       .from('orders')
@@ -265,13 +264,18 @@ export async function createOrder(
       .select()
       .single();
 
-    console.log("Supabase Response:", data, error);
-
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase insert order error:", JSON.stringify(error, null, 2));
+      throw error;
+    }
     
+    console.log("Supabase order inserted successfully:", data?.order_number || data?.id);
+
     // Send email notification
     try {
-      await fetch('/api/order-notification', {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== 'undefined' ? '' : 'https://www.sylvianeparisart.com');
+      const notifyUrl = `${baseUrl}/api/order-notification`;
+      await fetch(notifyUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),

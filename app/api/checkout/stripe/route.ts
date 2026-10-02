@@ -43,8 +43,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    if (country && country !== "US") {
+      return NextResponse.json(
+        { error: "International shipping is arranged on a case-by-case basis. Please contact us for a quotation before completing your order." },
+        { status: 400 }
+      );
+    }
+
     // Calculate shipping cost
-    const shippingQuote = getShippingRates(
+    const shippingQuote = await getShippingRates(
       { country, state: extractState(shippingAddress) },
       "website",
       price
@@ -60,27 +67,29 @@ export async function POST(req: NextRequest) {
     // We'll get the final tax amount from the session response
     const totalAmount = price + shippingCost; // Tax will be added by Stripe
 
-    // Create Stripe checkout session with automatic tax
-    const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `${paintingTitle} - ${sizeLabel}`,
-              description: `${edition} - ${dimensions}`,
-              tax_code: "txcd_10000000", // Physical goods - general
+      const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
+
+      // Create Stripe checkout session with automatic tax
+      const sessionParams: Stripe.Checkout.SessionCreateParams = {
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: `${paintingTitle} - ${sizeLabel}`,
+                description: `${edition} - ${dimensions}`,
+                tax_code: "txcd_10000000", // Physical goods - general
+              },
+              unit_amount: Math.round(price * 100), // Convert to cents
             },
-            unit_amount: Math.round(price * 100), // Convert to cents
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/cancel`,
-      customer_email: customerEmail,
+        ],
+        mode: "payment",
+        success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/checkout/cancel`,
+        customer_email: customerEmail,
       customer_creation: "always",
       automatic_tax: {
         enabled: !taxExempt, // Disable automatic tax for exempt customers
@@ -120,6 +129,9 @@ export async function POST(req: NextRequest) {
         exemptionReason: exemptionReason || "",
         shippingMethod: selectedShipping?.method || "",
         shippingCost: shippingCost.toString(),
+        shippingServiceCode: selectedShipping?.serviceCode || "",
+        shippingCarrierCode: selectedShipping?.carrierCode || "",
+        shippingRateId: selectedShipping?.rateId || "",
         paymentPlan,
       },
     };

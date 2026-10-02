@@ -96,6 +96,9 @@ CREATE TABLE IF NOT EXISTS orders (
   
   -- Shipping
   shipping_method TEXT,
+  shipping_service_code TEXT,
+  shipping_carrier_code TEXT,
+  shipping_rate_id TEXT,
   tracking_number TEXT,
   date_shipped TIMESTAMP WITH TIME ZONE,
   delivery_status TEXT,
@@ -245,3 +248,10 @@ CREATE POLICY "Allow public read access to submissions bucket"
 CREATE POLICY "Allow public upload to submissions bucket"
   ON storage.objects FOR INSERT
   WITH CHECK (bucket_id = 'submissions');
+
+-- Migration to add ShipEngine shipping fields to existing orders table
+-- Run this in Supabase SQL Editor if the table already exists
+ALTER TABLE orders 
+ADD COLUMN IF NOT EXISTS shipping_service_code TEXT,
+ADD COLUMN IF NOT EXISTS shipping_carrier_code TEXT,
+ADD COLUMN IF NOT EXISTS shipping_rate_id TEXT;

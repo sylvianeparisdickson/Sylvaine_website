@@ -75,6 +75,30 @@ export default function LimitedEditionsClient({ works }: LimitedEditionsClientPr
                   Buy Now
                 </button>
               )}
+
+              <div className="mt-5 pt-4 border-t border-black/10 space-y-2">
+                <p className="text-[11px] leading-[1.7] text-[#6a6560]">
+                  <span className="font-semibold text-[#1a1816]">International Orders:</span>{" "}
+                  International shipping is arranged individually according to destination, artwork size, packaging and insurance requirements. Please{" "}
+                  <a
+                    href="/contact?subject=International%20Shipping%20Quotation"
+                    className="underline text-[#1a1816] hover:text-[#8c4b22] transition-colors"
+                  >
+                    contact us
+                  </a>{" "}
+                  for a shipping quotation before ordering.
+                </p>
+                <p className="text-[10.5px] leading-[1.65] text-[#9a9188]">
+                  All sales are final. Inspect your artwork upon arrival — please review our{" "}
+                  <a
+                    href="/returns-policy"
+                    className="underline text-[#1a1816] hover:text-[#8c4b22] transition-colors"
+                  >
+                    Returns & Damaged Artwork Policy
+                  </a>{" "}
+                  for transit damage reporting procedures.
+                </p>
+              </div>
             </div>
           </div>
 

@@ -62,8 +62,15 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    if (country && country !== "US") {
+      return NextResponse.json(
+        { error: "International shipping is arranged on a case-by-case basis. Please contact us for a quotation before completing your order." },
+        { status: 400 }
+      );
+    }
+
     // Calculate shipping cost
-    const shippingQuote = getShippingRates(
+    const shippingQuote = await getShippingRates(
       { country, state: extractState(shippingAddress) },
       "website",
       price
@@ -88,6 +95,8 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
       // PayPal doesn't support native 3-month plans like Stripe, so we charge full amount
       finalPrice = price;
     }
+
+    const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
 
     // Create PayPal order with tax and shipping breakdown
     const paypalOrder = {
@@ -140,8 +149,8 @@ if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
             landing_page: "NO_PREFERENCE",
             shipping_preference: "SET_PROVIDED_ADDRESS",
             user_action: "PAY_NOW",
-            return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/success?payment_method=paypal`,
-            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/checkout/cancel`,
+            return_url: `${origin}/checkout/success?payment_method=paypal`,
+            cancel_url: `${origin}/checkout/cancel`,
           },
         },
       },

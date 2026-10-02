@@ -95,21 +95,21 @@ export async function POST(req: NextRequest) {
 
         const orderData = {
           order_number: orderNumber,
-          customer_email: session.customer_email || "",
-          customer_name: metadata.customerName || "",
-          customer_phone: metadata.customerPhone || "",
+          customer_email: session.customer_email || session.customer_details?.email || "",
+          customer_name: metadata.customerName || session.customer_details?.name || "Customer",
+          customer_phone: metadata.customerPhone || session.customer_details?.phone || "",
           billing_address: "",
-          shipping_address: metadata.shippingAddress || "",
-          country: metadata.country || "US",
+          shipping_address: metadata.shippingAddress || (metadata.shippingMethod === "Studio Pickup (Minneapolis)" ? "Studio Pickup" : "Direct Studio Order"),
+          country: metadata.country || session.customer_details?.address?.country || "US",
           
-          // Product information
-          painting_id: isStudioPayment ? undefined : metadata.paintingId,
-          painting_title: isStudioPayment ? undefined : metadata.paintingTitle,
-          edition: isStudioPayment ? undefined : metadata.edition,
-          size_label: isStudioPayment ? undefined : metadata.sizeLabel,
-          dimensions: isStudioPayment ? undefined : metadata.dimensions,
+          // Product information - provide non-null defaults to satisfy database constraints
+          painting_id: isStudioPayment ? "studio-payment" : (metadata.paintingId || "custom"),
+          painting_title: isStudioPayment ? (metadata.description || "Studio Purchase") : (metadata.paintingTitle || "Untitled"),
+          edition: isStudioPayment ? "Original / Custom" : (metadata.edition || "Original"),
+          size_label: isStudioPayment ? "Custom" : (metadata.sizeLabel || "Custom"),
+          dimensions: isStudioPayment ? "N/A" : (metadata.dimensions || "N/A"),
           product_type: (isStudioPayment ? "studio" : "reproduction") as "studio" | "reproduction" | "original",
-          description: metadata.description || "",
+          description: metadata.description || (isStudioPayment ? "Studio Purchase" : ""),
           
           // Pricing - extracted from Stripe session
           price,
@@ -132,6 +132,9 @@ export async function POST(req: NextRequest) {
           
           // Shipping
           shipping_method: metadata.shippingMethod || "",
+          shipping_service_code: metadata.shippingServiceCode || "",
+          shipping_carrier_code: metadata.shippingCarrierCode || "",
+          shipping_rate_id: metadata.shippingRateId || "",
           tracking_number: "",
           date_shipped: undefined,
           delivery_status: "",
@@ -153,7 +156,11 @@ export async function POST(req: NextRequest) {
 
         try {
           const order = await createOrder(orderData);
-          console.log("Order created successfully:", order?.order_number);
+          if (order) {
+            console.log("Order created successfully:", order.order_number);
+          } else {
+            console.error("createOrder returned null for session:", session.id);
+          }
         } catch (orderError) {
           console.error("Failed to create order:", orderError);
           // Don't fail the webhook - log the error but continue

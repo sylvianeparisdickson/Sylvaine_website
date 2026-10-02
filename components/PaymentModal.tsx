@@ -30,34 +30,43 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
 
   // Calculate shipping when form is shown
   useEffect(() => {
-    if (showForm) {
-      const form = document.getElementById("payment-form") as HTMLFormElement;
-      
-      const shippingRates = getShippingRates({ country }, "website", price);
-      setShippingQuote(shippingRates.rates);
-      
-      if (!selectedShippingMethod && shippingRates.rates.length > 0) {
-        setSelectedShippingMethod(shippingRates.rates[0].method);
+    const fetchShippingRates = async () => {
+      if (showForm) {
+        if (country !== "US") {
+          // International orders require personalized quotation
+          setShippingQuote([]);
+          setSelectedShippingMethod("");
+          setTaxAmount(0);
+          setTaxRate(0);
+          setTotalAmount(price);
+          return;
+        }
+
+        const shippingRates = await getShippingRates({ country }, "website", price);
+        setShippingQuote(shippingRates.rates);
+        
+        if (!selectedShippingMethod && shippingRates.rates.length > 0) {
+          setSelectedShippingMethod(shippingRates.rates[0].method);
+        }
+        
+        const shippingCost = selectedShippingMethod 
+          ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
+          : shippingRates.rates[0]?.cost || 0;
+        
+        // Stripe Tax handles tax at checkout, PayPal needs client-side calculation
+        if (paymentMethod === "paypal") {
+          setTaxRate(0);
+          setTaxAmount(0);
+          setTotalAmount(price + shippingCost);
+        } else {
+          setTaxAmount(0);
+          setTaxRate(0);
+          setTotalAmount(price + shippingCost);
+        }
       }
-      
-      const shippingCost = selectedShippingMethod 
-        ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
-        : shippingRates.rates[0]?.cost || 0;
-      
-      // Stripe Tax handles tax at checkout, PayPal needs client-side calculation
-      if (paymentMethod === "paypal") {
-        // PayPal: Tax will be calculated by Stripe Tax in the future
-        // For now, set to 0 and let Stripe handle it when integrated
-        setTaxRate(0);
-        setTaxAmount(0);
-        setTotalAmount(price + shippingCost);
-      } else {
-        // Stripe - tax calculated at checkout
-        setTaxAmount(0);
-        setTaxRate(0);
-        setTotalAmount(price + shippingCost);
-      }
-    }
+    };
+
+    fetchShippingRates();
   }, [showForm, country, taxExempt, selectedShippingMethod, price, paymentMethod]);
 
   const handlePayment = async () => {
@@ -78,8 +87,14 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
     const shippingAddress = formData.get("address") as string;
     const exemptionReason = formData.get("exemptionReason") as string;
 
-    if (!customerEmail || !customerName || !shippingAddress) {
+    if (!customerEmail || !customerName || !customerPhone || !shippingAddress) {
       alert("Please fill in all required fields");
+      setLoading(false);
+      return;
+    }
+
+    if (country !== "US") {
+      alert("International orders require a personalized shipping quotation. Please contact us before placing your order.");
       setLoading(false);
       return;
     }
@@ -209,10 +224,11 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               />
             </div>
             <div>
-              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Phone (optional)</label>
+              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Phone *</label>
               <input
                 type="tel"
                 name="phone"
+                required
                 className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
               />
             </div>
@@ -242,9 +258,9 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                 onChange={(e) => setCountry(e.target.value as "US" | "CA" | "other")}
                 className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
               >
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="other">Other</option>
+                <option value="US">United States (Domestic)</option>
+                <option value="CA">Canada (International)</option>
+                <option value="other">Other International Destination</option>
               </select>
             </div>
             
@@ -272,30 +288,55 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               </div>
             )}
 
-            {/* Shipping Method Selection */}
-            {shippingQuote.length > 0 && (
-              <div>
-                <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping Method</label>
-                <div className="space-y-2">
-                  {shippingQuote.map((rate) => (
-                    <label key={rate.method} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="shippingMethod"
-                        value={rate.method}
-                        checked={selectedShippingMethod === rate.method}
-                        onChange={(e) => setSelectedShippingMethod(e.target.value)}
-                        className="w-4 h-4"
-                      />
-                      <div className="flex-1">
-                        <p className="text-[12px] text-[#1a1816]">{rate.method}</p>
-                        <p className="text-[10px] text-[#9a9188]">{rate.estimatedDays}</p>
-                      </div>
-                      <p className="text-[12px] text-[#1a1816]">${rate.cost.toFixed(2)}</p>
-                    </label>
-                  ))}
+            {/* International Shipping Notice OR Domestic Method Selection */}
+            {country !== "US" ? (
+              <div className="p-4 rounded-xl border border-[#b8581e]/30 bg-[#fdfaf7] text-[#1a1816] space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#b8581e]" />
+                  <p className="text-[10px] tracking-[.18em] uppercase font-semibold text-[#8c4b22]">
+                    International Shipping Notice
+                  </p>
+                </div>
+                <p className="text-[12px] leading-[1.65] text-[#4a423a]">
+                  International shipping is arranged individually according to destination, artwork size, packaging and insurance requirements. Automatic checkout rates are not available.
+                </p>
+                <p className="text-[12px] leading-[1.65] text-[#4a423a]">
+                  Please contact us before completing your purchase. We will review available shipping options and provide a personalized quotation for your approval.
+                </p>
+                <div className="pt-1">
+                  <a
+                    href={`/contact?subject=${encodeURIComponent(`International Shipping Quotation — ${painting.title} (${edition.sizeLabel})`)}`}
+                    className="inline-flex items-center gap-1.5 text-[10px] tracking-[.14em] uppercase font-semibold text-[#8c4b22] hover:text-[#1a1816] underline transition-colors"
+                  >
+                    Contact Us for Shipping Quotation →
+                  </a>
                 </div>
               </div>
+            ) : (
+              shippingQuote.length > 0 && (
+                <div>
+                  <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping Method</label>
+                  <div className="space-y-2">
+                    {shippingQuote.map((rate) => (
+                      <label key={rate.method} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="shippingMethod"
+                          value={rate.method}
+                          checked={selectedShippingMethod === rate.method}
+                          onChange={(e) => setSelectedShippingMethod(e.target.value)}
+                          className="w-4 h-4"
+                        />
+                        <div className="flex-1">
+                          <p className="text-[12px] text-[#1a1816]">{rate.method}</p>
+                          <p className="text-[10px] text-[#9a9188]">{rate.estimatedDays}</p>
+                        </div>
+                        <p className="text-[12px] text-[#1a1816]">${rate.cost.toFixed(2)}</p>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )
             )}
 
             {/* Price Breakdown */}
@@ -304,13 +345,13 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                 <span className="text-[#6a6560]">Product</span>
                 <span className="text-[#1a1816]">${price.toFixed(2)}</span>
               </div>
-              {paymentMethod === "paypal" && taxAmount > 0 && (
+              {country === "US" && paymentMethod === "paypal" && taxAmount > 0 && (
                 <div className="flex justify-between text-[12px]">
                   <span className="text-[#6a6560]">Sales Tax ({(taxRate * 100).toFixed(2)}%)</span>
                   <span className="text-[#1a1816]">${taxAmount.toFixed(2)}</span>
                 </div>
               )}
-              {paymentMethod === "stripe" && (
+              {country === "US" && paymentMethod === "stripe" && (
                 <div className="flex justify-between text-[12px] text-[#9a9188] italic">
                   <span>Sales Tax</span>
                   <span>Calculated at checkout</span>
@@ -318,15 +359,22 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               )}
               <div className="flex justify-between text-[12px]">
                 <span className="text-[#6a6560]">Shipping</span>
-                <span className="text-[#1a1816]">${selectedShippingCost.toFixed(2)}</span>
+                <span className={country !== "US" ? "text-[#8c4b22] italic text-[11px]" : "text-[#1a1816]"}>
+                  {country !== "US" ? "Personalized quote required" : `$${selectedShippingCost.toFixed(2)}`}
+                </span>
               </div>
               <div className="flex justify-between text-[14px] font-bold pt-2 border-t border-black/10">
-                <span className="text-[#1a1816]">{paymentMethod === "stripe" ? "Subtotal" : "Total"}</span>
-                <span className="text-[#1a1816]">${totalAmount.toFixed(2)}</span>
+                <span className="text-[#1a1816]">
+                  {country !== "US" ? "Artwork Subtotal" : paymentMethod === "stripe" ? "Subtotal" : "Total"}
+                </span>
+                <span className="text-[#1a1816]">
+                  ${price.toFixed(2)}
+                  {country !== "US" && <span className="text-[11px] font-normal text-[#8c4b22] ml-1.5">(+ quote)</span>}
+                </span>
               </div>
-              {paymentMethod === "stripe" && (
+              {country === "US" && paymentMethod === "stripe" && (
                 <p className="text-[10px] text-[#9a9188] mt-2">
-                  *Sales tax will be calculated based on your location at checkout
+                  *Sales tax will be calculated based on the delivery address
                 </p>
               )}
             </div>
@@ -338,16 +386,40 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
           <p>• 7-10 business days to receive from printer</p>
           <p>• Certificate of authenticity included</p>
           <p>• Signed by the artist</p>
-          <p>• Shipped via UPS/FedEx</p>
+          <p>• Shipped via USPS / UPS for domestic. International arranged individually upon request.</p>
         </div>
 
-        <button
-          onClick={handlePayment}
-          disabled={loading}
-          className="w-full px-6 py-3 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? "Processing..." : showForm ? `Pay $${totalAmount.toFixed(2)}` : "Continue to Checkout"}
-        </button>
+        <div className="mb-5 pt-3 border-t border-black/10 text-[10.5px] text-[#7a7269] leading-relaxed">
+          <p>
+            By completing your purchase, you acknowledge that all sales are final and agree to our{" "}
+            <a
+              href="/returns-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#1a1816] underline decoration-black/30 hover:decoration-black font-medium transition-colors"
+            >
+              Returns and Damaged Artwork Policy
+            </a>
+            {" "}(opens in a new tab). Please inspect your artwork upon delivery; any shipping damage must be reported promptly with photographs.
+          </p>
+        </div>
+
+        {country !== "US" && showForm ? (
+          <a
+            href={`/contact?subject=${encodeURIComponent(`International Shipping Quotation — ${painting.title} (${edition.sizeLabel})`)}`}
+            className="block text-center w-full px-6 py-3 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors"
+          >
+            Request Shipping Quotation
+          </a>
+        ) : (
+          <button
+            onClick={handlePayment}
+            disabled={loading}
+            className="w-full px-6 py-3 bg-[#1a1816] text-white text-[10px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Processing..." : showForm ? `Pay $${totalAmount.toFixed(2)}` : "Continue to Checkout"}
+          </button>
+        )}
       </div>
     </div>
   );

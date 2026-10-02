@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Calculate shipping for studio payments (default to studio pickup)
-    const shippingQuote = getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amount);
+    const shippingQuote = await getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amount);
     const selectedShipping = shippingQuote.rates[0]; // Default to first option (usually studio pickup)
     const shippingCost = selectedShipping?.cost || 0;
 
@@ -63,27 +63,29 @@ export async function POST(req: NextRequest) {
     // Convert to cents (Stripe uses smallest currency unit)
     const amountInCents = Math.round(amount * 100);
 
-    // Create Stripe checkout session with automatic tax
-    const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: description || "Studio Purchase",
-              description: description || "Custom studio purchase",
-              tax_code: "txcd_10000000", // Physical goods - general
+      const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
+
+      // Create Stripe checkout session with automatic tax
+      const sessionParams: Stripe.Checkout.SessionCreateParams = {
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: description || "Studio Purchase",
+                description: description || "Custom studio purchase",
+                tax_code: "txcd_10000000", // Physical goods - general
+              },
+              unit_amount: amountInCents,
             },
-            unit_amount: amountInCents,
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/studio-payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/studio-payment/cancel`,
-      customer_email: email,
+        ],
+        mode: "payment",
+        success_url: `${origin}/studio-payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/studio-payment/cancel`,
+        customer_email: email,
       customer_creation: "always",
       automatic_tax: {
         enabled: !taxExempt, // Disable automatic tax for exempt customers
@@ -110,6 +112,9 @@ export async function POST(req: NextRequest) {
         exemptionReason: exemptionReason || "",
         shippingMethod: selectedShipping?.method || "",
         shippingCost: shippingCost.toString(),
+        shippingServiceCode: selectedShipping?.serviceCode || "",
+        shippingCarrierCode: selectedShipping?.carrierCode || "",
+        shippingRateId: selectedShipping?.rateId || "",
       },
     };
 

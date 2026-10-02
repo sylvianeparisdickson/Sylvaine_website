@@ -140,14 +140,14 @@ export async function POST(req: NextRequest) {
           shipping_address: formatPayPalAddress(purchaseUnit?.shipping?.address),
           country: purchaseUnit?.shipping?.address?.country_code || "US",
           
-          // Product information from item description
-          painting_id: purchaseUnit?.reference_id,
-          painting_title: item?.name || "",
-          edition: item?.description?.split(" - ")[0] || "",
-          size_label: item?.name?.split(" - ")[1] || "",
-          dimensions: item?.description?.split(" - ")[1] || "",
+          // Product information from item description - safe non-null defaults
+          painting_id: purchaseUnit?.reference_id || "studio-payment",
+          painting_title: item?.name || "Purchase",
+          edition: item?.description?.split(" - ")[0] || "Original",
+          size_label: item?.name?.split(" - ")[1] || "Custom",
+          dimensions: item?.description?.split(" - ")[1] || "N/A",
           product_type: "reproduction" as const,
-          description: item?.description || "",
+          description: item?.description || "Website Purchase",
           
           // Pricing from PayPal
           price,
