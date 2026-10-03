@@ -49,7 +49,7 @@ export default async function ReturnsPolicyPage({
         <section className="bg-white rounded-3xl border border-black/10 p-8 md:p-14 shadow-sm relative overflow-hidden">
           <div className="flex items-center gap-3 mb-6">
             <span className="text-[9px] tracking-[.24em] uppercase text-[#9a9188]">
-              Made-to-Order Reproductions
+              Limited-Edition Reproductions
             </span>
           </div>
 

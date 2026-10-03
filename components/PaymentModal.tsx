@@ -389,21 +389,6 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
           <p>• Shipped via USPS / UPS for domestic. International arranged individually upon request.</p>
         </div>
 
-        <div className="mb-5 pt-3 border-t border-black/10 text-[10.5px] text-[#7a7269] leading-relaxed">
-          <p>
-            By completing your purchase, you acknowledge that all sales are final and agree to our{" "}
-            <a
-              href="/returns-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#1a1816] underline decoration-black/30 hover:decoration-black font-medium transition-colors"
-            >
-              Returns and Damaged Artwork Policy
-            </a>
-            {" "}(opens in a new tab). Please inspect your artwork upon delivery; any shipping damage must be reported promptly with photographs.
-          </p>
-        </div>
-
         {country !== "US" && showForm ? (
           <a
             href={`/contact?subject=${encodeURIComponent(`International Shipping Quotation — ${painting.title} (${edition.sizeLabel})`)}`}
