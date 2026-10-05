@@ -77,13 +77,6 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        // Extract tax information from Stripe Tax calculation
-        const taxAmount = session.total_details?.amount_tax 
-          ? session.total_details.amount_tax / 100 
-          : 0;
-        const taxRate = taxAmount > 0 && session.amount_subtotal 
-          ? taxAmount / (session.amount_subtotal / 100) 
-          : undefined;
         const shippingCost = session.total_details?.amount_shipping 
           ? session.total_details.amount_shipping / 100 
           : parseFloat(metadata.shippingCost || "0");
@@ -113,16 +106,8 @@ export async function POST(req: NextRequest) {
           
           // Pricing - extracted from Stripe session
           price,
-          tax_amount: taxAmount,
-          tax_rate: taxRate,
           shipping_cost: shippingCost,
           total_amount: totalAmount,
-          
-          // Tax exemption
-          tax_exempt: metadata.taxExempt === "true",
-          exemption_reason: metadata.exemptionReason || "",
-          exemption_reference: "",
-          exemption_date: undefined,
           
           // Payment
           payment_method: "stripe" as const,

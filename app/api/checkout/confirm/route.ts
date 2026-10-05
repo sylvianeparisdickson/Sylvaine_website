@@ -72,9 +72,6 @@ export async function GET(req: NextRequest) {
       if (session.payment_status === "paid" || session.status === "complete") {
         const metadata = session.metadata || {};
 
-        const taxAmount = session.total_details?.amount_tax 
-          ? session.total_details.amount_tax / 100 
-          : 0;
         const shippingCost = session.total_details?.amount_shipping 
           ? session.total_details.amount_shipping / 100 
           : parseFloat(metadata.shippingCost || "0");
@@ -103,13 +100,8 @@ export async function GET(req: NextRequest) {
           
           // Pricing
           price,
-          tax_amount: taxAmount,
           shipping_cost: shippingCost,
           total_amount: totalAmount,
-          
-          // Tax exemption
-          tax_exempt: metadata.taxExempt === "true",
-          exemption_reason: metadata.exemptionReason || "",
           
           // Payment
           payment_method: "stripe" as const,
@@ -225,10 +217,8 @@ export async function GET(req: NextRequest) {
           description: item?.description || purchaseUnit?.description || "Artwork Purchase",
           
           price: amount?.breakdown?.item_total?.value ? parseFloat(amount.breakdown.item_total.value) : parseFloat(amount?.value || "0"),
-          tax_amount: amount?.breakdown?.tax_total?.value ? parseFloat(amount.breakdown.tax_total.value) : 0,
           shipping_cost: amount?.breakdown?.shipping?.value ? parseFloat(amount.breakdown.shipping.value) : 0,
           total_amount: parseFloat(amount?.value || "0"),
-          tax_exempt: false,
           
           payment_method: "paypal" as const,
           payment_id: captureItem?.id || token,

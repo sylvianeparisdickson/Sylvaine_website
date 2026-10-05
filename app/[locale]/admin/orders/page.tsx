@@ -14,7 +14,6 @@ export default function OrdersPage() {
     status: "all",
     source: "all",
     country: "all",
-    taxExempt: "all",
     international: "all",
   });
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -56,8 +55,6 @@ export default function OrdersPage() {
     if (filter.status !== "all" && order.payment_status !== filter.status) return false;
     if (filter.source !== "all" && order.order_source !== filter.source) return false;
     if (filter.country !== "all" && order.country !== filter.country) return false;
-    if (filter.taxExempt === "taxable" && order.tax_exempt) return false;
-    if (filter.taxExempt === "exempt" && !order.tax_exempt) return false;
     if (filter.international === "domestic" && order.country !== "US") return false;
     if (filter.international === "international" && order.country === "US") return false;
     return true;
@@ -116,10 +113,6 @@ export default function OrdersPage() {
       "Customer Phone",
       "Product",
       "Price",
-      "Tax Amount",
-      "Tax Rate",
-      "Tax Exempt",
-      "Exemption Reason",
       "Shipping Cost",
       "Shipping Method",
       "Total",
@@ -142,10 +135,6 @@ export default function OrdersPage() {
       order.customer_phone || "",
       order.painting_title || order.description || "",
       order.price.toFixed(2),
-      order.tax_amount.toFixed(2),
-      order.tax_rate ? (order.tax_rate * 100).toFixed(2) + "%" : "",
-      order.tax_exempt ? "Yes" : "No",
-      order.exemption_reason || "",
       order.shipping_cost.toFixed(2),
       order.shipping_method || "",
       order.total_amount.toFixed(2),
@@ -269,20 +258,6 @@ export default function OrdersPage() {
               <option value="US">United States</option>
               <option value="CA">Canada</option>
               <option value="other">Other International</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
-              Tax Status
-            </label>
-            <select
-              value={filter.taxExempt}
-              onChange={(e) => setFilter({ ...filter, taxExempt: e.target.value })}
-              className="px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
-            >
-              <option value="all">All</option>
-              <option value="taxable">Taxable</option>
-              <option value="exempt">Tax Exempt</option>
             </select>
           </div>
           <div>
@@ -474,20 +449,6 @@ export default function OrdersPage() {
                     <span className="text-[#6a6560]">Product</span>
                     <span className="text-[#1a1816]">${selectedOrder.price.toFixed(2)}</span>
                   </div>
-                  {selectedOrder.tax_amount > 0 && (
-                    <div className="flex justify-between">
-                      <span className="text-[#6a6560]">
-                        Sales Tax {selectedOrder.tax_rate ? `(${(selectedOrder.tax_rate * 100).toFixed(2)}%)` : ""}
-                      </span>
-                      <span className="text-[#1a1816]">${selectedOrder.tax_amount.toFixed(2)}</span>
-                    </div>
-                  )}
-                  {selectedOrder.tax_exempt && (
-                    <div className="flex justify-between text-green-600">
-                      <span className="text-[#6a6560]">Tax Exempt</span>
-                      <span className="text-[#1a1816]">Yes</span>
-                    </div>
-                  )}
                   <div className="flex justify-between">
                     <span className="text-[#6a6560]">Shipping ({selectedOrder.shipping_method || "Standard"})</span>
                     <span className="text-[#1a1816]">${selectedOrder.shipping_cost.toFixed(2)}</span>
@@ -603,38 +564,7 @@ export default function OrdersPage() {
                 </div>
               )}
 
-              {/* Tax Exemption Details */}
-              {selectedOrder.tax_exempt && (
-                <div className="mb-6 pb-6 border-b border-black/10">
-                  <h3 className="text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-3">
-                    Tax Exemption
-                  </h3>
-                  <div className="space-y-2 text-[13px]">
-                    <div className="flex justify-between text-green-600">
-                      <span className="text-[#6a6560]">Status</span>
-                      <span className="text-[#1a1816]">Exempt</span>
-                    </div>
-                    {selectedOrder.exemption_reason && (
-                      <div>
-                        <p className="text-[#6a6560]">Reason</p>
-                        <p className="text-[#1a1816]">{selectedOrder.exemption_reason}</p>
-                      </div>
-                    )}
-                    {selectedOrder.exemption_reference && (
-                      <div>
-                        <p className="text-[#6a6560]">Reference</p>
-                        <p className="text-[#1a1816]">{selectedOrder.exemption_reference}</p>
-                      </div>
-                    )}
-                    {selectedOrder.exemption_date && (
-                      <div>
-                        <p className="text-[#6a6560]">Date Recorded</p>
-                        <p className="text-[#1a1816]">{new Date(selectedOrder.exemption_date).toLocaleDateString()}</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
+
 
               {/* Notes */}
               <div className="mb-6">

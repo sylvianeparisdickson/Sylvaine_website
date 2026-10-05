@@ -32,8 +32,6 @@ export async function POST(req: NextRequest) {
       billingAddress,
       shippingAddress,
       country = "US",
-      taxExempt = false,
-      exemptionReason = "",
       shippingMethod,
       paymentPlan = "full",
     } = body;
@@ -63,13 +61,11 @@ export async function POST(req: NextRequest) {
     
     const shippingCost = selectedShipping?.cost || 0;
 
-    // Stripe Tax will handle tax calculation automatically
-    // We'll get the final tax amount from the session response
-    const totalAmount = price + shippingCost; // Tax will be added by Stripe
+    const totalAmount = price + shippingCost; 
 
       const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
 
-      // Create Stripe checkout session with automatic tax
+      // Create Stripe checkout session
       const sessionParams: Stripe.Checkout.SessionCreateParams = {
         payment_method_types: ["card"],
         line_items: [
@@ -79,7 +75,6 @@ export async function POST(req: NextRequest) {
               product_data: {
                 name: `${paintingTitle} - ${sizeLabel}`,
                 description: `${edition} - ${dimensions}`,
-                tax_code: "txcd_10000000", // Physical goods - general
               },
               unit_amount: Math.round(price * 100), // Convert to cents
             },
@@ -91,9 +86,6 @@ export async function POST(req: NextRequest) {
         cancel_url: `${origin}/checkout/cancel`,
         customer_email: customerEmail,
       customer_creation: "always",
-      automatic_tax: {
-        enabled: !taxExempt, // Disable automatic tax for exempt customers
-      },
       shipping_options: shippingQuote.rates.map(rate => ({
         shipping_rate_data: {
           display_name: rate.method,
@@ -125,8 +117,6 @@ export async function POST(req: NextRequest) {
         billingAddress: billingAddress || "",
         shippingAddress,
         country,
-        taxExempt: taxExempt.toString(),
-        exemptionReason: exemptionReason || "",
         shippingMethod: selectedShipping?.method || "",
         shippingCost: shippingCost.toString(),
         shippingServiceCode: selectedShipping?.serviceCode || "",
@@ -138,21 +128,12 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create(sessionParams);
 
-    // Extract tax information from the session
-    const taxAmount = session.total_details?.amount_tax 
-      ? session.total_details.amount_tax / 100 
-      : 0;
-    const taxRate = taxAmount > 0 && price > 0 ? taxAmount / price : 0;
-    const finalTotal = session.amount_total ? session.amount_total / 100 : totalAmount;
-
     console.log("Stripe checkout session created:", session.id);
 
     return NextResponse.json({ 
       sessionId: session.id, 
       url: session.url,
       shippingQuote,
-      taxAmount,
-      taxRate,
       totalAmount,
     });
   } catch (error) {

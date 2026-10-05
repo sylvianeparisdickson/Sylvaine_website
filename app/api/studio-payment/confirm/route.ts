@@ -51,9 +51,6 @@ export async function GET(req: NextRequest) {
       const metadata = session.metadata || {};
       const isStudioPayment = metadata.type === "studio_payment";
 
-      const taxAmount = session.total_details?.amount_tax 
-        ? session.total_details.amount_tax / 100 
-        : 0;
       const shippingCost = session.total_details?.amount_shipping 
         ? session.total_details.amount_shipping / 100 
         : parseFloat(metadata.shippingCost || "0");
@@ -82,13 +79,8 @@ export async function GET(req: NextRequest) {
         
         // Pricing
         price,
-        tax_amount: taxAmount,
         shipping_cost: shippingCost,
         total_amount: totalAmount,
-        
-        // Tax exemption
-        tax_exempt: metadata.taxExempt === "true",
-        exemption_reason: metadata.exemptionReason || "",
         
         // Payment
         payment_method: "stripe" as const,

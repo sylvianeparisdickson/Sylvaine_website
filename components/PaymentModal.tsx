@@ -16,11 +16,8 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
   
   // New state for tax/shipping
   const [country, setCountry] = useState<"US" | "CA" | "other">("US");
-  const [taxExempt, setTaxExempt] = useState(false);
   const [selectedShippingMethod, setSelectedShippingMethod] = useState<string>("");
   const [shippingQuote, setShippingQuote] = useState<{ method: string; cost: number; estimatedDays: string }[]>([]);
-  const [taxAmount, setTaxAmount] = useState(0);
-  const [taxRate, setTaxRate] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 
   const edition = painting.limitedEditions?.[selectedEdition];
@@ -36,8 +33,6 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
           // International orders require personalized quotation
           setShippingQuote([]);
           setSelectedShippingMethod("");
-          setTaxAmount(0);
-          setTaxRate(0);
           setTotalAmount(price);
           return;
         }
@@ -53,21 +48,12 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
           ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
           : shippingRates.rates[0]?.cost || 0;
         
-        // Stripe Tax handles tax at checkout, PayPal needs client-side calculation
-        if (paymentMethod === "paypal") {
-          setTaxRate(0);
-          setTaxAmount(0);
-          setTotalAmount(price + shippingCost);
-        } else {
-          setTaxAmount(0);
-          setTaxRate(0);
-          setTotalAmount(price + shippingCost);
-        }
+        setTotalAmount(price + shippingCost);
       }
     };
 
     fetchShippingRates();
-  }, [showForm, country, taxExempt, selectedShippingMethod, price, paymentMethod]);
+  }, [showForm, country, selectedShippingMethod, price, paymentMethod]);
 
   const handlePayment = async () => {
     if (!showForm) {
@@ -85,7 +71,6 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
     const customerPhone = formData.get("phone") as string;
     const billingAddress = formData.get("billingAddress") as string;
     const shippingAddress = formData.get("address") as string;
-    const exemptionReason = formData.get("exemptionReason") as string;
 
     if (!customerEmail || !customerName || !customerPhone || !shippingAddress) {
       alert("Please fill in all required fields");
@@ -112,8 +97,6 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
       billingAddress,
       shippingAddress,
       country,
-      taxExempt,
-      exemptionReason,
       shippingMethod: selectedShippingMethod,
       paymentPlan: "full",
     };
@@ -263,30 +246,6 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                 <option value="other">Other International Destination</option>
               </select>
             </div>
-            
-            {/* Tax Exemption */}
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="taxExempt"
-                checked={taxExempt}
-                onChange={(e) => setTaxExempt(e.target.checked)}
-                className="w-4 h-4"
-              />
-              <label htmlFor="taxExempt" className="text-[11px] text-[#6a6560]">Tax Exempt</label>
-            </div>
-            
-            {taxExempt && (
-              <div>
-                <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Exemption Reason</label>
-                <input
-                  type="text"
-                  name="exemptionReason"
-                  placeholder="e.g., Resale certificate #12345"
-                  className="w-full px-4 py-2 bg-transparent border border-black/20 text-[13px] text-[#1a1816] outline-none focus:border-[#1a1816]"
-                />
-              </div>
-            )}
 
             {/* International Shipping Notice OR Domestic Method Selection */}
             {country !== "US" ? (
@@ -345,18 +304,6 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                 <span className="text-[#6a6560]">Product</span>
                 <span className="text-[#1a1816]">${price.toFixed(2)}</span>
               </div>
-              {country === "US" && paymentMethod === "paypal" && taxAmount > 0 && (
-                <div className="flex justify-between text-[12px]">
-                  <span className="text-[#6a6560]">Sales Tax ({(taxRate * 100).toFixed(2)}%)</span>
-                  <span className="text-[#1a1816]">${taxAmount.toFixed(2)}</span>
-                </div>
-              )}
-              {country === "US" && paymentMethod === "stripe" && (
-                <div className="flex justify-between text-[12px] text-[#9a9188] italic">
-                  <span>Sales Tax</span>
-                  <span>Calculated at checkout</span>
-                </div>
-              )}
               <div className="flex justify-between text-[12px]">
                 <span className="text-[#6a6560]">Shipping</span>
                 <span className={country !== "US" ? "text-[#8c4b22] italic text-[11px]" : "text-[#1a1816]"}>
@@ -365,18 +312,13 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               </div>
               <div className="flex justify-between text-[14px] font-bold pt-2 border-t border-black/10">
                 <span className="text-[#1a1816]">
-                  {country !== "US" ? "Artwork Subtotal" : paymentMethod === "stripe" ? "Subtotal" : "Total"}
+                  {country !== "US" ? "Artwork Subtotal" : "Total"}
                 </span>
                 <span className="text-[#1a1816]">
                   ${price.toFixed(2)}
                   {country !== "US" && <span className="text-[11px] font-normal text-[#8c4b22] ml-1.5">(+ quote)</span>}
                 </span>
               </div>
-              {country === "US" && paymentMethod === "stripe" && (
-                <p className="text-[10px] text-[#9a9188] mt-2">
-                  *Sales tax will be calculated based on the delivery address
-                </p>
-              )}
             </div>
           </form>
         )}

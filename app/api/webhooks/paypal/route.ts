@@ -116,10 +116,7 @@ export async function POST(req: NextRequest) {
           breakdown: amount?.breakdown,
         });
 
-        // Extract tax and shipping from PayPal breakdown
-        const taxAmount = amount?.breakdown?.tax_total?.value 
-          ? parseFloat(amount.breakdown.tax_total.value) 
-          : 0;
+        // Extract shipping from PayPal breakdown
         const shippingCost = amount?.breakdown?.shipping?.value 
           ? parseFloat(amount.breakdown.shipping.value) 
           : 0;
@@ -127,8 +124,6 @@ export async function POST(req: NextRequest) {
         const price = amount?.breakdown?.item_total?.value 
           ? parseFloat(amount.breakdown.item_total.value) 
           : (item?.unit_amount?.value ? parseFloat(item.unit_amount.value) : 0);
-        
-        const taxRate = taxAmount > 0 && price > 0 ? taxAmount / price : undefined;
 
         // Create order in Supabase
         const orderData = {
@@ -151,16 +146,8 @@ export async function POST(req: NextRequest) {
           
           // Pricing from PayPal
           price,
-          tax_amount: taxAmount,
-          tax_rate: taxRate,
           shipping_cost: shippingCost,
           total_amount: totalAmount,
-          
-          // Tax exemption
-          tax_exempt: false,
-          exemption_reason: "",
-          exemption_reference: "",
-          exemption_date: undefined,
           
           // Payment
           payment_method: "paypal" as const,

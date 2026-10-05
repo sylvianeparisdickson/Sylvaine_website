@@ -9,7 +9,6 @@ interface OrderSummary {
   customer_email?: string;
   total_amount?: number;
   price?: number;
-  tax_amount?: number;
   shipping_cost?: number;
   shipping_method?: string;
   payment_method?: string;

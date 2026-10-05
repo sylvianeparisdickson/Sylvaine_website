@@ -12,15 +12,12 @@ export default function StudioPaymentPage() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState<"US" | "CA" | "other">("US");
-  const [taxExempt, setTaxExempt] = useState(false);
-  const [exemptionReason, setExemptionReason] = useState("");
   const [selectedShippingMethod, setSelectedShippingMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "paypal">("stripe");
   const [loading, setLoading] = useState(false);
   const [paymentReady, setPaymentReady] = useState(false);
   const [checkoutUrl, setCheckoutUrl] = useState("");
   const [shippingQuote, setShippingQuote] = useState<{ method: string; cost: number; estimatedDays: string }[]>([]);
-  const [taxAmount, setTaxAmount] = useState(0);
-  const [taxRate, setTaxRate] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 
   // Calculate shipping when amount or address changes
@@ -39,15 +36,12 @@ export default function StudioPaymentPage() {
           ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
           : shippingRates.rates[0]?.cost || 0;
         
-        // Tax will be calculated by Stripe Tax at checkout
-        setTaxRate(0);
-        setTaxAmount(0);
         setTotalAmount(amountNum + shippingCost);
       }
     };
 
     fetchShippingRates();
-  }, [amount, address, country, selectedShippingMethod]);
+  }, [amount, address, country, selectedShippingMethod, paymentMethod]);
 
   const handleCreatePayment = async () => {
     const amountNum = parseFloat(amount);
@@ -80,7 +74,9 @@ export default function StudioPaymentPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/studio-payment", {
+      const endpoint = paymentMethod === "stripe" ? "/api/studio-payment" : "/api/studio-payment/paypal";
+      
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -91,8 +87,6 @@ export default function StudioPaymentPage() {
           phone,
           address,
           country,
-          taxExempt,
-          exemptionReason,
           shippingMethod: selectedShippingMethod,
         }),
       });
@@ -134,13 +128,10 @@ export default function StudioPaymentPage() {
     setPhone("");
     setAddress("");
     setCountry("US");
-    setTaxExempt(false);
     setSelectedShippingMethod("");
     setPaymentReady(false);
     setCheckoutUrl("");
     setShippingQuote([]);
-    setTaxAmount(0);
-    setTaxRate(0);
     setTotalAmount(0);
   };
 
@@ -177,24 +168,17 @@ export default function StudioPaymentPage() {
                 <span className="text-[#6a6560]">Shipping</span>
                 <span className="text-[#1a1816]">${selectedShippingCost.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[12px] text-[#9a9188] italic">
-                <span>Sales Tax</span>
-                <span>Calculated at checkout</span>
-              </div>
               <div className="flex justify-between text-[14px] font-bold pt-2 border-t border-black/10">
                 <span className="text-[#1a1816]">Subtotal</span>
                 <span className="text-[#1a1816]">${totalAmount.toFixed(2)}</span>
               </div>
-              <p className="text-[10px] text-[#9a9188] mt-2">
-                *Sales tax will be calculated based on the delivery address
-              </p>
             </div>
 
             <button
               onClick={handlePay}
               className="w-full px-6 py-4 bg-[#1a1816] text-white text-[12px] tracking-[.18em] uppercase hover:bg-[#3a3836] transition-colors mb-4"
             >
-              Pay ${totalAmount.toFixed(2)} with Stripe
+              Pay ${totalAmount.toFixed(2)} with {paymentMethod === "stripe" ? "Stripe" : "PayPal"}
             </button>
 
             <button
@@ -324,33 +308,6 @@ export default function StudioPaymentPage() {
             />
           </div>
 
-          {/* Tax Exemption */}
-          <div className="mb-6 flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="taxExempt"
-              checked={taxExempt}
-              onChange={(e) => setTaxExempt(e.target.checked)}
-              className="w-4 h-4"
-            />
-            <label htmlFor="taxExempt" className="text-[11px] text-[#6a6560]">Tax Exempt</label>
-          </div>
-
-          {taxExempt && (
-            <div className="mb-6">
-              <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
-                Exemption Reason
-              </label>
-              <input
-                type="text"
-                value={exemptionReason}
-                onChange={(e) => setExemptionReason(e.target.value)}
-                placeholder="e.g., Resale certificate #12345"
-                className="w-full px-4 py-3 bg-transparent border border-black/20 text-[14px] text-[#1a1816] outline-none focus:border-[#1a1816]"
-              />
-            </div>
-          )}
-
           {/* Shipping Method Selection */}
           {shippingQuote.length > 0 && (
             <div className="mb-6">
@@ -390,19 +347,43 @@ export default function StudioPaymentPage() {
                 <span className="text-[#6a6560]">Shipping</span>
                 <span className="text-[#1a1816]">${selectedShippingCost.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[12px] text-[#9a9188] italic">
-                <span>Sales Tax</span>
-                <span>Calculated at checkout</span>
-              </div>
               <div className="flex justify-between text-[14px] font-bold pt-2 border-t border-black/10">
                 <span className="text-[#1a1816]">Subtotal</span>
                 <span className="text-[#1a1816]">${totalAmount.toFixed(2)}</span>
               </div>
-              <p className="text-[10px] text-[#9a9188] mt-2">
-                *Sales tax will be calculated based on the delivery address
-              </p>
             </div>
           )}
+
+          {/* Payment Method Selection */}
+          <div className="mb-6">
+            <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">
+              Payment Method
+            </label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="stripe"
+                  checked={paymentMethod === "stripe"}
+                  onChange={() => setPaymentMethod("stripe")}
+                  className="w-4 h-4"
+                />
+                <span className="text-[12px] text-[#1a1816]">Credit Card (Stripe)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="paypal"
+                  checked={paymentMethod === "paypal"}
+                  onChange={() => setPaymentMethod("paypal")}
+                  className="w-4 h-4"
+                />
+                <span className="text-[12px] text-[#1a1816]">PayPal</span>
+              </label>
+            </div>
+          </div>
 
           <button
             onClick={handleCreatePayment}

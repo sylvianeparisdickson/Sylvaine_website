@@ -15,11 +15,8 @@ export async function POST(req: Request) {
       size_label, 
       dimensions, 
       price, 
-      tax_amount,
-      tax_rate,
       shipping_cost,
       total_amount,
-      tax_exempt,
       payment_method, 
       payment_id,
       shipping_address,
@@ -90,18 +87,6 @@ export async function POST(req: Request) {
                 <td style="padding: 8px 0; font-size: 13px; color: #6a6560;">Product</td>
                 <td style="padding: 8px 0; font-size: 15px; color: #1a1816; text-align: right;">$${parseFloat(price).toFixed(2)}</td>
               </tr>
-              ${tax_amount > 0 ? `
-              <tr>
-                <td style="padding: 8px 0; font-size: 13px; color: #6a6560;">Sales Tax${tax_rate ? ` (${(parseFloat(tax_rate) * 100).toFixed(2)}%)` : ''}</td>
-                <td style="padding: 8px 0; font-size: 15px; color: #1a1816; text-align: right;">$${parseFloat(tax_amount).toFixed(2)}</td>
-              </tr>
-              ` : ''}
-              ${tax_exempt ? `
-              <tr>
-                <td style="padding: 8px 0; font-size: 13px; color: #16a34a;">Tax Exempt</td>
-                <td style="padding: 8px 0; font-size: 15px; color: #16a34a; text-align: right;">Yes</td>
-              </tr>
-              ` : ''}
               <tr>
                 <td style="padding: 8px 0; font-size: 13px; color: #6a6560;">Shipping${shipping_method ? ` (${shipping_method})` : ''}</td>
                 <td style="padding: 8px 0; font-size: 15px; color: #1a1816; text-align: right;">$${parseFloat(shipping_cost).toFixed(2)}</td>
