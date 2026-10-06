@@ -34,11 +34,23 @@ export async function POST(req: NextRequest) {
       country = "US",
       shippingMethod,
       paymentPlan = "full",
+      taxExempt = false,
+      exemptionReference,
+      exemptionReason,
+      exemptionOrganization,
     } = body;
 
     // Validate required fields
     if (!paintingId || !paintingTitle || !edition || !price || !customerEmail || !customerName || !shippingAddress) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    // Validate tax exemption documentation if claimed
+    if (taxExempt && (!exemptionReference || !exemptionReason)) {
+      return NextResponse.json(
+        { error: "Tax exemption documentation required. Please provide a valid certificate or permit number and exemption category." },
+        { status: 400 }
+      );
     }
 
     if (country && country !== "US") {
@@ -59,33 +71,37 @@ export async function POST(req: NextRequest) {
       ? shippingQuote.rates.find(r => r.method === shippingMethod)
       : shippingQuote.rates[0];
     
-    const shippingCost = selectedShipping?.cost || 0;
-
+    const shippingCost = selectedShipping?.cost ?? 14.99;
     const totalAmount = price + shippingCost; 
 
-      const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
+    const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
 
-      // Create Stripe checkout session
-      const sessionParams: Stripe.Checkout.SessionCreateParams = {
-        payment_method_types: ["card"],
-        line_items: [
-          {
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: `${paintingTitle} - ${sizeLabel}`,
-                description: `${edition} - ${dimensions}`,
-              },
-              unit_amount: Math.round(price * 100), // Convert to cents
+    // Create Stripe checkout session with Stripe Tax
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            tax_behavior: "exclusive",
+            product_data: {
+              name: `${paintingTitle} - ${sizeLabel}`,
+              description: `${edition} - ${dimensions}`,
+              tax_code: "txcd_99999999", // Physical Goods (Tangible Personal Property)
             },
-            quantity: 1,
+            unit_amount: Math.round(price * 100), // Convert to cents
           },
-        ],
-        mode: "payment",
-        success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/checkout/cancel`,
-        customer_email: customerEmail,
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/checkout/cancel`,
+      customer_email: customerEmail,
       customer_creation: "always",
+      automatic_tax: {
+        enabled: !taxExempt, // Automatically calculates destination sales tax unless documented exempt
+      },
       shipping_options: shippingQuote.rates.map(rate => ({
         shipping_rate_data: {
           display_name: rate.method,
@@ -94,6 +110,8 @@ export async function POST(req: NextRequest) {
             amount: Math.round(rate.cost * 100),
             currency: "usd",
           },
+          tax_behavior: "exclusive",
+          tax_code: "txcd_92010001", // Shipping/Delivery charges (taxable under Minnesota law)
           delivery_estimate: {
             minimum: {
               unit: "business_day",
@@ -106,6 +124,9 @@ export async function POST(req: NextRequest) {
           },
         },
       })),
+      shipping_address_collection: {
+        allowed_countries: ["US"],
+      },
       metadata: {
         paintingId,
         paintingTitle,
@@ -123,6 +144,11 @@ export async function POST(req: NextRequest) {
         shippingCarrierCode: selectedShipping?.carrierCode || "",
         shippingRateId: selectedShipping?.rateId || "",
         paymentPlan,
+        taxExempt: taxExempt ? "true" : "false",
+        exemptionReference: exemptionReference || "",
+        exemptionReason: exemptionReason || "",
+        exemptionOrganization: exemptionOrganization || "",
+        exemptionDate: taxExempt ? new Date().toISOString() : "",
       },
     };
 

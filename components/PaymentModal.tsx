@@ -20,6 +20,12 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
   const [shippingQuote, setShippingQuote] = useState<{ method: string; cost: number; estimatedDays: string }[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  // Tax Exemption documentation state
+  const [taxExempt, setTaxExempt] = useState(false);
+  const [exemptionOrganization, setExemptionOrganization] = useState("");
+  const [exemptionReference, setExemptionReference] = useState("");
+  const [exemptionReason, setExemptionReason] = useState("Resale");
+
   const edition = painting.limitedEditions?.[selectedEdition];
   if (!edition) return null;
 
@@ -81,6 +87,15 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
       return;
     }
 
+    // Require valid documentation if claiming tax exemption
+    if (taxExempt) {
+      if (!exemptionOrganization.trim() || !exemptionReference.trim() || !exemptionReason.trim()) {
+        alert("Tax exemption documentation is required by law. Please provide the organization name, certificate/permit number (e.g. Form ST3 / Resale ID), and exemption category.");
+        setLoading(false);
+        return;
+      }
+    }
+
     const checkoutData = {
       paintingId: painting.id,
       paintingTitle: painting.title,
@@ -94,8 +109,12 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
       billingAddress,
       shippingAddress,
       country,
-      shippingMethod: selectedShippingMethod,
+      shippingMethod: selectedShippingMethod || "Shipping & Packaging",
       paymentPlan: "full",
+      taxExempt,
+      exemptionOrganization: taxExempt ? exemptionOrganization.trim() : undefined,
+      exemptionReference: taxExempt ? exemptionReference.trim() : undefined,
+      exemptionReason: taxExempt ? exemptionReason.trim() : undefined,
     };
 
     try {
@@ -244,6 +263,69 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               </select>
             </div>
 
+            {/* Tax Exemption Option with strict documentation validation */}
+            <div className="pt-2 border-t border-black/10">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={taxExempt}
+                  onChange={(e) => setTaxExempt(e.target.checked)}
+                  className="w-4 h-4 text-[#1a1816] rounded border-black/20 focus:ring-0"
+                />
+                <span className="text-[11px] text-[#1a1816] font-medium">This order is tax-exempt</span>
+              </label>
+
+              {taxExempt && (
+                <div className="mt-3 p-3.5 bg-[#fcf9f5] border border-black/15 rounded space-y-3">
+                  <p className="text-[10px] text-[#8c4b22] font-medium tracking-[.05em] leading-relaxed">
+                    Minnesota & U.S. law requires valid exemption documentation (e.g. Form ST3 / Resale Certificate).
+                  </p>
+                  <div>
+                    <label className="block text-[9px] tracking-[.14em] uppercase text-[#7a7269] mb-1">
+                      Organization / Entity Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={exemptionOrganization}
+                      onChange={(e) => setExemptionOrganization(e.target.value)}
+                      placeholder="e.g. Minneapolis Art Gallery LLC"
+                      required={taxExempt}
+                      className="w-full px-3 py-1.5 bg-white border border-black/20 text-[12px] text-[#1a1816] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] tracking-[.14em] uppercase text-[#7a7269] mb-1">
+                      Certificate / Permit Number *
+                    </label>
+                    <input
+                      type="text"
+                      value={exemptionReference}
+                      onChange={(e) => setExemptionReference(e.target.value)}
+                      placeholder="e.g. MN Tax ID # or ST3 Certificate Number"
+                      required={taxExempt}
+                      className="w-full px-3 py-1.5 bg-white border border-black/20 text-[12px] text-[#1a1816] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] tracking-[.14em] uppercase text-[#7a7269] mb-1">
+                      Reason for Exemption *
+                    </label>
+                    <select
+                      value={exemptionReason}
+                      onChange={(e) => setExemptionReason(e.target.value)}
+                      className="w-full px-3 py-1.5 bg-white border border-black/20 text-[12px] text-[#1a1816] outline-none"
+                    >
+                      <option value="Resale">Resale (Goods purchased for resale)</option>
+                      <option value="Non-profit 501(c)(3)">Non-profit Organization (501(c)(3))</option>
+                      <option value="Government Entity">Government Entity</option>
+                      <option value="Educational Institution">Educational Institution</option>
+                      <option value="Other Qualifying Exemption">Other Qualifying Exemption</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* International Shipping Notice OR Domestic Method Selection */}
             {country !== "US" ? (
               <div className="p-4 rounded-xl border border-[#b8581e]/30 bg-[#fdfaf7] text-[#1a1816] space-y-2.5">
@@ -315,13 +397,27 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                   {country !== "US" ? "Personalized quote required" : `$${selectedShippingCost.toFixed(2)}`}
                 </span>
               </div>
+              <div className="flex justify-between text-[12px]">
+                <span className="text-[#6a6560]">Sales Tax</span>
+                <span className="text-[#6a6560] italic text-[11px]">
+                  {taxExempt 
+                    ? "$0.00 (Documented Tax-Exempt)" 
+                    : country === "US" 
+                      ? "Calculated at checkout based on destination" 
+                      : "Handled on quotation"}
+                </span>
+              </div>
               <div className="flex justify-between text-[14px] font-bold pt-2 border-t border-black/10">
                 <span className="text-[#1a1816]">
-                  {country !== "US" ? "Artwork Subtotal" : "Total"}
+                  {country !== "US" ? "Artwork Subtotal" : "Subtotal + Shipping"}
                 </span>
                 <span className="text-[#1a1816]">
                   ${(country !== "US" ? price : totalAmount).toFixed(2)}
-                  {country !== "US" && <span className="text-[11px] font-normal text-[#8c4b22] ml-1.5">(+ quote)</span>}
+                  {country !== "US" ? (
+                    <span className="text-[11px] font-normal text-[#8c4b22] ml-1.5">(+ quote)</span>
+                  ) : !taxExempt ? (
+                    <span className="text-[10px] font-normal text-[#9a9188] ml-1.5">(+ applicable tax)</span>
+                  ) : null}
                 </span>
               </div>
             </div>

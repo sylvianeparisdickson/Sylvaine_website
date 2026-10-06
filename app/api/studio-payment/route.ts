@@ -27,7 +27,20 @@ export async function POST(req: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const body = await req.json();
-    const { amount, description, email, customerName, phone, address, country = "US" } = body;
+    const { 
+      amount, 
+      description, 
+      email, 
+      customerName, 
+      phone, 
+      address, 
+      country = "US",
+      shippingMethod,
+      taxExempt = false,
+      exemptionReference,
+      exemptionReason,
+      exemptionOrganization,
+    } = body;
 
     // Validate amount
     if (!amount || isNaN(amount) || amount <= 0) {
@@ -37,6 +50,14 @@ export async function POST(req: NextRequest) {
     // Validate email
     if (!email || !email.includes("@")) {
       return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
+    }
+
+    // Validate tax exemption documentation if claimed
+    if (taxExempt && (!exemptionReference || !exemptionReason)) {
+      return NextResponse.json(
+        { error: "Tax exemption documentation required. Please provide a valid certificate or permit number and exemption category." },
+        { status: 400 }
+      );
     }
 
     // Insert email into newsletter_subscribers
@@ -49,9 +70,11 @@ export async function POST(req: NextRequest) {
       console.error('Database error:', dbError);
     }
 
-    // Calculate shipping for studio payments (default to studio pickup)
+    // Calculate shipping for studio payments
     const shippingQuote = await getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amount);
-    const selectedShipping = shippingQuote.rates[0]; // Default to first option (usually studio pickup)
+    const selectedShipping = shippingMethod 
+      ? shippingQuote.rates.find(r => r.method === shippingMethod)
+      : shippingQuote.rates[0];
     const shippingCost = selectedShipping?.cost || 0;
 
     const totalAmount = amount + shippingCost; 
@@ -62,29 +85,59 @@ export async function POST(req: NextRequest) {
     // Convert to cents (Stripe uses smallest currency unit)
     const amountInCents = Math.round(amount * 100);
 
-      const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
+    const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
 
-      // Create Stripe checkout session
-      const sessionParams: Stripe.Checkout.SessionCreateParams = {
-        payment_method_types: ["card"],
-        line_items: [
-          {
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: description || "Studio Purchase",
-                description: description || "Custom studio purchase",
-              },
-              unit_amount: amountInCents,
-            },
-            quantity: 1,
+    // Studio Pickup check
+    const isStudioPickup = !selectedShipping?.method || selectedShipping?.method.includes("Studio Pickup");
+
+    // For Studio Pickup in Minneapolis, tax is sourced to the studio location (1500 Jackson St NE, Minneapolis, MN 55413)
+    let customerId: string | undefined;
+    if (isStudioPickup) {
+      const customer = await stripe.customers.create({
+        email,
+        name: customerName,
+        phone: phone || undefined,
+        shipping: {
+          name: customerName || "Studio Pickup - Minneapolis",
+          address: {
+            line1: "1500 Jackson St NE, Studio 439",
+            city: "Minneapolis",
+            state: "MN",
+            postal_code: "55413",
+            country: "US",
           },
-        ],
-        mode: "payment",
-        success_url: `${origin}/studio-payment/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/studio-payment/cancel`,
-        customer_email: email,
-      customer_creation: "always",
+        },
+      });
+      customerId = customer.id;
+    }
+
+    // Create Stripe checkout session with Stripe Tax
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      payment_method_types: ["card"],
+      customer: customerId,
+      customer_email: customerId ? undefined : email,
+      customer_creation: customerId ? undefined : "always",
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            tax_behavior: "exclusive",
+            product_data: {
+              name: description || "Studio Purchase",
+              description: description || "Custom studio purchase",
+              tax_code: "txcd_99999999", // Physical Goods (Tangible Personal Property)
+            },
+            unit_amount: amountInCents,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      automatic_tax: {
+        enabled: !taxExempt,
+      },
+      success_url: `${origin}/studio-payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/studio-payment/cancel`,
       shipping_options: shippingQuote.rates.map(rate => ({
         shipping_rate_data: {
           display_name: rate.method,
@@ -93,6 +146,8 @@ export async function POST(req: NextRequest) {
             amount: Math.round(rate.cost * 100),
             currency: "usd",
           },
+          tax_behavior: "exclusive",
+          tax_code: "txcd_92010001", // Shipping/Delivery charges
         },
       })),
       metadata: {
@@ -101,13 +156,18 @@ export async function POST(req: NextRequest) {
         description: description || "",
         customerName: customerName || "",
         customerPhone: phone || "",
-        shippingAddress: address || "",
+        shippingAddress: isStudioPickup ? "Studio Pickup (1500 Jackson St NE, Studio 439, Minneapolis, MN 55413)" : (address || ""),
         country,
-        shippingMethod: selectedShipping?.method || "",
+        shippingMethod: selectedShipping?.method || "Studio Pickup (Minneapolis)",
         shippingCost: shippingCost.toString(),
         shippingServiceCode: selectedShipping?.serviceCode || "",
         shippingCarrierCode: selectedShipping?.carrierCode || "",
         shippingRateId: selectedShipping?.rateId || "",
+        taxExempt: taxExempt ? "true" : "false",
+        exemptionReference: exemptionReference || "",
+        exemptionReason: exemptionReason || "",
+        exemptionOrganization: exemptionOrganization || "",
+        exemptionDate: taxExempt ? new Date().toISOString() : "",
       },
     };
 

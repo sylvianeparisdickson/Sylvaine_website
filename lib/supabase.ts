@@ -70,8 +70,16 @@ export type Order = {
   
   // Pricing
   price: number;
+  tax_amount?: number;
+  tax_rate?: number;
   shipping_cost: number;
   total_amount: number;
+  
+  // Tax Exemption
+  tax_exempt?: boolean;
+  exemption_reason?: string;
+  exemption_reference?: string;
+  exemption_date?: string;
   
   // Payment
   payment_method: "stripe" | "paypal";

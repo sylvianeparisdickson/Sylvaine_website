@@ -77,6 +77,12 @@ export async function GET(req: NextRequest) {
           : parseFloat(metadata.shippingCost || "0");
         const totalAmount = session.amount_total ? session.amount_total / 100 : 0;
         const price = session.amount_subtotal ? session.amount_subtotal / 100 : totalAmount;
+        
+        const taxAmount = session.total_details?.amount_tax 
+          ? session.total_details.amount_tax / 100 
+          : 0;
+        const taxRate = taxAmount > 0 && price > 0 ? Number((taxAmount / price).toFixed(4)) : 0;
+        const isTaxExempt = metadata.taxExempt === "true";
 
         const orderNumber = metadata.order_number || `ORD-${Date.now()}`;
 
@@ -100,8 +106,16 @@ export async function GET(req: NextRequest) {
           
           // Pricing
           price,
+          tax_amount: taxAmount,
+          tax_rate: taxRate,
           shipping_cost: shippingCost,
           total_amount: totalAmount,
+          
+          // Tax exemption
+          tax_exempt: isTaxExempt,
+          exemption_reason: isTaxExempt ? (metadata.exemptionReason || "") : undefined,
+          exemption_reference: isTaxExempt ? (metadata.exemptionReference || "") : undefined,
+          exemption_date: isTaxExempt ? (metadata.exemptionDate || new Date().toISOString()) : undefined,
           
           // Payment
           payment_method: "stripe" as const,

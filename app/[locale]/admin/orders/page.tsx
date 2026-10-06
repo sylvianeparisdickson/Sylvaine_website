@@ -453,6 +453,18 @@ export default function OrdersPage() {
                     <span className="text-[#6a6560]">Shipping ({selectedOrder.shipping_method || "Standard"})</span>
                     <span className="text-[#1a1816]">${selectedOrder.shipping_cost.toFixed(2)}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#6a6560]">Sales Tax</span>
+                    <span className="text-[#1a1816]">
+                      {selectedOrder.tax_exempt ? (
+                        <span className="text-emerald-700 font-medium">Exempt</span>
+                      ) : selectedOrder.tax_amount ? (
+                        `$${selectedOrder.tax_amount.toFixed(2)} (${((selectedOrder.tax_rate || 0) * 100).toFixed(2)}%)`
+                      ) : (
+                        "$0.00"
+                      )}
+                    </span>
+                  </div>
                   <div className="flex justify-between font-bold pt-2 border-t border-black/10">
                     <span className="text-[#1a1816]">Total</span>
                     <span className="text-[#1a1816]">${selectedOrder.total_amount.toFixed(2)}</span>
@@ -564,7 +576,32 @@ export default function OrdersPage() {
                 </div>
               )}
 
-
+              {/* Tax Exemption Section */}
+              {selectedOrder.tax_exempt && (
+                <div className="mb-6 pb-6 border-b border-black/10">
+                  <h3 className="text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-3">
+                    Tax Exemption Documentation
+                  </h3>
+                  <div className="space-y-2 text-[13px] bg-[#fdfaf7] p-3.5 rounded border border-black/10">
+                    <div>
+                      <p className="text-[#6a6560] text-[11px]">Certificate / Permit #</p>
+                      <p className="text-[#1a1816] font-mono font-medium">{selectedOrder.exemption_reference || "Documented at checkout"}</p>
+                    </div>
+                    {selectedOrder.exemption_reason && (
+                      <div>
+                        <p className="text-[#6a6560] text-[11px]">Exemption Category / Reason</p>
+                        <p className="text-[#1a1816]">{selectedOrder.exemption_reason}</p>
+                      </div>
+                    )}
+                    {selectedOrder.exemption_date && (
+                      <div>
+                        <p className="text-[#6a6560] text-[11px]">Date Recorded</p>
+                        <p className="text-[#1a1816]">{new Date(selectedOrder.exemption_date).toLocaleDateString()}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Notes */}
               <div className="mb-6">
