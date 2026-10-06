@@ -73,7 +73,7 @@ export default async function ReturnsPolicyPage({
 
           <div className="flex items-center gap-3 mb-6">
             <span className="text-[9px] tracking-[.24em] uppercase text-[#9a9188]">
-              Transit Protection & Claims
+              Transit Protection & Replacement Guarantee
             </span>
           </div>
 

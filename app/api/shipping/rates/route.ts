@@ -42,6 +42,20 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Domestic U.S. Limited Editions:
+    // Fixed $14.99 shipping & packaging per reproduction across all sizes (16×22", 24×32", 26×34")
+    if (orderType === "website") {
+      return NextResponse.json({
+        rates: [
+          {
+            method: "Shipping & Packaging",
+            cost: 14.99,
+            estimatedDays: "7–10 business days",
+          },
+        ],
+      });
+    }
+
     // Studio pickup option
     const studioPickup = [
       { method: "Studio Pickup (Minneapolis)", cost: 0, estimatedDays: "Immediate" },

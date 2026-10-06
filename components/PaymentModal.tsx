@@ -40,14 +40,11 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
         const shippingRates = await getShippingRates({ country }, "website", price);
         setShippingQuote(shippingRates.rates);
         
-        if (!selectedShippingMethod && shippingRates.rates.length > 0) {
-          setSelectedShippingMethod(shippingRates.rates[0].method);
-        }
+        const defaultMethod = shippingRates.rates[0]?.method || "Shipping & Packaging";
+        const currentMethod = selectedShippingMethod || defaultMethod;
+        setSelectedShippingMethod(currentMethod);
         
-        const shippingCost = selectedShippingMethod 
-          ? shippingRates.rates.find(r => r.method === selectedShippingMethod)?.cost || 0
-          : shippingRates.rates[0]?.cost || 0;
-        
+        const shippingCost = shippingRates.rates.find(r => r.method === currentMethod)?.cost ?? 14.99;
         setTotalAmount(price + shippingCost);
       }
     };
@@ -131,8 +128,8 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
     }
   };
 
-  const selectedShippingCost = selectedShippingMethod 
-    ? shippingQuote.find(r => r.method === selectedShippingMethod)?.cost || 0
+  const selectedShippingCost = country === "US" 
+    ? (shippingQuote.find(r => r.method === selectedShippingMethod)?.cost ?? 14.99)
     : 0;
 
   return (
@@ -272,12 +269,12 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                 </div>
               </div>
             ) : (
-              shippingQuote.length > 0 && (
-                <div>
-                  <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping Method</label>
+              <div>
+                <label className="block text-[10px] tracking-[.14em] uppercase text-[#9a9188] mb-2">Shipping & Packaging</label>
+                {shippingQuote.length > 1 ? (
                   <div className="space-y-2">
                     {shippingQuote.map((rate) => (
-                      <label key={rate.method} className="flex items-center gap-2 cursor-pointer">
+                      <label key={rate.method} className="flex items-center gap-2 cursor-pointer p-2.5 bg-[#fdfaf7] border border-black/10 rounded-sm">
                         <input
                           type="radio"
                           name="shippingMethod"
@@ -287,25 +284,33 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                           className="w-4 h-4"
                         />
                         <div className="flex-1">
-                          <p className="text-[12px] text-[#1a1816]">{rate.method}</p>
+                          <p className="text-[12px] text-[#1a1816] font-medium">{rate.method}</p>
                           <p className="text-[10px] text-[#9a9188]">{rate.estimatedDays}</p>
                         </div>
-                        <p className="text-[12px] text-[#1a1816]">${rate.cost.toFixed(2)}</p>
+                        <p className="text-[12px] text-[#1a1816] font-semibold">${rate.cost.toFixed(2)}</p>
                       </label>
                     ))}
                   </div>
-                </div>
-              )
+                ) : (
+                  <div className="p-3 bg-[#fdfaf7] border border-black/10 rounded-sm flex items-center justify-between">
+                    <div>
+                      <p className="text-[12px] font-medium text-[#1a1816]">Direct Delivery from Printer</p>
+                      <p className="text-[10px] text-[#8c827a]">7–10 business days · Inspected & hand-signed by artist with COA</p>
+                    </div>
+                    <span className="text-[12px] font-semibold text-[#1a1816]">$14.99</span>
+                  </div>
+                )}
+              </div>
             )}
 
             {/* Price Breakdown */}
             <div className="border-t border-black/10 pt-4 space-y-2">
               <div className="flex justify-between text-[12px]">
-                <span className="text-[#6a6560]">Product</span>
+                <span className="text-[#6a6560]">Artwork ({edition.sizeLabel})</span>
                 <span className="text-[#1a1816]">${price.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-[12px]">
-                <span className="text-[#6a6560]">Shipping</span>
+                <span className="text-[#6a6560]">Shipping & Packaging</span>
                 <span className={country !== "US" ? "text-[#8c4b22] italic text-[11px]" : "text-[#1a1816]"}>
                   {country !== "US" ? "Personalized quote required" : `$${selectedShippingCost.toFixed(2)}`}
                 </span>
@@ -315,7 +320,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                   {country !== "US" ? "Artwork Subtotal" : "Total"}
                 </span>
                 <span className="text-[#1a1816]">
-                  ${price.toFixed(2)}
+                  ${(country !== "US" ? price : totalAmount).toFixed(2)}
                   {country !== "US" && <span className="text-[11px] font-normal text-[#8c4b22] ml-1.5">(+ quote)</span>}
                 </span>
               </div>
@@ -324,11 +329,11 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
         )}
 
         <div className="mb-6 text-[11px] text-[#6a6560] leading-relaxed">
-          <p className="mb-2">Fulfillment Timeline:</p>
-          <p>• 7-10 business days to receive from printer</p>
-          <p>• Certificate of authenticity included</p>
-          <p>• Signed by the artist</p>
-          <p>• Shipped via USPS / UPS for domestic. International arranged individually upon request.</p>
+          <p className="mb-2 font-medium text-[#1a1816]">Fulfillment & Authenticity:</p>
+          <p>• 7–10 business days for archival reproduction</p>
+          <p>• The artist visits printer to inspect, hand-sign, number, and provide Certificate of Authenticity</p>
+          <p>• Shipped directly from printer to customer with carrier tracking</p>
+          <p>• Transit Guarantee: Full replacement print provided if damaged during shipment</p>
         </div>
 
         {country !== "US" && showForm ? (

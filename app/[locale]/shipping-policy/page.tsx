@@ -115,18 +115,22 @@ export default async function ShippingPolicyPage({
             <p className="pt-2">{t("domesticText3")}</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 pt-8 border-t border-black/10 text-[12px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 pt-8 border-t border-black/10 text-[12px]">
+            <div className="space-y-1.5">
+              <p className="text-[10px] tracking-[.18em] uppercase text-[#1a1816] font-medium">Domestic Rate</p>
+              <p className="text-[#6a6560]">$14.99 flat shipping & packaging (all sizes).</p>
+            </div>
             <div className="space-y-1.5">
               <p className="text-[10px] tracking-[.18em] uppercase text-[#1a1816] font-medium">Timeline</p>
-              <p className="text-[#6a6560]">7–10 business days for archival printing & hand-signing.</p>
+              <p className="text-[#6a6560]">7–10 business days for printing & inspection.</p>
             </div>
             <div className="space-y-1.5">
               <p className="text-[10px] tracking-[.18em] uppercase text-[#1a1816] font-medium">Authenticity</p>
-              <p className="text-[#6a6560]">Hand-signed, numbered, Certificate of Authenticity included.</p>
+              <p className="text-[#6a6560]">Hand-signed, numbered, COA included.</p>
             </div>
             <div className="space-y-1.5">
-              <p className="text-[10px] tracking-[.18em] uppercase text-[#1a1816] font-medium">Tracking</p>
-              <p className="text-[#6a6560]">Confirmation with full carrier tracking sent upon dispatch.</p>
+              <p className="text-[10px] tracking-[.18em] uppercase text-[#1a1816] font-medium">Direct Delivery</p>
+              <p className="text-[#6a6560]">Dispatched directly by printer with carrier tracking.</p>
             </div>
           </div>
         </section>

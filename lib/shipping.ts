@@ -65,18 +65,41 @@ async function getShipEngineRates(
   }
 }
 
+export const DOMESTIC_REPRODUCTION_SHIPPING_RATE: ShippingRate = {
+  method: "Shipping & Packaging",
+  cost: 14.99,
+  estimatedDays: "7–10 business days",
+};
+
 // Get shipping rates based on address and order type
 export async function getShippingRates(
   address: ShippingAddress,
   orderType: "website" | "studio" = "website",
   orderTotal: number = 0
 ): Promise<ShippingQuote> {
-  // Call the API route which handles ShipEngine integration
-  const rates = await getShipEngineRates(address, orderType, orderTotal);
-  
-  if (rates.length === 0) {
-    console.error("No shipping rates available");
+  // International orders require case-by-case personalized quotation
+  if (address.country && address.country !== "US") {
     return { rates: [] };
+  }
+
+  // Domestic U.S. Limited Editions:
+  // Flat $14.99 shipping & packaging per reproduction across all sizes (16×22", 24×32", 26×34")
+  // Direct shipment from printer after artist inspection and hand-signed COA
+  if (orderType === "website") {
+    return {
+      rates: [DOMESTIC_REPRODUCTION_SHIPPING_RATE],
+      selectedRate: DOMESTIC_REPRODUCTION_SHIPPING_RATE,
+    };
+  }
+
+  // Studio custom payments: check ShipEngine rates or default to studio pickup
+  const rates = await getShipEngineRates(address, orderType, orderTotal);
+  if (rates.length === 0) {
+    return {
+      rates: [
+        { method: "Studio Pickup (Minneapolis)", cost: 0, estimatedDays: "Immediate" },
+      ],
+    };
   }
 
   return { rates };
