@@ -278,7 +278,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
               {taxExempt && (
                 <div className="mt-3 p-3.5 bg-[#fcf9f5] border border-black/15 rounded space-y-3">
                   <p className="text-[10px] text-[#8c4b22] font-medium tracking-[.05em] leading-relaxed">
-                    Minnesota & U.S. law requires valid exemption documentation (e.g. Form ST3 / Resale Certificate).
+                    Exemption documentation is required by law and is subject to verification.
                   </p>
                   <div>
                     <label className="block text-[9px] tracking-[.14em] uppercase text-[#7a7269] mb-1">
@@ -288,20 +288,20 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                       type="text"
                       value={exemptionOrganization}
                       onChange={(e) => setExemptionOrganization(e.target.value)}
-                      placeholder="e.g. Minneapolis Art Gallery LLC"
+                      placeholder="Organization or Entity Legal Name"
                       required={taxExempt}
                       className="w-full px-3 py-1.5 bg-white border border-black/20 text-[12px] text-[#1a1816] outline-none"
                     />
                   </div>
                   <div>
                     <label className="block text-[9px] tracking-[.14em] uppercase text-[#7a7269] mb-1">
-                      Certificate / Permit Number *
+                      Exemption Documentation / Certificate / Tax ID *
                     </label>
                     <input
                       type="text"
                       value={exemptionReference}
                       onChange={(e) => setExemptionReference(e.target.value)}
-                      placeholder="e.g. MN Tax ID # or ST3 Certificate Number"
+                      placeholder="e.g. Exemption Certificate #, Resale Permit, or Tax ID"
                       required={taxExempt}
                       className="w-full px-3 py-1.5 bg-white border border-black/20 text-[12px] text-[#1a1816] outline-none"
                     />
@@ -315,11 +315,10 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
                       onChange={(e) => setExemptionReason(e.target.value)}
                       className="w-full px-3 py-1.5 bg-white border border-black/20 text-[12px] text-[#1a1816] outline-none"
                     >
-                      <option value="Resale">Resale (Goods purchased for resale)</option>
-                      <option value="Non-profit 501(c)(3)">Non-profit Organization (501(c)(3))</option>
-                      <option value="Government Entity">Government Entity</option>
-                      <option value="Educational Institution">Educational Institution</option>
-                      <option value="Other Qualifying Exemption">Other Qualifying Exemption</option>
+                      <option value="Purchased for Resale">Purchased for Resale</option>
+                      <option value="Qualifying Non-profit Entity">Qualifying Non-profit Entity</option>
+                      <option value="Government / Educational Entity">Government / Educational Entity</option>
+                      <option value="Other Legally Qualifying Exemption">Other Legally Qualifying Exemption</option>
                     </select>
                   </div>
                 </div>

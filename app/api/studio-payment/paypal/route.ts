@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getShippingRates } from "@/lib/shipping";
 import { createClient } from '@supabase/supabase-js';
+import Stripe from "stripe";
 
 const PAYPAL_API_BASE = process.env.PAYPAL_MODE === "live" 
   ? "https://api-m.paypal.com" 
@@ -33,6 +34,24 @@ function generateOrderNumber(): string {
   return `ORD-${year}${month}-${random}`;
 }
 
+// Helper function to extract state and parse address
+function parseShippingAddress(addressStr: string) {
+  const zipMatch = addressStr.match(/\b\d{5}(?:-\d{4})?\b/);
+  const stateMatch = addressStr.match(/\b(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|Minnesota|Wisconsin|Iowa|Illinois|North Dakota|South Dakota)\b/i);
+  
+  const parts = addressStr.split(',').map(p => p.trim());
+  const line1 = parts[0] || addressStr;
+  const city = parts.length > 2 ? parts[1] : (parts.length === 2 ? parts[0] : undefined);
+
+  return {
+    line1,
+    city,
+    state: stateMatch ? stateMatch[0] : "MN",
+    postal_code: zipMatch ? zipMatch[0] : undefined,
+    country: "US",
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
@@ -44,7 +63,20 @@ export async function POST(req: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const body = await req.json();
-    const { amount, description, email, customerName, phone, address, country = "US" } = body;
+    const {
+      amount,
+      description,
+      email,
+      customerName,
+      phone,
+      address,
+      country = "US",
+      shippingMethod,
+      taxExempt = false,
+      exemptionOrganization,
+      exemptionReference,
+      exemptionReason,
+    } = body;
 
     // Validate amount
     if (!amount || isNaN(amount) || amount <= 0) {
@@ -62,29 +94,93 @@ export async function POST(req: NextRequest) {
       .insert({ email });
     
     if (dbError && dbError.code !== '23505') {
-      // 23505 is duplicate key error, which is fine
       console.error('Database error:', dbError);
     }
 
+    const isStudioPickup = shippingMethod === "Studio Pickup (Minneapolis)" || (address && address.toLowerCase().includes("studio pickup"));
+
     // Calculate shipping for studio payments
-    const shippingQuote = await getShippingRates({ country, state: address ? extractState(address) : undefined }, "studio", amount);
-    const selectedShipping = shippingQuote.rates[0];
+    const shippingQuote = await getShippingRates(
+      { country, state: address ? parseShippingAddress(address).state : undefined },
+      "studio",
+      amount
+    );
+    const selectedShipping = isStudioPickup
+      ? { method: "Studio Pickup (Minneapolis)", cost: 0, estimatedDays: "Ready immediately" }
+      : (shippingMethod ? shippingQuote.rates.find(r => r.method === shippingMethod) : shippingQuote.rates[0]);
+    
     const shippingCost = selectedShipping?.cost || 0;
 
-    const totalAmount = amount + shippingCost;
+    // ========================================================
+    // Real-Time Destination Sales Tax Calculation (Stripe Tax Engine)
+    // Sourced to Minneapolis Studio (9.025%) for pickup or physical studio sales
+    // ========================================================
+    let taxAmount = 0;
+    if (!taxExempt && country === "US" && process.env.STRIPE_SECRET_KEY) {
+      try {
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+          apiVersion: "2026-06-24.dahlia" as any,
+        });
 
+        const taxAddress = isStudioPickup || !address
+          ? {
+              line1: "1500 Jackson St NE",
+              line2: "Studio 439",
+              city: "Minneapolis",
+              state: "MN",
+              postal_code: "55413",
+              country: "US",
+            }
+          : parseShippingAddress(address);
+
+        const calculation = await stripe.tax.calculations.create({
+          currency: "usd",
+          line_items: [
+            {
+              amount: Math.round(amount * 100),
+              reference: "studio-payment",
+              tax_code: "txcd_99999999", // Tangible goods
+              tax_behavior: "exclusive",
+            },
+          ],
+          shipping_cost: {
+            amount: Math.round(shippingCost * 100),
+            tax_code: "txcd_92010001", // Shipping
+            tax_behavior: "exclusive",
+          },
+          customer_details: {
+            address: taxAddress,
+            address_source: "shipping",
+          },
+        });
+
+        taxAmount = (calculation.tax_amount_exclusive || 0) / 100;
+      } catch (taxErr) {
+        console.error("Stripe Tax calculation for Studio PayPal failed:", taxErr);
+      }
+    }
+
+    const totalAmount = amount + shippingCost + taxAmount;
     const orderNumber = generateOrderNumber();
     const accessToken = await getPayPalAccessToken();
 
     const origin = req.headers.get("origin") || req.nextUrl.origin || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.sylvianeparisart.com';
 
-    // Create PayPal order
+    // Create PayPal order with exact destination tax breakdown
     const paypalOrder = {
       intent: "CAPTURE",
       purchase_units: [
         {
           reference_id: orderNumber,
           description: description || "Studio Purchase",
+          custom_id: JSON.stringify({
+            orderNumber,
+            taxExempt: !!taxExempt,
+            taxAmount,
+            shippingCost,
+            price: amount,
+            exemptionRef: taxExempt ? (exemptionReference || "").slice(0, 30) : undefined,
+          }).slice(0, 127),
           amount: {
             currency_code: "USD",
             value: totalAmount.toFixed(2),
@@ -97,6 +193,12 @@ export async function POST(req: NextRequest) {
                 currency_code: "USD",
                 value: shippingCost.toFixed(2),
               },
+              ...(taxAmount > 0 ? {
+                tax_total: {
+                  currency_code: "USD",
+                  value: taxAmount.toFixed(2),
+                },
+              } : {}),
             },
           },
           items: [
@@ -107,6 +209,12 @@ export async function POST(req: NextRequest) {
                 currency_code: "USD",
                 value: amount.toFixed(2),
               },
+              ...(taxAmount > 0 ? {
+                tax: {
+                  currency_code: "USD",
+                  value: taxAmount.toFixed(2),
+                },
+              } : {}),
               quantity: "1",
             },
           ],
@@ -144,6 +252,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to create PayPal order", details: paypalOrderData }, { status: 500 });
     }
 
+    console.log("PayPal studio order created with tax:", {
+      id: paypalOrderData.id,
+      amount,
+      shippingCost,
+      taxAmount,
+      totalAmount,
+    });
+
     const approvalUrl = paypalOrderData.links?.find((link: any) => link.rel === "approve")?.href ||
                        paypalOrderData.links?.find((link: any) => link.rel === "payer-action")?.href;
 
@@ -155,7 +271,8 @@ export async function POST(req: NextRequest) {
       orderId: paypalOrderData.id,
       url: approvalUrl,
       orderNumber,
-      shippingQuote,
+      shippingCost,
+      taxAmount,
       totalAmount,
     });
   } catch (error) {
@@ -163,10 +280,4 @@ export async function POST(req: NextRequest) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ error: "Failed to create checkout session", details: errorMessage }, { status: 500 });
   }
-}
-
-// Helper function to extract state from address string
-function extractState(address: string): string | undefined {
-  const stateMatch = address.match(/(?:MN|Minnesota|WI|Wisconsin|IA|Iowa|ND|North Dakota|SD|South Dakota)/i);
-  return stateMatch ? stateMatch[0] : undefined;
 }

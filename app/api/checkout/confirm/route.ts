@@ -86,13 +86,32 @@ export async function GET(req: NextRequest) {
 
         const orderNumber = metadata.order_number || `ORD-${Date.now()}`;
 
+        const billingAddressStr = session.customer_details?.address ? [
+          session.customer_details.address.line1,
+          session.customer_details.address.line2,
+          session.customer_details.address.city,
+          session.customer_details.address.state,
+          session.customer_details.address.postal_code,
+          session.customer_details.address.country
+        ].filter(Boolean).join(", ") : (metadata.billingAddress || "");
+
+        const sessionWithShipping = session as unknown as { shipping_details?: { address?: Stripe.Address } };
+        const shippingAddressStr = metadata.shippingAddress || (sessionWithShipping.shipping_details?.address ? [
+          sessionWithShipping.shipping_details.address.line1,
+          sessionWithShipping.shipping_details.address.line2,
+          sessionWithShipping.shipping_details.address.city,
+          sessionWithShipping.shipping_details.address.state,
+          sessionWithShipping.shipping_details.address.postal_code,
+          sessionWithShipping.shipping_details.address.country
+        ].filter(Boolean).join(", ") : (metadata.shippingMethod === "Studio Pickup (Minneapolis)" ? "Studio Pickup (1500 Jackson St NE, Studio 439, Minneapolis, MN 55413)" : "Provided during checkout"));
+
         const orderData = {
           order_number: orderNumber,
           customer_email: session.customer_email || session.customer_details?.email || "",
           customer_name: metadata.customerName || session.customer_details?.name || "Customer",
           customer_phone: metadata.customerPhone || session.customer_details?.phone || "",
-          billing_address: metadata.billingAddress || "",
-          shipping_address: metadata.shippingAddress || "Provided during checkout",
+          billing_address: billingAddressStr,
+          shipping_address: shippingAddressStr,
           country: metadata.country || session.customer_details?.address?.country || "US",
           
           // Product information
@@ -206,12 +225,25 @@ export async function GET(req: NextRequest) {
         const item = purchaseUnit?.items?.[0];
         const shipping = purchaseUnit?.shipping;
 
+        const payerAddress = orderDetails.payer?.address ? [
+          orderDetails.payer.address.address_line_1,
+          orderDetails.payer.address.admin_area_2,
+          orderDetails.payer.address.admin_area_1,
+          orderDetails.payer.address.postal_code,
+          orderDetails.payer.address.country_code
+        ].filter(Boolean).join(", ") : "";
+
+        const paypalPrice = amount?.breakdown?.item_total?.value ? parseFloat(amount.breakdown.item_total.value) : parseFloat(amount?.value || "0");
+        const paypalShipping = amount?.breakdown?.shipping?.value ? parseFloat(amount.breakdown.shipping.value) : 0;
+        const paypalTax = amount?.breakdown?.tax_total?.value ? parseFloat(amount.breakdown.tax_total.value) : 0;
+        const paypalTaxRate = paypalTax > 0 && paypalPrice > 0 ? Number((paypalTax / paypalPrice).toFixed(4)) : 0;
+
         const orderData = {
           order_number: `ORD-${Date.now()}`,
           customer_email: shipping?.address?.email_address || orderDetails.payer?.email_address || "",
           customer_name: shipping?.name?.full_name || `${orderDetails.payer?.name?.given_name || ""} ${orderDetails.payer?.name?.surname || ""}`.trim() || "Customer",
-          customer_phone: "",
-          billing_address: "",
+          customer_phone: orderDetails.payer?.phone?.phone_number?.national_number || "",
+          billing_address: payerAddress,
           shipping_address: shipping?.address ? [
             shipping.address.address_line_1,
             shipping.address.address_line_2,
@@ -230,8 +262,10 @@ export async function GET(req: NextRequest) {
           product_type: "reproduction" as const,
           description: item?.description || purchaseUnit?.description || "Artwork Purchase",
           
-          price: amount?.breakdown?.item_total?.value ? parseFloat(amount.breakdown.item_total.value) : parseFloat(amount?.value || "0"),
-          shipping_cost: amount?.breakdown?.shipping?.value ? parseFloat(amount.breakdown.shipping.value) : 0,
+          price: paypalPrice,
+          tax_amount: paypalTax,
+          tax_rate: paypalTaxRate,
+          shipping_cost: paypalShipping,
           total_amount: parseFloat(amount?.value || "0"),
           
           payment_method: "paypal" as const,

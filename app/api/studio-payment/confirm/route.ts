@@ -79,8 +79,16 @@ export async function GET(req: NextRequest) {
         
         // Pricing
         price,
+        tax_amount: session.total_details?.amount_tax ? session.total_details.amount_tax / 100 : 0,
+        tax_rate: session.total_details?.amount_tax && price > 0 ? Number(((session.total_details.amount_tax / 100) / price).toFixed(4)) : 0,
         shipping_cost: shippingCost,
         total_amount: totalAmount,
+        
+        // Tax exemption records
+        tax_exempt: metadata.taxExempt === "true",
+        exemption_reason: metadata.taxExempt === "true" ? metadata.exemptionReason : undefined,
+        exemption_reference: metadata.taxExempt === "true" ? metadata.exemptionReference : undefined,
+        exemption_date: metadata.taxExempt === "true" ? (metadata.exemptionDate || new Date().toISOString()) : undefined,
         
         // Payment
         payment_method: "stripe" as const,

@@ -92,13 +92,32 @@ export async function POST(req: NextRequest) {
         // Create order in Supabase with all new fields
         const orderNumber = metadata.order_number || generateOrderNumber();
 
+        const billingAddressStr = session.customer_details?.address ? [
+          session.customer_details.address.line1,
+          session.customer_details.address.line2,
+          session.customer_details.address.city,
+          session.customer_details.address.state,
+          session.customer_details.address.postal_code,
+          session.customer_details.address.country
+        ].filter(Boolean).join(", ") : (metadata.billingAddress || "");
+
+        const sessionWithShipping = session as unknown as { shipping_details?: { address?: Stripe.Address } };
+        const shippingAddressStr = metadata.shippingAddress || (sessionWithShipping.shipping_details?.address ? [
+          sessionWithShipping.shipping_details.address.line1,
+          sessionWithShipping.shipping_details.address.line2,
+          sessionWithShipping.shipping_details.address.city,
+          sessionWithShipping.shipping_details.address.state,
+          sessionWithShipping.shipping_details.address.postal_code,
+          sessionWithShipping.shipping_details.address.country
+        ].filter(Boolean).join(", ") : (metadata.shippingMethod === "Studio Pickup (Minneapolis)" ? "Studio Pickup (1500 Jackson St NE, Studio 439, Minneapolis, MN 55413)" : "Direct Studio Order"));
+
         const orderData = {
           order_number: orderNumber,
           customer_email: session.customer_email || session.customer_details?.email || "",
           customer_name: metadata.customerName || session.customer_details?.name || "Customer",
           customer_phone: metadata.customerPhone || session.customer_details?.phone || "",
-          billing_address: "",
-          shipping_address: metadata.shippingAddress || (metadata.shippingMethod === "Studio Pickup (Minneapolis)" ? "Studio Pickup" : "Direct Studio Order"),
+          billing_address: billingAddressStr,
+          shipping_address: shippingAddressStr,
           country: metadata.country || session.customer_details?.address?.country || "US",
           
           // Product information - provide non-null defaults to satisfy database constraints

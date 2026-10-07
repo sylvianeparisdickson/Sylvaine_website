@@ -20,19 +20,25 @@ interface OrderSummary {
 export default function StudioPaymentSuccessPage() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const token = searchParams.get("token");
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState<OrderSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!sessionId) {
-      setLoading(false);
-      return;
-    }
-
     const confirmOrder = async () => {
       try {
-        const res = await fetch(`/api/studio-payment/confirm?session_id=${encodeURIComponent(sessionId)}`);
+        let url = "";
+        if (sessionId) {
+          url = `/api/studio-payment/confirm?session_id=${encodeURIComponent(sessionId)}`;
+        } else if (token) {
+          url = `/api/checkout/confirm?payment_method=paypal&token=${encodeURIComponent(token)}`;
+        } else {
+          setLoading(false);
+          return;
+        }
+
+        const res = await fetch(url);
         const data = await res.json();
 
         if (res.ok && data.success && data.order) {
@@ -48,7 +54,7 @@ export default function StudioPaymentSuccessPage() {
     };
 
     confirmOrder();
-  }, [sessionId]);
+  }, [sessionId, token]);
 
   return (
     <main className="min-h-screen bg-[#f8f5ef] p-4 py-12 md:py-16">
