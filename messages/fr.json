@@ -355,6 +355,22 @@
           "edition_small": "Édition de 50",
           "edition_medium": "Édition de 25",
           "edition_large": "Édition de 10"
+        },
+        "where-light-rises": {
+          "title": "Là où la lumière s'élève",
+          "medium": "Acrylique sur papier Bristol",
+          "dimensions": "20,5 × 28 inches / 52 × 72 cm",
+          "hint": "Lorsque je me suis tenue pour la première fois à l'intérieur de la Sainte-Chapelle, à Paris, j'ai été profondément touchée par la force spirituelle, la grandeur et la splendeur de cet édifice extraordinaire. J'ai ressenti une profonde admiration pour celles et ceux qui l'ont conçu et construit, pour leur inspiration, leur dévouement et leur volonté d'honorer Dieu à travers leur œuvre.\n\nEn tant qu'artiste, je pouvais déjà imaginer le tableau que cette expérience pourrait m'inspirer. Je voulais saisir non seulement la magnificence de la Sainte-Chapelle, mais aussi le sentiment d'émerveillement et d'élévation spirituelle qu'elle avait éveillé en moi, en rendant hommage à la vision de ses créateurs.\n\nDes siècles plus tard, leur œuvre continue de nous parler. Nous pouvons encore ressentir sa force, éprouver sa splendeur et nous émerveiller devant ce que l'imagination humaine, le dévouement et la foi ont rendu possible.\n\nÀ travers mon art, j'espère honorer cet héritage vivant et contribuer à un regain d'appréciation pour la spiritualité et la beauté.",
+          "status": "Disponible",
+          "sizeLabel_small": "Petit format",
+          "sizeLabel_medium": "Moyen format",
+          "sizeLabel_large": "Grand format",
+          "edition_small": "Édition de 50",
+          "edition_medium": "Édition de 25",
+          "edition_large": "Édition de 10",
+          "dimensions_small": "40.64 x 55.5 cm",
+          "dimensions_medium": "60.96 x 83.26 cm",
+          "dimensions_large": "66.04 x 90.2 cm"
         }
       }
     },

@@ -78,6 +78,23 @@ export const allSeries: Series[] = [
           { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 x 34.75", price: "$1,950" },
         ],
       },
+      {
+        id: "where-light-rises",
+        title: "Where Light Rises",
+        year: "2026",
+        medium: "Acrylic on Bristol paper",
+        img: "/where-light-rises.jpg",
+        alt: "Where Light Rises — Sylviane Paris",
+        dimensions: "20.5 × 28 in. / 52 × 72 cm",
+        hint:
+          "When I first stood inside Sainte-Chapelle in Paris, I was deeply moved by the spiritual power, grandeur, and splendor of this extraordinary edifice. I felt profound admiration for the people who conceived and built it, for their inspiration, dedication, and desire to honor God through their work.\n\nAs an artist, I could already envision the painting this experience might inspire. I wanted to capture not only the magnificence of Sainte-Chapelle, but also the sense of wonder and spiritual elevation it awakened in me, paying tribute to the vision of those who created it.\n\nCenturies later, their work still speaks to us. We can still feel its power, experience its splendor, and marvel at what human imagination, dedication, and faith made possible.\n\nThrough my art, I hope to honor this enduring legacy and contribute to a renewed appreciation for spirituality and beauty.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "Edition of 50", dimensions: "16 × 21.85 in.", price: "$595" },
+          { sizeLabel: "Medium", edition: "Edition of 25", dimensions: "24 × 32.8 in.", price: "$995" },
+          { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 × 35.5 in.", price: "$1,965" },
+        ],
+      },
     ],
   },
   {

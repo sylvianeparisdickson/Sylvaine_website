@@ -355,6 +355,22 @@
           "edition_small": "Edición de 50",
           "edition_medium": "Edición de 25",
           "edition_large": "Edición de 10"
+        },
+        "where-light-rises": {
+          "title": "Donde se eleva la luz",
+          "medium": "Acrílico sobre papel Bristol",
+          "dimensions": "20,5 × 28 pulgadas / 52 × 72 cm",
+          "hint": "Cuando entré por primera vez en la Sainte-Chapelle de París, me conmovieron profundamente la fuerza espiritual, la grandeza y el esplendor de este extraordinario edificio. Sentí una profunda admiración por las personas que lo concibieron y construyeron, por su inspiración, su dedicación y su deseo de honrar a Dios a través de su obra.\n\nComo artista, ya podía imaginar la pintura que esta experiencia podría inspirarme. Quería captar no solo la magnificencia de la Sainte-Chapelle, sino también la sensación de asombro y elevación espiritual que despertó en mí, rindiendo homenaje a la visión de quienes la crearon.\n\nSiglos después, su obra sigue hablándonos. Todavía podemos sentir su fuerza, experimentar su esplendor y maravillarnos ante lo que la imaginación humana, la dedicación y la fe hicieron posible.\n\nA través de mi arte, espero honrar este legado perdurable y contribuir a una renovada valoración de la espiritualidad y la belleza.",
+          "status": "Disponible",
+          "sizeLabel_small": "Pequeño",
+          "sizeLabel_medium": "Mediano",
+          "sizeLabel_large": "Grande",
+          "edition_small": "Edición de 50",
+          "edition_medium": "Edición de 25",
+          "edition_large": "Edición de 10",
+          "dimensions_small": "40.64 x 55.5 pulgadas",
+          "dimensions_medium": "60.96 x 83.26 pulgadas",
+          "dimensions_large": "66.04 x 90.2 pulgadas"
         }
       }
     },

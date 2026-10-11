@@ -28,14 +28,19 @@ export async function getLocalizedSeries(
       : p.availabilityLabel;
     const status = p.status ? td(`${paintingKey}.status`) : p.status;
 
+    const hasDimensions = td.has?.(`${paintingKey}.dimensions`);
+    const dimensions = hasDimensions ? td(`${paintingKey}.dimensions`) : p.dimensions;
+
     // Localize limitedEditions size labels and edition strings
     const limitedEditions = p.limitedEditions?.map((ed, idx) => {
       const sizeKeys = ["small", "medium", "large"] as const;
       const sizeKey = sizeKeys[idx] ?? sizeKeys[0];
+      const hasEditionDim = td.has?.(`${paintingKey}.dimensions_${sizeKey}`);
       return {
         ...ed,
         sizeLabel: td(`${paintingKey}.sizeLabel_${sizeKey}`),
         edition: td(`${paintingKey}.edition_${sizeKey}`),
+        dimensions: hasEditionDim ? td(`${paintingKey}.dimensions_${sizeKey}`) : ed.dimensions,
       };
     });
 
@@ -43,6 +48,7 @@ export async function getLocalizedSeries(
       ...p,
       title,
       medium,
+      ...(dimensions !== undefined ? { dimensions } : {}),
       ...(hint !== undefined ? { hint } : {}),
       ...(availabilityLabel !== undefined ? { availabilityLabel } : {}),
       ...(status !== undefined ? { status } : {}),
