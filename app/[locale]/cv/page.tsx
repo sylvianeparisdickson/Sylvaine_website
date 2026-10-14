@@ -82,13 +82,7 @@ export default function CVPage() {
               <p className="font-medium text-[#1a1816]">2025 — Light Space & Time, 15th Annual Nature Online Art Exhibition</p>
               <p>Special Merit Award</p>
             </div>
-            <div>
-              <p className="font-medium text-[#1a1816]">2025 — TERAVARNA, 13th Open Art Exhibition</p>
-              <p>Honorable Mention</p>
-            </div>
-            <p className="text-[13px] italic text-[#9a9188] mt-4">
-              The two TERAVARNA certificates are now documented in the Master CV archive; the 13th Open award remains identified there as part of the historical record.
-            </p>
+
           </div>
         </section>
 
