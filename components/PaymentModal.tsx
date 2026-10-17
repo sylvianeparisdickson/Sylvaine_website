@@ -426,7 +426,7 @@ export default function PaymentModal({ painting, onClose }: PaymentModalProps) {
         <div className="mb-6 text-[11px] text-[#6a6560] leading-relaxed">
           <p className="mb-2 font-medium text-[#1a1816]">Fulfillment & Authenticity:</p>
           <p>• 7–10 business days for archival reproduction</p>
-          <p>• The artist visits printer to inspect, hand-sign, number, and provide Certificate of Authenticity</p>
+          <p>• Artist inspects, hand-signs, numbers, and provides Certificate of Authenticity before shipment</p>
           <p>• Shipped directly from printer to customer with carrier tracking</p>
           <p>• Transit Guarantee: Full replacement print provided if damaged during shipment</p>
         </div>
