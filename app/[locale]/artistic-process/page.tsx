@@ -27,7 +27,7 @@ export default function ArtisticProcess() {
               <video 
                 controls
                 className="w-full h-full"
-                poster="/artisans.jpg"
+                poster="/A Legacy in Color.jpg"
               >
                 <source src="/final.mp4" type="video/mp4" />
                 Your browser does not support the video tag.

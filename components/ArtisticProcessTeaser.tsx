@@ -10,10 +10,9 @@ export default function ArtisticProcessTeaser() {
         <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Video preview image */}
           <div className="aspect-video bg-[#ede9e1] relative reveal">
-            {/* Replace poster with actual video still image */}
             <video 
               className="w-full h-full object-cover"
-              poster="/artisans.jpg"
+              poster="/A Legacy in Color.jpg"
               muted
             >
               <source src="/final.mp4" type="video/mp4" />
