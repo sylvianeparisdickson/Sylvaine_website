@@ -95,6 +95,23 @@ export const allSeries: Series[] = [
           { sizeLabel: "Large", edition: "Edition of 10", dimensions: "26 × 35.5 in.", price: "$1,965" },
         ],
       },
+      {
+        id: "a-legacy-in-color",
+        title: "A Legacy in Color",
+        year: "2026",
+        medium: "Acrylic painting",
+        img: "/A Legacy in Color.jpg",
+        alt: "A Legacy in Color — Sylviane Paris",
+        dimensions: "20.5 × 27.5 in / 52 × 70 cm",
+        hint:
+          "A small part of Notre-Dame de Paris revealed to me an extraordinary richness of artistic expression.\n\nWhat captivated me was the remarkable expertise behind every element: the architectural structure, the painted decorations, the stained glass and the sculpture. Each discipline brings its own contribution, yet all are thoughtfully integrated into a harmonious whole.\n\nI was particularly drawn to the dialogue between the deep blue, star-covered vault, the vibrant colors of the stained glass and the sculptural figures. Looking at this space, I could appreciate the vision, knowledge and skill required to bring so many different forms of art together.\n\nWith A Legacy in Color, I wanted to celebrate this remarkable union of artistic disciplines and pay tribute to the generations of creators and artisans whose work continues to enrich Notre-Dame de Paris.",
+        status: "Available",
+        limitedEditions: [
+          { sizeLabel: "Small", edition: "1/50", dimensions: "16 × 21.26", price: "$595" },
+          { sizeLabel: "Medium", edition: "1/25", dimensions: "24 × 32", price: "$995" },
+          { sizeLabel: "Large", edition: "1/10", dimensions: "26 × 34.75", price: "$1,950" },
+        ],
+      },
     ],
   },
   {

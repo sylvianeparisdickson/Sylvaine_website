@@ -3,22 +3,28 @@ import { Link } from "@/i18n/routing";
 
 const featuredConfig = [
   {
-    img: "/souls-of-the-park.jpg",
-    seriesId: "divine-presence",
-    paintingId: "souls-of-the-park",
-    href: "/study/divine-presence",
+    img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/artisans.jpg",
+    seriesId: "architecture-of-light",
+    paintingId: "inner-illumination",
+    href: "/study/architecture-of-light",
   },
   {
-    img: "/timeless-craft.jpg",
-    seriesId: "living-moments",
-    paintingId: "timeless-craft",
-    href: "/study/living-moments",
+    img: "https://edpbkxlcapjmynahvgth.supabase.co/storage/v1/object/public/paintings/Light%20Renewed.jpg",
+    seriesId: "architecture-of-light",
+    paintingId: "light-renewed",
+    href: "/study/architecture-of-light",
   },
   {
-    img: "/whispering-passage.jpg",
-    seriesId: "enchanted-path",
-    paintingId: "whispering-passage",
-    href: "/study/enchanted-path",
+    img: "/where-light-rises.jpg",
+    seriesId: "architecture-of-light",
+    paintingId: "where-light-rises",
+    href: "/study/architecture-of-light",
+  },
+  {
+    img: "/A Legacy in Color.jpg",
+    seriesId: "architecture-of-light",
+    paintingId: "a-legacy-in-color",
+    href: "/study/architecture-of-light",
   },
 ];
 

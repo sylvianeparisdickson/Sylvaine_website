@@ -371,6 +371,22 @@
           "dimensions_small": "40.64 x 55.5 cm",
           "dimensions_medium": "60.96 x 83.26 cm",
           "dimensions_large": "66.04 x 90.2 cm"
+        },
+        "a-legacy-in-color": {
+          "title": "Un Héritage en Couleurs",
+          "medium": "Peinture acrylique",
+          "dimensions": "20.5 × 27.5 in / 52 × 70 cm",
+          "hint": "Ce qui m'a fascinée, c'est le remarquable savoir-faire qui se révèle dans chaque élément : la structure architecturale, les décors peints, les vitraux et la sculpture. Chaque discipline apporte sa propre contribution, et pourtant, toutes s'intègrent harmonieusement dans un ensemble cohérent.\n\nJ'ai été particulièrement attirée par le dialogue entre la voûte bleu profond parsemée d'étoiles, les couleurs vibrantes des vitraux et les figures sculptées. En contemplant cet espace, j'ai pu apprécier la vision, les connaissances et le talent nécessaires pour réunir autant de formes artistiques différentes.\n\nAvec Un Héritage en Couleurs, j'ai voulu célébrer cette remarquable union des disciplines artistiques et rendre hommage aux générations de créateurs et d'artisans dont le travail continue d'enrichir Notre-Dame de Paris.",
+          "status": "Disponible",
+          "sizeLabel_small": "Petit",
+          "sizeLabel_medium": "Moyen",
+          "sizeLabel_large": "Grand",
+          "edition_small": "1/50",
+          "edition_medium": "1/25",
+          "edition_large": "1/10",
+          "dimensions_small": "16 × 21.26",
+          "dimensions_medium": "24 × 32",
+          "dimensions_large": "26 × 34.75"
         }
       }
     },

@@ -371,6 +371,22 @@
           "dimensions_small": "40.64 x 55.5 pulgadas",
           "dimensions_medium": "60.96 x 83.26 pulgadas",
           "dimensions_large": "66.04 x 90.2 pulgadas"
+        },
+        "a-legacy-in-color": {
+          "title": "Un Legado en Color",
+          "medium": "Pintura acrílica",
+          "dimensions": "20.5 × 27.5 in / 52 × 70 cm",
+          "hint": "Un pequeño rincón de Notre-Dame de París me reveló una extraordinaria riqueza de expresión artística.\n\nLo que me cautivó fue la excepcional maestría que se aprecia en cada elemento: la estructura arquitectónica, las decoraciones pintadas, las vidrieras y la escultura. Cada disciplina aporta su propia contribución y, sin embargo, todas se integran armoniosamente en un conjunto lleno de unidad.\n\nMe atrajo especialmente el diálogo entre la bóveda azul intenso, salpicada de estrellas, los vibrantes colores de las vidrieras y las figuras esculpidas. Al contemplar este espacio, pude apreciar la visión, los conocimientos y la habilidad necesarios para reunir tantas formas artísticas diferentes.\n\nCon Un Legado en Color, quise celebrar esta extraordinaria unión de disciplinas artísticas y rendir homenaje a las generaciones de creadores y artesanos cuyo trabajo sigue enriqueciendo Notre-Dame de París.",
+          "status": "Disponible",
+          "sizeLabel_small": "Pequeño",
+          "sizeLabel_medium": "Mediano",
+          "sizeLabel_large": "Grande",
+          "edition_small": "1/50",
+          "edition_medium": "1/25",
+          "edition_large": "1/10",
+          "dimensions_small": "16 × 21.26",
+          "dimensions_medium": "24 × 32",
+          "dimensions_large": "26 × 34.75"
         }
       }
     },
