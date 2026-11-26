@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import NorthrupStrip from "@/components/NorthrupStrip";
 import StatementSection from "@/components/StatementSection";
 import CollectionsSection from "@/components/CollectionsSection";
+import ArtisticProcessTeaser from "@/components/ArtisticProcessTeaser";
 import SelectedWorks from "@/components/SelectedWorks";
 import CommissionTeaser from "@/components/CommissionTeaser";
 import CollectorQuote from "@/components/CollectorQuote";
@@ -19,6 +20,7 @@ export default function Home() {
       <NorthrupStrip />
       <CollectionsSection />
       <StatementSection />
+      <ArtisticProcessTeaser />
       <SelectedWorks />
       <CommissionTeaser />
       <CollectorQuote />

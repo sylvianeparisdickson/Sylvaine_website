@@ -18,6 +18,7 @@
     "collectors": "Coleccionistas",
     "limitedEditions": "Ediciones Limitadas",
     "about": "Acerca de",
+    "artisticProcess": "Proceso Artístico",
     "cv": "CV",
     "contact": "Contacto"
   },
@@ -302,6 +303,11 @@
     "badge": "Prensa y Reconocimiento",
     "heading": "Prensa y\nReconocimiento",
     "text": "Características de prensa y reconocimientos adicionales\nse agregarán aquí cuando estén disponibles."
+  },
+  "ArtisticProcess": {
+    "title": "El Proceso Artístico",
+    "subtitle": "De la Observación a la Creación",
+    "text": "Mis pinturas comienzan con una observación cuidadosa de la arquitectura, el espacio y la luz. A través de la perspectiva, las formas, las proporciones, el color, la luz y la sombra, construyo gradualmente una imagen que captura no solo la apariencia de un lugar, sino también su atmósfera y presencia.\n\nCada pintura se desarrolla a través de un proceso meticuloso, con cada detalle pintado a mano con cuidado."
   },
   "SeriesPageTemplate": {
     "close": "Cerrar ×",

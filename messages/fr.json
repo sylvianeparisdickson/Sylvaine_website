@@ -18,6 +18,7 @@
     "collectors": "Témoignages",
     "limitedEditions": "Éditions Limitées",
     "about": "À Propos",
+    "artisticProcess": "Processus Artistique",
     "cv": "CV",
     "contact": "Contact"
   },
@@ -302,6 +303,11 @@
     "badge": "Presse & Distinctions",
     "heading": "Presse &\nDistinctions",
     "text": "Les articles de presse et autres distinctions\nseront ajoutés ici dès qu'ils seront disponibles."
+  },
+  "ArtisticProcess": {
+    "title": "Le Processus Artistique",
+    "subtitle": "De l'Observation à la Création",
+    "text": "Mes peintures commencent par une observation attentive de l'architecture, de l'espace et de la lumière. À travers la perspective, les formes, les proportions, la couleur, la lumière et l'ombre, je construis progressivement une image qui capture non seulement l'apparence d'un lieu, mais aussi son atmosphère et sa présence.\n\nChaque peinture se développe à travers un processus méticuleux, chaque détail étant peint à la main avec soin."
   },
   "Series": {
     "title": "Séries — Sylviane Paris",
